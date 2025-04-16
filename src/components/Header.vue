@@ -51,6 +51,8 @@ export default {
       <h2>Ajustes</h2>
     </section>
   </nav>
+
+  <button>Publicar</button> 
 </template>
 
 <style scoped>
