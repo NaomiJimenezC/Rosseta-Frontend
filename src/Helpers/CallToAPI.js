@@ -2,11 +2,10 @@ import axios from 'axios';
 
 const baseURL = import.meta.env.VITE_BACKEND_URL;
 
-// Vamos a crear una instancia de axios con la URL base y los headers por defecto
 const api = axios.create({
   baseURL: baseURL,
   headers: {
-    'Content-Type': 'application/json', // Esto le dice al servidor que le estamos enviando datos en formato JSON
+    'Content-Type': 'application/json',
   },
 });
 
