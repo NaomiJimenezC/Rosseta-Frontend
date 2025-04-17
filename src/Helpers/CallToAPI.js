@@ -12,9 +12,10 @@ const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('authToken');
-    if (token) {
+    if (token && config.needsAuth !== false) { // Solo añadimos el token si existe Y si needsAuth no es explícitamente false
       config.headers['Authorization'] = `Bearer ${token}`;
     }
+    delete config.needsAuth; // Limpiamos la propiedad needsAuth para que no se envíe en la petición
     return config;
   },
   (error) => {
@@ -22,9 +23,10 @@ api.interceptors.request.use(
   }
 );
 
-export const postCalling = async (route, data) => {
+export const postCalling = async (route, data, needsAuth = true) => {
   try {
-    const response = await api.post(route, data);
+    console.log("PRUEBA");
+    const response = await api.post(route, { ...data, needsAuth }); // Pasamos needsAuth en la configuración
     return response;
   } catch (err) {
     console.log(err);
@@ -32,9 +34,9 @@ export const postCalling = async (route, data) => {
   }
 };
 
-export const getCalling = async (route) => {
+export const getCalling = async (route, needsAuth = true) => {
   try {
-    const response = await api.get(route);
+    const response = await api.get(route, { needsAuth }); // Pasamos needsAuth en la configuración
     return response.data;
   } catch (err) {
     console.error(err);
@@ -42,9 +44,9 @@ export const getCalling = async (route) => {
   }
 };
 
-export const updateCalling = async (route, data) => {
+export const updateCalling = async (route, data, needsAuth = true) => {
   try {
-    const response = await api.patch(route, data);
+    const response = await api.patch(route, { ...data, needsAuth }); // Pasamos needsAuth en la configuración
     return response;
   } catch (err) {
     console.error(err);
@@ -52,9 +54,9 @@ export const updateCalling = async (route, data) => {
   }
 };
 
-export const deleteCalling = async (route) => {
+export const deleteCalling = async (route, needsAuth = true) => {
   try {
-    const response = await api.delete(route);
+    const response = await api.delete(route, { needsAuth }); // Pasamos needsAuth en la configuración
     return response;
   } catch (err) {
     console.error(err);
