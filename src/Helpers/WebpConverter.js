@@ -1,15 +1,13 @@
 import axios from 'axios';
 
-async function uploadFormImageWebpAxios(imageFile) {
+export async function uploadFormImageWebpAxios(imageFile) {
   const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD;
-  const apiKey =import.meta.env.VITE_CLOUDINARY_API_KEY;
-  const apiSecret = import.meta.env.VITE_CLOUDINARY_API_SECRET_KEY;
+  const uploadPreset = 'ml_default'; // Reemplaza con el nombre de tu preset
 
   const formData = new FormData();
   formData.append("file", imageFile);
   formData.append("cloud_name", cloudName);
-  formData.append("api_key", apiKey);
-  formData.append("format", "webp");
+  formData.append("upload_preset", uploadPreset);
 
   const url = `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`;
 
@@ -21,7 +19,9 @@ async function uploadFormImageWebpAxios(imageFile) {
     });
 
     if (response.status === 200) {
+      console.log(response.data);
       return response.data;
+
     } else {
       console.error("¡Ups! Hubo un error al subir la imagen:", response.status);
       return null;

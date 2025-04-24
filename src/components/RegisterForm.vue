@@ -2,6 +2,7 @@
 import { Form, Field, ErrorMessage } from 'vee-validate';
 import * as yup from 'yup';
 import { postCalling } from "@/Helpers/CallToAPI.js"; // Asegúrate que esta ruta es correcta
+import { uploadFormImageWebpAxios } from "@/Helpers/WebpConverter.js"; // Ajusta la ruta si es necesario
 
 export default {
   name: 'RegisterForm',
@@ -9,6 +10,7 @@ export default {
   data() {
     console.log('Yup object:', yup);
     return {
+      values: {}, // Inicializamos un objeto para los valores del formulario
       schema: yup.object({
         username: yup
           .string()
@@ -32,8 +34,8 @@ export default {
           .string()
           .nullable(), // Permite valores nulos o cadenas vacías (no obligatorio)
         profile_photo: yup
-          .mixed()
-          .nullable(), // Permitimos null para el campo de archivo opcional
+          .string()
+          .nullable(), // Ahora almacenaremos la URL de Cloudinary aquí
         terms_and_conditions: yup
           .boolean()
           .oneOf([true], 'Debes aceptar los términos y condiciones'),
@@ -77,18 +79,39 @@ export default {
         console.log('handleSubmit finished.');
       }
     },
-    handleFileChange(event) {
+    async handleFileChange(event) {
       const file = event.target.files[0];
       console.log('File selected:', file ? file.name : 'No file selected');
-      // Si decides enviar la foto como Base64 aquí, tendrías que leer el archivo
-      // y actualizar el objeto 'values' (o 'processedValues') con la cadena Base64.
-    }
+
+      if (file) {
+        this.isSending = true; // Deshabilitar el botón mientras se sube la imagen
+        try {
+          const uploadResult = await uploadFormImageWebpAxios(file);
+          if (uploadResult && uploadResult.secure_url) {
+            console.log('Image uploaded to Cloudinary:', uploadResult.secure_url);
+            // Actualizamos el valor del campo profile_photo en nuestro objeto 'values'
+            this.values.profile_photo = uploadResult.secure_url;
+          } else {
+            console.error('Error al subir la imagen o no se recibió URL.');
+            this.submitError = 'Error al subir la foto de perfil.';
+          }
+        } catch (error) {
+          console.error('Error durante la subida a Cloudinary:', error);
+          this.submitError = 'Error al subir la foto de perfil.';
+        } finally {
+          this.isSending = false; // Habilitar el botón después de intentar subir
+        }
+      } else {
+        // Si no se selecciona ningún archivo, establecemos el valor a null
+        this.values.profile_photo = null;
+      }
+    },
   },
 };
 </script>
 
 <template>
-  <Form :validation-schema="schema" @submit="handleSubmit" v-slot="{ errors }">
+  <Form :validation-schema="schema" @submit="handleSubmit" v-slot="{ errors, values }">
     <div v-if="submitError" class="alert alert-danger">{{ submitError }}</div>
 
     <div class="form-group">
@@ -99,6 +122,7 @@ export default {
         type="text"
         class="form-control"
         :class="{ 'is-invalid': errors.username }"
+        v-model="values.username"
       />
       <ErrorMessage name="username" class="error-message invalid-feedback" />
     </div>
@@ -111,6 +135,7 @@ export default {
         type="email"
         class="form-control"
         :class="{ 'is-invalid': errors.email }"
+        v-model="values.email"
       />
       <ErrorMessage name="email" class="error-message invalid-feedback" />
     </div>
@@ -123,6 +148,7 @@ export default {
         type="password"
         class="form-control"
         :class="{ 'is-invalid': errors.password }"
+        v-model="values.password"
       />
       <ErrorMessage name="password" class="error-message invalid-feedback" />
     </div>
@@ -135,6 +161,7 @@ export default {
         type="password"
         class="form-control"
         :class="{ 'is-invalid': errors.password_confirmation }"
+        v-model="values.password_confirmation"
       />
       <ErrorMessage name="password_confirmation" class="error-message invalid-feedback" />
     </div>
@@ -147,6 +174,7 @@ export default {
         type="date"
         class="form-control"
         :class="{ 'is-invalid': errors.birthday }"
+        v-model="values.birthday"
       />
       <ErrorMessage name="birthday" class="error-message invalid-feedback" />
     </div>
@@ -159,6 +187,7 @@ export default {
         type="text"
         class="form-control"
         :class="{ 'is-invalid': errors.phone_number }"
+        v-model="values.phone_number"
       />
       <ErrorMessage name="phone_number" class="error-message invalid-feedback" />
     </div>
@@ -184,6 +213,7 @@ export default {
         type="checkbox"
         :value="true" class="form-check-input"
         :class="{ 'is-invalid': errors.terms_and_conditions }"
+        v-model="values.terms_and_conditions"
       />
       <label class="form-check-label" for="terms_and_conditions">
         Acepto los <a href="/terminos" target="_blank">términos y condiciones</a> <span class="required">*</span>
