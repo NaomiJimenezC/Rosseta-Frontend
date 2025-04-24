@@ -1,16 +1,15 @@
 <script>
 import { Form, Field, ErrorMessage } from 'vee-validate';
 import * as yup from 'yup';
-import { postCalling } from "@/Helpers/CallToAPI.js"; // Asegúrate que esta ruta es correcta
-import { uploadFormImageWebpAxios } from "@/Helpers/WebpConverter.js"; // Ajusta la ruta si es necesario
+import { postCalling } from "@/Helpers/CallToAPI.js"; 
+import { uploadFormImageWebpAxios } from "@/Helpers/WebpConverter.js";
 
 export default {
   name: 'RegisterForm',
   components: { Form, Field, ErrorMessage },
   data() {
-    console.log('Yup object:', yup);
     return {
-      values: {}, // Inicializamos un objeto para los valores del formulario
+      values: {},
       schema: yup.object({
         username: yup
           .string()
@@ -32,10 +31,10 @@ export default {
           .required('La fecha de nacimiento es obligatoria'),
         phone_number: yup
           .string()
-          .nullable(), // Permite valores nulos o cadenas vacías (no obligatorio)
+          .nullable(),
         profile_photo: yup
           .string()
-          .nullable(), // Ahora almacenaremos la URL de Cloudinary aquí
+          .nullable(),
         terms_and_conditions: yup
           .boolean()
           .oneOf([true], 'Debes aceptar los términos y condiciones'),
@@ -68,6 +67,7 @@ export default {
 
         console.log('postCalling successful:', response);
         alert('¡Registro exitoso!');
+        this.$router.push({ name: 'verify-email', query: { email: values.email } });
         resetForm();
 
       } catch (error) {
