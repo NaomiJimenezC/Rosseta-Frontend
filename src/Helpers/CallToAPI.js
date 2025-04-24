@@ -25,8 +25,7 @@ api.interceptors.request.use(
 
 export const postCalling = async (route, data, needsAuth = true) => {
   try {
-    console.log("PRUEBA");
-    const response = await api.post(route, { ...data, needsAuth }); // Pasamos needsAuth en la configuración
+    const response = await api.post(route, { ...data, needsAuth });
     return response;
   } catch (err) {
     console.log(err);
@@ -36,7 +35,7 @@ export const postCalling = async (route, data, needsAuth = true) => {
 
 export const getCalling = async (route, needsAuth = true) => {
   try {
-    const response = await api.get(route, { needsAuth }); // Pasamos needsAuth en la configuración
+    const response = await api.get(route, { needsAuth });
     return response.data;
   } catch (err) {
     console.error(err);
