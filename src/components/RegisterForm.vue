@@ -1,7 +1,7 @@
 <script>
 import { Form, Field, ErrorMessage } from 'vee-validate';
 import * as yup from 'yup';
-import { postCalling } from "@/Helpers/CallToAPI.js"; 
+import { postCalling } from "@/Helpers/CallToAPI.js";
 import { uploadFormImageWebpAxios } from "@/Helpers/WebpConverter.js";
 
 export default {
@@ -44,7 +44,7 @@ export default {
     };
   },
   mounted() {
-    console.log('RegisterForm component mounted.');
+
   },
   methods: {
     async handleSubmit(values, { resetForm }) {
@@ -52,7 +52,6 @@ export default {
       this.isSending = true;
       this.submitError = null;
 
-      // Establecer valores por defecto de "" para campos vacíos antes de enviar
       const processedValues = Object.keys(values).reduce((acc, key) => {
         acc[key] = values[key] === null ? "" : values[key];
         return acc;
@@ -61,8 +60,7 @@ export default {
       console.log('Processed values for submit:', processedValues);
 
       try {
-        console.log('Attempting to call postCalling with JSON...');
-        // Llamamos a postCalling con el objeto 'processedValues'
+
         const response = await postCalling("/register", processedValues, true);
 
         console.log('postCalling successful:', response);
@@ -84,12 +82,12 @@ export default {
       console.log('File selected:', file ? file.name : 'No file selected');
 
       if (file) {
-        this.isSending = true; // Deshabilitar el botón mientras se sube la imagen
+        this.isSending = true;
         try {
           const uploadResult = await uploadFormImageWebpAxios(file);
           if (uploadResult && uploadResult.secure_url) {
             console.log('Image uploaded to Cloudinary:', uploadResult.secure_url);
-            // Actualizamos el valor del campo profile_photo en nuestro objeto 'values'
+
             this.values.profile_photo = uploadResult.secure_url;
           } else {
             console.error('Error al subir la imagen o no se recibió URL.');
@@ -99,10 +97,9 @@ export default {
           console.error('Error durante la subida a Cloudinary:', error);
           this.submitError = 'Error al subir la foto de perfil.';
         } finally {
-          this.isSending = false; // Habilitar el botón después de intentar subir
+          this.isSending = false;
         }
       } else {
-        // Si no se selecciona ningún archivo, establecemos el valor a null
         this.values.profile_photo = null;
       }
     },
