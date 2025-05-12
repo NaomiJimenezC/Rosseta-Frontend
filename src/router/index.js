@@ -1,7 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import RegisterForm from "@/components/RegisterForm.vue";
 import LoginForm from "@/components/LoginForm.vue";
-import ConfirmEmailForm from "@/components/ConfirmEmailForm.vue"; // Cambié el nombre para que coincida con lo que hemos estado usando
+import ConfirmEmailForm from "@/components/ConfirmEmailForm.vue";
+import Home from "@/pages/Home.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -9,6 +10,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
+      component: Home,
     },
     {
       path: '/about',

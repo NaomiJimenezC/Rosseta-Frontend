@@ -69,16 +69,11 @@ export default {
       this.isVerifying = true;
 
       try {
-        const response = await postCalling('/verify-email', values, true); // Asegúrate que la ruta sea correcta
-
-        if (response.message) {
-          this.message = response.message;
-          if (response.message.includes('verificado exitosamente')) {
-            setTimeout(() => {
-              this.$router.push({ name: 'login' });
-            }, 2000);
-          }
-        } else if (response.errors) {
+        const response = await postCalling('/verify-email', values, true);
+        if (response.status === 200) {
+          this.$router.push({ name: 'login' });
+        }
+         else if (response.errors) {
           let errorString = '';
           for (const key in response.errors) {
             errorString += `${response.errors[key].join(', ')}<br>`;
