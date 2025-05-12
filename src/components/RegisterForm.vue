@@ -48,7 +48,6 @@ export default {
   },
   methods: {
     async handleSubmit(values, { resetForm }) {
-      console.log('handleSubmit triggered!');
       this.isSending = true;
       this.submitError = null;
 
@@ -57,45 +56,33 @@ export default {
         return acc;
       }, {});
 
-      console.log('Processed values for submit:', processedValues);
-
       try {
-
-        const response = await postCalling("/register", processedValues, true);
-
-        console.log('postCalling successful:', response);
+        await postCalling("/register", processedValues, true);
         alert('¡Registro exitoso!');
         this.$router.push({ name: 'verify-email', query: { email: values.email } });
         resetForm();
 
       } catch (error) {
-        console.error('Error during postCalling:', error);
-        console.error('Detalles del error del backend:', error.response ? error.response.data : error);
         this.submitError = 'Ocurrió un error al registrar. Inténtalo de nuevo.';
       } finally {
         this.isSending = false;
-        console.log('handleSubmit finished.');
+
       }
     },
     async handleFileChange(event) {
       const file = event.target.files[0];
-      console.log('File selected:', file ? file.name : 'No file selected');
 
       if (file) {
         this.isSending = true;
         try {
           const uploadResult = await uploadFormImageWebpAxios(file);
           if (uploadResult && uploadResult.secure_url) {
-            console.log('Image uploaded to Cloudinary:', uploadResult.secure_url);
-
             this.values.profile_photo = uploadResult.secure_url;
           } else {
-            console.error('Error al subir la imagen o no se recibió URL.');
             this.submitError = 'Error al subir la foto de perfil.';
           }
         } catch (error) {
-          console.error('Error durante la subida a Cloudinary:', error);
-          this.submitError = 'Error al subir la foto de perfil.';
+          this.submitError = error;
         } finally {
           this.isSending = false;
         }
@@ -190,7 +177,7 @@ export default {
     </div>
 
     <div class="form-group">
-      <label for="profile_photo">Foto de perfil (Opcional, max 2MB, JPG/PNG):</label>
+      <label for="profile_photo">Foto de perfil (max 2MB, JPG/PNG):</label>
       <Field
         id="profile_photo"
         name="profile_photo"
@@ -226,7 +213,6 @@ export default {
 </template>
 
 <style scoped>
-/* Estilos básicos para los mensajes de error (adapta según tu CSS/Framework) */
 .error-message {
   color: red;
   font-size: 0.8em;

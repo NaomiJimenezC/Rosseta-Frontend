@@ -2,7 +2,7 @@ import axios from 'axios';
 
 export async function uploadFormImageWebpAxios(imageFile) {
   const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD;
-  const uploadPreset = 'ml_default'; // Reemplaza con el nombre de tu preset
+  const uploadPreset = 'ml_default';
 
   const formData = new FormData();
   formData.append("file", imageFile);
@@ -19,7 +19,6 @@ export async function uploadFormImageWebpAxios(imageFile) {
     });
 
     if (response.status === 200) {
-      console.log(response.data);
       return response.data;
 
     } else {

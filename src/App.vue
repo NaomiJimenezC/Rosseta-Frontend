@@ -1,12 +1,12 @@
 <script setup>
 import Header from './components/Header.vue'
 import { RouterView } from 'vue-router';
-import RegisterForm from "@/components/RegisterForm.vue"; // Importa RouterView
+import NewPublication from "@/components/NewPublication.vue";
 </script>
 
 <template>
   <Header/>
-  <RouterView/> <RegisterForm/> </template>
+  <RouterView/> <NewPublication/> </template>
 
 <style scoped>
 </style>
