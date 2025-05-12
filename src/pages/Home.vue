@@ -1,8 +1,10 @@
 <script>
 import { getCalling } from "@/Helpers/CallToAPI.js";
+import Post from "@/components/Post.vue";
 
 export default {
   name: 'Home',
+  components: {Post},
   data() {
     return {
       posts: [],
@@ -39,9 +41,12 @@ export default {
     </div>
     <ul v-else-if="posts && posts.data && posts.data.length > 0">
       <li v-for="post in posts.data" :key="post.id">
-        <img :src="post.image_url" :alt="post.caption" style="max-width: 100px; height: auto;">
-        <p>Contenido: {{ post.content }}</p>
-        <p>Fecha de publicación: {{ post.created_at }}</p>
+        <Post
+          :userId="post.users_id"
+          :img="post.image_url"
+          :caption="post.caption"
+          :image="post.content"
+        />
       </li>
     </ul>
     <h2 v-else>No hay publicaciones disponibles</h2>
