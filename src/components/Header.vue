@@ -1,5 +1,4 @@
 <script>
-import NavItem from "@/components/NavItem.vue";
 import HomeIcon from 'vue-material-design-icons/Home.vue';
 import SearchWebIcon from 'vue-material-design-icons/SearchWeb.vue';
 import PlusCircleIcon from 'vue-material-design-icons/PlusCircle.vue';
@@ -10,13 +9,17 @@ import CogIcon from 'vue-material-design-icons/Cog.vue';
 export default {
   name: "Header",
   components: {
-    NavItem,
     HomeIcon,
     SearchWebIcon,
     PlusCircleIcon,
     AccountCircleIcon,
     MessageIcon,
     CogIcon
+  },
+  methods: {
+    publish(){
+      this.$router.push('/publish');
+    }
   }
 }
 
@@ -24,7 +27,6 @@ export default {
 
 <template>
   <img src="" alt="Logo">
-  <NavItem/>
   <nav>
     <section>
       <home-icon/>
@@ -52,7 +54,7 @@ export default {
     </section>
   </nav>
 
-  <button>Publicar</button> 
+  <button @click="publish">Publicar</button>
 </template>
 
 <style scoped>

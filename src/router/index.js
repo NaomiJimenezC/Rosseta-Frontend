@@ -3,6 +3,7 @@ import RegisterForm from "@/components/RegisterForm.vue";
 import LoginForm from "@/components/LoginForm.vue";
 import ConfirmEmailForm from "@/components/ConfirmEmailForm.vue";
 import Home from "@/pages/Home.vue";
+import NewPublication from "@/components/NewPublication.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -30,6 +31,11 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: LoginForm,
+    },
+    {
+      path: '/publish',
+      name: 'publish',
+      component: NewPublication,
     }
   ],
 });

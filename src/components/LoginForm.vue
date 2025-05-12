@@ -17,7 +17,7 @@ export default {
           .required('La contraseña es obligatoria')
           .min(6, 'La contraseña debe tener al menos 6 caracteres'),
       }),
-      loginError: null, // Para mostrar mensajes de error de inicio de sesión
+      loginError: null,
     };
   },
   methods: {
@@ -25,8 +25,6 @@ export default {
       this.loginError = null;
       try {
         const response = await postCalling("/login", values, false);
-
-        console.log('Respuesta del inicio de sesión:', response);
 
         if (response && response.data && response.data.access_token) {
           const bearerToken = response.data.access_token;
@@ -38,7 +36,6 @@ export default {
         }
 
       } catch (error) {
-        console.error('Error durante el inicio de sesión:', error);
         this.loginError = 'Ocurrió un error al iniciar sesión. Inténtalo de nuevo.';
         if (error.response && error.response.data && error.response.data.message) {
           this.loginError = error.response.data.message;

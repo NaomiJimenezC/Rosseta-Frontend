@@ -12,10 +12,10 @@ const api = axios.create({
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('authToken');
-    if (token && config.needsAuth !== false) { // Solo añadimos el token si existe Y si needsAuth no es explícitamente false
+    if (token && config.needsAuth !== false) {
       config.headers['Authorization'] = `Bearer ${token}`;
     }
-    delete config.needsAuth; // Limpiamos la propiedad needsAuth para que no se envíe en la petición
+    delete config.needsAuth;
     return config;
   },
   (error) => {
@@ -45,7 +45,7 @@ export const getCalling = async (route, needsAuth = true) => {
 
 export const updateCalling = async (route, data, needsAuth = true) => {
   try {
-    const response = await api.patch(route, { ...data, needsAuth }); // Pasamos needsAuth en la configuración
+    const response = await api.patch(route, { ...data, needsAuth });
     return response;
   } catch (err) {
     console.error(err);
@@ -55,7 +55,7 @@ export const updateCalling = async (route, data, needsAuth = true) => {
 
 export const deleteCalling = async (route, needsAuth = true) => {
   try {
-    const response = await api.delete(route, { needsAuth }); // Pasamos needsAuth en la configuración
+    const response = await api.delete(route, { needsAuth });
     return response;
   } catch (err) {
     console.error(err);

@@ -2,6 +2,7 @@
 import * as yup from 'yup';
 import { Field, Form } from "vee-validate";
 import {uploadFormImageWebpAxios} from "@/Helpers/WebpConverter.js";
+import {postCalling} from "@/Helpers/CallToAPI.js";
 
 export default {
   name: "NewPublication",
@@ -11,11 +12,13 @@ export default {
       image: null,
       values: {},
       schema: yup.object({
-        comment: yup.string().nullable(),
-        imageData: yup.string().nullable(),
+        content: yup.string().nullable(),
+        image_url: yup.string().required(),
+        caption: yup.string().nullable(),
       }),
       isSending: false,
       submitError: null,
+      postSuccessMessage: null,
     };
   },
   methods: {
@@ -27,12 +30,7 @@ export default {
           const uploadResult = await uploadFormImageWebpAxios(file);
           if (uploadResult && uploadResult.secure_url) {
             this.image = uploadResult.secure_url;
-            this.values.imageData = uploadResult.secure_url;
-            this.$nextTick(() => {
-              if (this.$refs.commentField) {
-                this.$refs.commentField.focus();
-              }
-            });
+            this.values.image_url = uploadResult.secure_url;
           } else {
             this.submitError = 'Error al subir la imagen.';
             this.image = null;
@@ -42,22 +40,27 @@ export default {
           this.image = null;
         } finally {
           this.isSending = false;
-          URL.revokeObjectURL(localUrl);
         }
       } else {
         this.image = null;
-        this.values.imageData = null;
+        this.values.image_url = null;
       }
     },
-    handleSubmit(values) {
+    async handleSubmit(values) {
       this.isSending = true;
-      console.log("Valores del formulario:", values);
-      console.log("Imagen (URL de Cloudinary):", values.imageData);
-      setTimeout(() => {
+      this.submitError = null;
+      this.postSuccessMessage = null;
+      try {
+        await postCalling("/posts", values, true);
         this.isSending = false;
         this.image = null;
         this.values = {};
-      }, 2000);
+        this.postSuccessMessage = '¡Publicación creada con éxito!';
+      } catch (error) {
+        console.error("Error al crear la publicación:", error);
+        this.submitError = 'Error al crear la publicación. Inténtalo de nuevo.';
+        this.isSending = false;
+      }
     },
   },
 };
@@ -80,23 +83,34 @@ export default {
   <section v-else>
     <img :src="image" alt="Foto seleccionada" style="max-width: 300px; height: auto; margin-bottom: 1rem;" />
     <Form :validation-schema="schema" @submit="handleSubmit" ref="form">
-      <label for="comment">
+      <label for="content">
         Descripción
       </label>
       <Field
-        id="comment"
-        name="comment"
-        as="textarea"
-        placeholder="Escribe una descripción para tu publicación..."
-        ref="commentField"
+        id="content"
+        name="content"
+      as="textarea"
+      placeholder="Escribe una descripción para tu publicación..."
+      ref="commentField"
       ></Field>
-      <Field type="hidden" name="imageData" :value="values.imageData" />
+      <label for="caption">
+        Título
+      </label>
+      <Field
+        id="caption"
+        name="caption"
+        type="text"
+        placeholder="Escribe un título para tu publicación..."
+        ref="captionField"
+      ></Field>
+      <Field type="hidden" name="image_url" :value="values.image_url" />
       <button type="submit" :disabled="isSending">
         {{ isSending ? 'Publicando...' : 'Publicar' }}
       </button>
     </Form>
-    <button @click="image = null; values.imageData = null;">Cambiar imagen</button>
+    <button @click="image = null; values.image_url = null; values.caption = null; postSuccessMessage = null; submitError = null;">Cambiar imagen</button>
     <div v-if="submitError" style="color: red;">{{ submitError }}</div>
+    <div v-if="postSuccessMessage" style="color: green;">{{ postSuccessMessage }}</div>
   </section>
 </template>
 
