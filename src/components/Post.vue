@@ -14,7 +14,6 @@ export default {
       userData: null,
       loading: true,
       error: null,
-      defaultProfilePicture: '@/assets/Default_pfp.jpg', // Define the URL por defecto aquí
     };
   },
   async mounted() {
@@ -26,12 +25,7 @@ export default {
     } finally {
       this.loading = false;
     }
-  },
-  methods: {
-    handleImageError(event) {
-      event.target.src = this.defaultProfilePicture; // Cambia la fuente de la imagen al valor por defecto
-    },
-  },
+  }
 };
 </script>
 
@@ -39,9 +33,8 @@ export default {
   <article v-if="!loading && !error">
     <header>
       <img
-        :src="userData ? userData.profile_picture_url : defaultProfilePicture"
-        @error="handleImageError"
-        alt="User Profile"
+        :src="userData.profile_picture_url"
+        :alt="userData.username + ' profile photo'"
       />
       <h4 v-if="userData">{{ userData.username }}</h4>
     </header>

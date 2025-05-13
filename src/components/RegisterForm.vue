@@ -9,7 +9,9 @@ export default {
   components: { Form, Field, ErrorMessage },
   data() {
     return {
-      values: {},
+      values: {
+        profile_photo: import.meta.env.VITE_DEFAULT_PROFILE_PHOTO
+      },
       schema: yup.object({
         username: yup
           .string()
@@ -43,51 +45,48 @@ export default {
       submitError: null,
     };
   },
-  mounted() {
-
-  },
   methods: {
     async handleSubmit(values, { resetForm }) {
       this.isSending = true;
       this.submitError = null;
 
       const processedValues = Object.keys(values).reduce((acc, key) => {
-        acc[key] = values[key] === null ? "" : values[key];
+        const backendKey = key === 'profile_photo' ? 'profile_picture_url' : key;
+        acc[backendKey] = values[key] == null ? '' : values[key];
         return acc;
       }, {});
 
       try {
-        await postCalling("/register", processedValues, true);
+        await postCalling('/register', processedValues, true);
         alert('¡Registro exitoso!');
         this.$router.push({ name: 'verify-email', query: { email: values.email } });
         resetForm();
-
       } catch (error) {
         this.submitError = 'Ocurrió un error al registrar. Inténtalo de nuevo.';
       } finally {
         this.isSending = false;
-
       }
     },
-    async handleFileChange(event) {
+    async handleFileChange(event, setFieldValue) {
       const file = event.target.files[0];
+      if (!file) return;
 
-      if (file) {
-        this.isSending = true;
-        try {
-          const uploadResult = await uploadFormImageWebpAxios(file);
-          if (uploadResult && uploadResult.secure_url) {
-            this.values.profile_photo = uploadResult.secure_url;
-          } else {
-            this.submitError = 'Error al subir la foto de perfil.';
-          }
-        } catch (error) {
-          this.submitError = error;
-        } finally {
-          this.isSending = false;
+      this.isSending = true;
+      this.submitError = null;
+      try {
+        const uploadResult = await uploadFormImageWebpAxios(file);
+        if (uploadResult && uploadResult.secure_url) {
+          // guardar en state local para previsualización
+          this.values.profile_photo = uploadResult.secure_url;
+          // sincronizar con Vee-Validate
+          setFieldValue('profile_photo', uploadResult.secure_url);
+        } else {
+          this.submitError = 'Error al subir la foto de perfil.';
         }
-      } else {
-        this.values.profile_photo = null;
+      } catch (error) {
+        this.submitError = 'Error al subir la foto de perfil.';
+      } finally {
+        this.isSending = false;
       }
     },
   },
@@ -95,7 +94,12 @@ export default {
 </script>
 
 <template>
-  <Form :validation-schema="schema" @submit="handleSubmit" v-slot="{ errors, values }">
+  <Form
+    :validation-schema="schema"
+    :initial-values="values"
+    @submit="handleSubmit"
+    v-slot="{ errors, values, setFieldValue }"
+  >
     <div v-if="submitError" class="alert alert-danger">{{ submitError }}</div>
 
     <div class="form-group">
@@ -183,7 +187,7 @@ export default {
         name="profile_photo"
         type="file"
         class="form-control"
-        @change="handleFileChange"
+        @change="e => handleFileChange(e, setFieldValue)"
         accept="image/jpeg, image/png"
         :class="{ 'is-invalid': errors.profile_photo }"
       />
@@ -195,7 +199,8 @@ export default {
         id="terms_and_conditions"
         name="terms_and_conditions"
         type="checkbox"
-        :value="true" class="form-check-input"
+        :value="true"
+        class="form-check-input"
         :class="{ 'is-invalid': errors.terms_and_conditions }"
         v-model="values.terms_and_conditions"
       />
@@ -220,22 +225,21 @@ export default {
 .form-group {
   margin-bottom: 1rem;
 }
-/* Estilos para campos inválidos si usas Bootstrap u otro framework */
 .is-invalid {
   border-color: red;
 }
 .invalid-feedback {
-  display: none; /* Oculto por defecto */
+  display: none;
   width: 100%;
   margin-top: 0.25rem;
   font-size: 80%;
-  color: #dc3545; /* Color rojo de Bootstrap para errores */
+  color: #dc3545;
 }
 .is-invalid ~ .invalid-feedback,
-.is-invalid ~ .form-check-label + .invalid-feedback { /* Mostrar el mensaje si el campo es inválido */
+.is-invalid ~ .form-check-label + .invalid-feedback {
   display: block;
 }
-.d-block { /* Utilidad para asegurar que el mensaje de términos se muestre */
+.d-block {
   display: block !important;
 }
 .required {

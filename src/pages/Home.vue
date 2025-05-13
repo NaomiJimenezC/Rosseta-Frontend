@@ -8,8 +8,8 @@ export default {
   data() {
     return {
       posts: [],
-      loading: true, // Para manejar el estado de carga
-      error: null    // Para manejar errores
+      loading: true,
+      error: null
     };
   },
   async mounted() {
@@ -17,9 +17,9 @@ export default {
       this.posts = await this.getPostFollowed();
     } catch (error) {
       console.error('Error fetching posts:', error);
-      this.error = error; // Guarda el error para mostrarlo en el template
+      this.error = error;
     } finally {
-      this.loading = false; // Actualiza el estado de carga
+      this.loading = false;
     }
   },
   methods: {
@@ -45,7 +45,7 @@ export default {
           :userId="post.users_id"
           :img="post.image_url"
           :caption="post.caption"
-          :image="post.content"
+          :description="post.content"
         />
       </li>
     </ul>
