@@ -1,7 +1,7 @@
 <script>
 import * as yup from 'yup';
 import { Field, Form } from "vee-validate";
-import {uploadFormImageWebpAxios} from "@/Helpers/WebpConverter.js";
+import {toWebpUrl, uploadFormImageWebpAxios} from "@/Helpers/WebpConverter.js";
 import {postCalling} from "@/Helpers/CallToAPI.js";
 
 export default {
@@ -22,6 +22,7 @@ export default {
     };
   },
   methods: {
+
     async handleImageChange(event) {
       const file = event.target.files[0];
       if (file) {
@@ -29,8 +30,8 @@ export default {
         try {
           const uploadResult = await uploadFormImageWebpAxios(file);
           if (uploadResult && uploadResult.secure_url) {
-            this.image = uploadResult.secure_url;
-            this.values.image_url = uploadResult.secure_url;
+            this.image = toWebpUrl(uploadResult.secure_url) ;
+            this.values.image_url = toWebpUrl(uploadResult.secure_url);
           } else {
             this.submitError = 'Error al subir la imagen.';
             this.image = null;

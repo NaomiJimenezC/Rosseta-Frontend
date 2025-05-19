@@ -30,3 +30,17 @@ export async function uploadFormImageWebpAxios(imageFile) {
     return null;
   }
 }
+/**
+ * Convierte una URL de Cloudinary a su versión WebP.
+ * @param {string} secureUrl - URL original segura (e.g. termina en .png, .jpg).
+ * @returns {string} - URL transformada para entregar WebP.
+ */
+export function toWebpUrl(secureUrl) {
+
+  const withFlag = secureUrl.replace(
+    '/upload/',
+    '/upload/f_webp/'
+  );
+
+  return withFlag.replace(/\.\w+$/, '.webp');
+}

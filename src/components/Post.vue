@@ -14,7 +14,7 @@ export default {
       userData: null,
       loading: true,
       error: null,
-      defaultProfilePicture: '@/assets/Default_pfp.jpg', // Define the URL por defecto aquí
+      defaultProfilePicture: '@/assets/Default_pfp.jpg',
     };
   },
   async mounted() {
@@ -29,7 +29,7 @@ export default {
   },
   methods: {
     handleImageError(event) {
-      event.target.src = this.defaultProfilePicture; // Cambia la fuente de la imagen al valor por defecto
+      event.target.src = this.defaultProfilePicture;
     },
   },
 };
