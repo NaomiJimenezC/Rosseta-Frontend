@@ -42,10 +42,11 @@ export default {
     <ul v-else-if="posts && posts.data && posts.data.length > 0">
       <li v-for="post in posts.data" :key="post.id">
         <Post
+          :postId="post.id"
           :userId="post.users_id"
           :img="post.image_url"
           :caption="post.caption"
-          :image="post.content"
+          :description="post.content"
         />
       </li>
     </ul>
