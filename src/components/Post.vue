@@ -2,6 +2,7 @@
 import { getCalling } from "@/Helpers/CallToAPI.js";
 import Heart from 'vue-material-design-icons/Heart.vue';
 import HeartOutline from 'vue-material-design-icons/HeartOutline.vue';
+import defaultProfileImage from '@/assets/Default_pfp.jpg'
 
 export default {
   name: "Post",
@@ -22,6 +23,7 @@ export default {
       userData: null,
       loading: true,
       error: null,
+      defaultProfileImage: defaultProfileImage
     };
   },
   async mounted() {
@@ -42,7 +44,7 @@ export default {
   <article v-if="!loading && !error">
     <header>
       <img
-        :src="userData.profile_picture_url"
+        :src="userData.profile_picture_url || this.defaultProfileImage "
         :alt="userData.username + ' profile photo'"
       />
       <h4>{{ userData.username }}</h4>
