@@ -25,8 +25,7 @@ api.interceptors.request.use(
 
 export const postCalling = async (route, data, needsAuth = true) => {
   try {
-    const response = await api.post(route, { ...data, needsAuth });
-    return response;
+    return await api.post(route, {...data, needsAuth});
   } catch (err) {
     console.log(err);
     throw err;
@@ -45,18 +44,20 @@ export const getCalling = async (route, needsAuth = true) => {
 
 export const updateCalling = async (route, data, needsAuth = true) => {
   try {
-    const response = await api.patch(route, { ...data, needsAuth });
-    return response;
+    return await api.patch(route, {...data, needsAuth});
   } catch (err) {
     console.error(err);
     throw err;
   }
 };
 
-export const deleteCalling = async (route, needsAuth = true) => {
+export const deleteCalling = async (route, data = {}, needsAuth = true) => {
   try {
-    const response = await api.delete(route, { needsAuth });
-    return response;
+    const config = {
+      data,
+      needsAuth
+    };
+    return await api.delete(route, config);
   } catch (err) {
     console.error(err);
     throw err;

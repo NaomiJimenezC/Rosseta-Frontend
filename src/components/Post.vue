@@ -1,5 +1,5 @@
 <script>
-import { getCalling } from "@/Helpers/CallToAPI.js";
+import {deleteCalling, getCalling, postCalling} from "@/Helpers/CallToAPI.js";
 import Heart from 'vue-material-design-icons/Heart.vue';
 import HeartOutline from 'vue-material-design-icons/HeartOutline.vue';
 import defaultProfileImage from '@/assets/Default_pfp.jpg'
@@ -19,22 +19,44 @@ export default {
   },
   data() {
     return {
-      hasLiked: Boolean,
+      hasLiked: false,
       userData: null,
       loading: true,
       error: null,
-      defaultProfileImage: defaultProfileImage
+      defaultProfileImage,
+      processingLike: false,
     };
   },
   async mounted() {
     try {
       this.userData = await getCalling(`/users/${this.userId}`, true);
-      this.hasLiked = await getCalling(`posts/${this.postId}/liked`,true)
+      const res = await getCalling(`/posts/${this.postId}/liked`, true);
+
+      this.hasLiked = !!res.hasLiked;
     } catch (error) {
       console.error("Error fetching user data:", error);
       this.error = error;
     } finally {
       this.loading = false;
+    }
+  },
+  methods: {
+    async toggleLike() {
+      if (this.processingLike) return;
+      this.processingLike = true;
+      try {
+        if (this.hasLiked) {
+          await deleteCalling(`/posts/${this.postId}/dislike`,{'post_id':this.postId}, true);
+          this.hasLiked = false;
+        } else {
+          await postCalling(`/posts/${this.postId}/like`,{'post_id':this.postId}, true);
+          this.hasLiked = true;
+        }
+      } catch (err) {
+        console.error('Error toggling like:', err);
+      } finally {
+        this.processingLike = false;
+      }
     }
   }
 };
@@ -44,18 +66,17 @@ export default {
   <article v-if="!loading && !error">
     <header>
       <img
-        :src="userData.profile_picture_url || this.defaultProfileImage "
-        :alt="userData.username + ' profile photo'"
+        :src="userData.profile_picture_url || defaultProfileImage"
+        :alt="`${userData.username} profile photo`"
       />
       <h4>{{ userData.username }}</h4>
     </header>
 
     <img :src="img" :alt="caption" />
 
-    <span class="icon-wrapper">
-      <Heart v-if="!hasLiked" class="icon-filled" />
-      <HeartOutline v-else class="icon-outline" />
-<!--      TODO: Añadir la interacción para dar me gustas y añadir el emoji de comentarios-->
+    <span class="icon-wrapper" @click="toggleLike">
+      <HeartOutline v-if="!hasLiked" class="icon-outline" />
+      <Heart v-else class="icon-filled" />
     </span>
 
     <p>{{ description }}</p>
@@ -74,11 +95,20 @@ img {
   max-width: 100%;
   height: auto;
 }
+.icon-wrapper {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+}
 .icon-outline,
 .icon-filled {
   width: 24px;
   height: 24px;
-  cursor: pointer;
   margin-right: 8px;
+  transition: transform 0.2s;
+}
+.icon-wrapper:active .icon-outline,
+.icon-wrapper:active .icon-filled {
+  transform: scale(0.9);
 }
 </style>
