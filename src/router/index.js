@@ -4,6 +4,7 @@ import LoginForm from "@/components/LoginForm.vue";
 import ConfirmEmailForm from "@/components/ConfirmEmailForm.vue";
 import Home from "@/pages/Home.vue";
 import NewPublication from "@/components/NewPublication.vue";
+import SearchResults from "@/pages/SearchResults.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -36,6 +37,11 @@ const router = createRouter({
       path: '/publish',
       name: 'publish',
       component: NewPublication,
+    },
+    {
+      path: '/search',
+      name: 'search',
+      component: SearchResults,
     }
   ],
 });
