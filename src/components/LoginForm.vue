@@ -29,6 +29,7 @@ export default {
         if (response && response.data && response.data.access_token) {
           const bearerToken = response.data.access_token;
           localStorage.setItem('authToken', bearerToken);
+          localStorage.setItem('user', response.data.user);
 
           this.$router.push({ name: 'home' });
         } else {

@@ -5,6 +5,7 @@ import ConfirmEmailForm from "@/components/ConfirmEmailForm.vue";
 import Home from "@/pages/Home.vue";
 import NewPublication from "@/components/NewPublication.vue";
 import SearchResults from "@/pages/SearchResults.vue";
+import Profile from "@/pages/Profile.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -42,6 +43,11 @@ const router = createRouter({
       path: '/search',
       name: 'search',
       component: SearchResults,
+    },
+    {
+      path: '/profile/:id',
+      name: 'profile',
+      component: Profile,
     }
   ],
 });
