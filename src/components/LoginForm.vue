@@ -30,7 +30,6 @@ export default {
           const bearerToken = response.data.access_token;
           localStorage.setItem('authToken', bearerToken);
           localStorage.setItem('user', response.data.user);
-
           this.$router.push({ name: 'home' });
         } else {
           this.loginError = 'Credenciales incorrectas. Por favor, inténtalo de nuevo.';
