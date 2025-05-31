@@ -21,6 +21,9 @@
           >
             {{ user.username }}
           </li>
+          <li v-if="!filtered.length" class="no-results">
+            No se encontraron usuarios.
+          </li>
         </ul>
       </div>
       <footer class="modal-footer">
@@ -42,18 +45,26 @@ export default {
   },
   computed: {
     filtered() {
-      const t = this.term.toLowerCase();
-      return t.length < 2
-        ? []
-        : this.users.filter(u =>
-          u.username.toLowerCase().includes(t)
-        );
+      const t = this.term.toLowerCase().trim();
+
+      if (t === '') {
+        return this.users;
+      }
+
+      return this.users.filter(u =>
+        u.username.toLowerCase().includes(t)
+      );
     }
   },
   watch: {
     visible(val) {
       this.$nextTick(() => {
-        val ? this.$refs.dialog.showModal() : this.$refs.dialog.close();
+        if (val) {
+          this.$refs.dialog.showModal();
+        } else {
+          this.$refs.dialog.close();
+          this.term = '';
+        }
       });
     }
   },
@@ -63,7 +74,6 @@ export default {
     },
     close() {
       this.$emit('close');
-      this.term = '';
     }
   }
 };
@@ -100,5 +110,10 @@ export default {
 }
 .user-item:hover {
   background: #f1f1f1;
+}
+.no-results {
+  padding: 0.5rem;
+  color: #888;
+  font-style: italic;
 }
 </style>

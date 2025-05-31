@@ -38,6 +38,7 @@ export default {
     async fetchFollowees() {
       try {
         const res = await getCalling(`/users/${this.currentUserId}/following`);
+        console.log(res)
         this.followees = res.data.map(item => item.followee);
       } catch (e) {
         console.error('Error fetching followees:', e);
