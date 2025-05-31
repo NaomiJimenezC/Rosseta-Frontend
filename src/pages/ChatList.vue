@@ -38,10 +38,10 @@ export default {
     async fetchFollowees() {
       try {
         const res = await getCalling(`/users/${this.currentUserId}/following`);
-        console.log(res)
-        this.followees = res.data.map(item => item.followee);
+        this.followees = res.data || [];
       } catch (e) {
         console.error('Error fetching followees:', e);
+        this.followees = [];
       }
     },
 
@@ -63,10 +63,11 @@ export default {
 
     async startChat(userId) {
       try {
-        const { data } = await postCalling(`/conversations/${userId}`, {});
-        this.conversations.unshift(data);
+        const {data} = await postCalling(`/conversations/${userId}`, {});
+        console.log(data.data.id);
         this.showUserSearch = false;
-        this.$router.push({ name: 'chat-view', params: { id: data.id } });
+        this.$router.push({ name: 'chat-view', params: { id: data.data.id} });
+
       } catch (e) {
         console.error('Error starting chat:', e);
       }
@@ -74,6 +75,7 @@ export default {
   },
   mounted() {
     this.fetchConversations();
+    this.fetchFollowees();
   }
 };
 </script>

@@ -1,5 +1,3 @@
-// router/index.js (tu archivo de rutas)
-
 import { createRouter, createWebHistory } from 'vue-router';
 import ConfirmEmailForm from "@/components/ConfirmEmailForm.vue";
 import Home from "@/pages/Home.vue";
