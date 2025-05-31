@@ -1,3 +1,5 @@
+// router/index.js (tu archivo de rutas)
+
 import { createRouter, createWebHistory } from 'vue-router';
 import RegisterForm from "@/components/RegisterForm.vue";
 import LoginForm from "@/components/LoginForm.vue";
@@ -12,10 +14,10 @@ import Chat from "@/pages/Chat.vue";
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
-    { path: '/', name: 'login', component: LoginForm },
-    { path: '/about', name: 'about' },
-    { path: '/verify-email', name: 'verify-email', component: ConfirmEmailForm },
-    { path: '/register', name: 'register', component: RegisterForm },
+    { path: '/', name: 'login', component: LoginForm, meta: { hideHeader: true } }, // Añadido meta
+    { path: '/about', name: 'about', meta: { hideHeader: true } }, // Añadido meta (asumiendo que esta no requiere header)
+    { path: '/verify-email', name: 'verify-email', component: ConfirmEmailForm, meta: { hideHeader: true } }, // Añadido meta
+    { path: '/register', name: 'register', component: RegisterForm, meta: { hideHeader: true } }, // Añadido meta
     { path: '/home', name: 'home', component: Home, meta: { requiresAuth: true } },
     { path: '/publish', name: 'publish', component: NewPublication, meta: { requiresAuth: true } },
     { path: '/search', name: 'search', component: SearchResults, meta: { requiresAuth: true } },

@@ -1,11 +1,14 @@
 <script setup>
 import Header from './components/Header.vue'
-import { RouterView } from 'vue-router';
+import { RouterView, useRoute } from 'vue-router';
+
+const route = useRoute();
 </script>
 
 <template>
-  <div id="app-layout">
-    <Header class="sidebar" />
+  <div id="app-layout" :class="{ 'no-sidebar-layout': route.meta.hideHeader }">
+    <Header v-if="!route.meta.hideHeader" class="sidebar" />
+
     <main class="main-content">
       <RouterView />
     </main>
@@ -27,6 +30,11 @@ body, html {
   grid-template-areas: "sidebar main-content";
 }
 
+#app-layout.no-sidebar-layout {
+  grid-template-columns: 1fr;
+  grid-template-areas: "main-content";
+}
+
 .sidebar {
   grid-area: sidebar;
 }
@@ -35,5 +43,9 @@ body, html {
   grid-area: main-content;
   padding: 20px 40px;
   overflow-y: auto;
+}
+
+#app-layout.no-sidebar-layout .main-content {
+  padding: 0;
 }
 </style>
