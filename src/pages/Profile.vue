@@ -1,5 +1,5 @@
 <script>
-import { getCalling } from "@/Helpers/CallToAPI.js";
+import {deleteCalling, getCalling, postCalling} from "@/Helpers/CallToAPI.js";
 import defaultProfileImage from "@/assets/Default_pfp.jpg";
 import Post from "@/components/Post.vue";
 
@@ -15,21 +15,85 @@ export default {
       loading: true,
       error: null,
       defaultProfileImage,
+      isCurrentUserProfile: false,
+      isFollowing: false,
     };
   },
-  async mounted() {
-    const userId = this.$route.params.id;
+  computed: {
+    loggedInUserId() {
+      return localStorage.getItem('userId') ? parseInt(localStorage.getItem('userId')) : null;
+    }
+  },
+  async created() {
+    await this.fetchProfileData();
+  },
+  watch: {
+    '$route.params.id': {
+      handler: 'fetchProfileData',
+      immediate: false
+    }
+  },
+  methods: {
+    async fetchProfileData() {
+      this.loading = true;
+      this.error = null;
+      const profileId = this.$route.params.id;
 
-    try {
-      const userData = await getCalling(`/users/${userId}`, true);
-      const postsData = await getCalling(`/users/${userId}/posts`,{'user_id':userId}, true);
-      this.user = userData;
-      this.posts = postsData;
-    } catch (err) {
-      console.error(err);
-      this.error = 'No se pudo cargar el perfil.';
-    } finally {
-      this.loading = false;
+      this.isCurrentUserProfile = (this.loggedInUserId && this.loggedInUserId === parseInt(profileId));
+
+      try {
+        const userData = await getCalling(`/users/${profileId}`, true);
+        const postsData = await getCalling(`/users/${profileId}/posts`, {'user_id': profileId}, true);
+        this.user = userData;
+        this.posts = postsData;
+
+        if (!this.isCurrentUserProfile && this.loggedInUserId) {
+          await this.checkFollowStatus(profileId);
+        }
+
+      } catch (err) {
+        console.error("Error al cargar el perfil:", err);
+        this.error = 'No se pudo cargar el perfil.';
+      } finally {
+        this.loading = false;
+      }
+    },
+
+    async checkFollowStatus(profileId) {
+      try {
+        const response = await getCalling(`/users/${profileId}/is-following`, true);
+        this.isFollowing = response.isFollowing;
+      } catch (err) {
+        console.error("Error al verificar el estado de seguimiento:", err);
+        this.isFollowing = false;
+      }
+    },
+
+    async toggleFollow() {
+      if (!this.loggedInUserId) {
+        alert("Debes iniciar sesión para seguir/dejar de seguir a usuarios.");
+        return;
+      }
+      this.loading = true;
+      try {
+        let response;
+        if (this.isFollowing) {
+          response = await deleteCalling(`/users/${this.user.id}/unfollow`, {}, true);
+        } else {
+          response = await postCalling(`/users/${this.user.id}/follow`, {}, true);
+        }
+        if (response.status === 201 || response.status === 200) {
+          await this.checkFollowStatus(this.user.id);
+        } else {
+          console.warn("La operación de seguir/dejar de seguir no fue exitosa:", response);
+          alert("La acción no pudo completarse.");
+        }
+      } catch (err) {
+        console.error("Error al seguir/dejar de seguir:", err);
+        alert("Ocurrió un error al realizar la acción. Intenta de nuevo.");
+      } finally {
+        this.loading = false;
+      }
     }
   },
 };
@@ -54,6 +118,16 @@ export default {
             <span>{{ user.following_count }} seguidos</span>
             <span>{{ posts.length }} publicaciones</span>
           </div>
+
+          <button
+            v-if="!isCurrentUserProfile"
+            @click="toggleFollow"
+            :class="['follow-button', { 'unfollow': isFollowing }]"
+            :disabled="loading"
+          >
+            {{ isFollowing ? 'Dejar de Seguir' : 'Seguir' }}
+          </button>
+          <button v-else class="edit-profile-button">Editar Perfil</button>
         </div>
       </header>
 
@@ -127,5 +201,46 @@ export default {
 
 .error {
   color: red;
+}
+
+.follow-button, .edit-profile-button {
+  margin-top: 15px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.follow-button {
+  background-color: #007bff;
+  color: white;
+}
+
+.follow-button:hover {
+  background-color: #0056b3;
+}
+
+.follow-button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.follow-button.unfollow {
+  background-color: #dc3545;
+}
+
+.follow-button.unfollow:hover {
+  background-color: #c82333;
+}
+
+.edit-profile-button {
+  background-color: #6c757d;
+  color: white;
+}
+
+.edit-profile-button:hover {
+  background-color: #5a6268;
 }
 </style>
