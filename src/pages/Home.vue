@@ -39,7 +39,7 @@ export default {
     <div v-else-if="error">
       Error al cargar las publicaciones: {{ error.message }}
     </div>
-    <ul v-else-if="posts && posts.data && posts.data.length > 0">
+    <ul v-else-if="posts && posts.data && posts.data.length > 0" class="post-list">
       <li v-for="post in posts.data" :key="post.id">
         <Post
           :postId="post.id"
@@ -55,4 +55,11 @@ export default {
 </template>
 
 <style scoped>
+.post-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+
 </style>
