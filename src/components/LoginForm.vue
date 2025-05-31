@@ -28,8 +28,9 @@ export default {
 
         if (response && response.data && response.data.access_token) {
           const bearerToken = response.data.access_token;
+          const userId = response.data.user.id;
           localStorage.setItem('authToken', bearerToken);
-          localStorage.setItem('user', response.data.user);
+          localStorage.setItem('userId', userId);
           this.$router.push({ name: 'home' });
         } else {
           this.loginError = 'Credenciales incorrectas. Por favor, inténtalo de nuevo.';

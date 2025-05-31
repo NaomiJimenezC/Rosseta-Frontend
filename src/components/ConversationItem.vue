@@ -18,7 +18,7 @@ export default {
     title() {
       return this.conversation.users
         .filter(u => u.id !== this.currentUserId)
-        .map(u => u.name)
+        .map(u => u.username)
         .join(', ');
     },
     lastMessage() {
