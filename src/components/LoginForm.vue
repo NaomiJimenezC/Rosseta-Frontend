@@ -48,9 +48,9 @@ export default {
 </script>
 
 <template>
+
   <Form :validation-schema="schema" @submit="handleSubmit" v-slot="{ errors }">
     <div v-if="loginError" class="alert alert-danger">{{ loginError }}</div>
-
     <div class="form-group">
       <label for="username">Nombre de usuario:</label>
       <Field
