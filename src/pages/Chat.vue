@@ -73,9 +73,11 @@ export default {
       try {
         this.loading = true;
 
+        // 1) Obtener detalles de la conversación (usuarios)
         const convRes = await getCalling(`/conversations/${this.id}`);
         this.conversation = convRes.data;
 
+        // 2) Obtener mensajes paginados
         const msgRes = await getCalling(`/conversations/${this.id}/messages`);
         this.messages = msgRes.data.data || msgRes.data;
       } catch (e) {
@@ -115,16 +117,12 @@ export default {
         window.Echo = new Echo({
           broadcaster: 'pusher',
           key: import.meta.env.VITE_PUSHER_APP_KEY,
-          cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,
-          wsHost: import.meta.env.VITE_PUSHER_HOST || undefined,
-          wsPort: import.meta.env.VITE_PUSHER_PORT || 443,
-          wssPort: import.meta.env.VITE_PUSHER_PORT || 443,
+          cluster: 'eu',
           forceTLS: import.meta.env.VITE_PUSHER_SCHEME === 'https',
           enabledTransports: ['ws', 'wss'],
 
           // Autenticación para canales privados
-          authEndpoint:
-            import.meta.env.VITE_BACKEND_URL + '/broadcasting/auth',
+          authEndpoint: import.meta.env.VITE_BACKEND_URL + '/broadcasting/auth',
           auth: {
             headers: {
               Authorization: `Bearer ${localStorage.getItem('authToken')}`
@@ -136,20 +134,19 @@ export default {
     }
   },
   mounted() {
-    // 1) Cargar la conversación y mensajes históricos
+    // 1) Cargar la conversación y mensajes existentes
     this.fetchConversation();
 
     // 2) Inicializar Echo/Pusher y suscribirse al canal privado
     const echo = this.ensureEcho();
-    // Suscribirse a "private-chat.{id}"
     this.echoChannel = echo.private(`chat.${this.id}`);
 
     this.echoChannel
       .listen('.message.direct', e => {
-        // El payload e debe coincidir con lo que emite DirectMessageSent::broadcastWith()
+        // El payload 'e' debe coincidir con lo que emite DirectMessageSent::broadcastWith()
         this.handleIncoming({
-          id: Date.now(),        // o usa e.id si viene
-          sender_id: e.from_id,  // desde el evento
+          id: e.id || Date.now(),
+          sender_id: e.from_id,
           content: e.content,
           created_at: e.created_at
         });
@@ -159,7 +156,6 @@ export default {
       });
   },
   beforeUnmount() {
-    // Desuscribirse al destruir componente
     if (this.echoChannel) {
       this.echoChannel.stopListening('.message.direct');
     }
