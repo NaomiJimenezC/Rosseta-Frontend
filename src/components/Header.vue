@@ -31,7 +31,7 @@ export default {
       this.$router.push(`/profile/${userId}`);
     },
     goToNotifications() {
-      console.log('Navigate to notifications');
+      this.$router.push('/notifications');
     },
     goToSettings() {
 

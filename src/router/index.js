@@ -8,6 +8,7 @@ import ChatList from "@/pages/ChatList.vue";
 import Chat from "@/pages/Chat.vue";
 import LoginPage from "@/pages/LoginPage.vue";
 import RegisterPage from "@/pages/RegisterPage.vue";
+import NotificationPage from "@/pages/NotificationPage.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -19,6 +20,7 @@ const router = createRouter({
     { path: '/publish', name: 'publish', component: NewPublication, meta: { requiresAuth: true } },
     { path: '/search', name: 'search', component: SearchResults, meta: { requiresAuth: true } },
     { path: '/profile/:id', name: 'profile', component: Profile, meta: { requiresAuth: true } },
+    { path: '/notifications', name: 'notifications', component: NotificationPage, meta: { requiresAuth: true} },
     { path: '/chats', name: 'chats', component: ChatList, meta: { requiresAuth: true } },
     {
       path: '/chats/:id',
