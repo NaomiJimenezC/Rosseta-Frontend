@@ -1,13 +1,15 @@
 <script>
-import {deleteCalling, getCalling, postCalling} from "@/Helpers/CallToAPI.js";
+import { deleteCalling, getCalling, postCalling } from "@/Helpers/CallToAPI.js";
 import Heart from 'vue-material-design-icons/Heart.vue';
 import HeartOutline from 'vue-material-design-icons/HeartOutline.vue';
 import MessageOutline from 'vue-material-design-icons/MessageOutline.vue';
-import defaultProfileImage from '@/assets/Default_pfp.jpg'
+import ConfirmModal from '@/components/ConfirmModal.vue';
+import defaultProfileImage from '@/assets/Default_pfp.jpg';
 
 export default {
   name: "Post",
   components: {
+    ConfirmModal,
     Heart,
     HeartOutline,
     MessageOutline
@@ -27,13 +29,23 @@ export default {
       error: null,
       defaultProfileImage,
       processingLike: false,
+      showConfirmModal: false,
     };
+  },
+  computed: {
+    loggedInUserId() {
+      return localStorage.getItem("userId")
+        ? parseInt(localStorage.getItem("userId"))
+        : null;
+    },
+    isOwner() {
+      return this.loggedInUserId === this.userId;
+    }
   },
   async mounted() {
     try {
       this.userData = await getCalling(`/users/${this.userId}`, true);
       const res = await getCalling(`/posts/${this.postId}/liked`, true);
-
       this.hasLiked = !!res.hasLiked;
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -48,10 +60,10 @@ export default {
       this.processingLike = true;
       try {
         if (this.hasLiked) {
-          await deleteCalling(`/posts/${this.postId}/dislike`, {'post_id':this.postId}, true);
+          await deleteCalling(`/posts/${this.postId}/dislike`, { post_id: this.postId }, true);
           this.hasLiked = false;
         } else {
-          await postCalling(`/posts/${this.postId}/like`, {'post_id':this.postId}, true);
+          await postCalling(`/posts/${this.postId}/like`, { post_id: this.postId }, true);
           this.hasLiked = true;
         }
       } catch (err) {
@@ -62,7 +74,21 @@ export default {
     },
     handleCommentClick() {
       this.$router.push({ name: 'post', params: { id: this.postId } });
+    },
+    deletePost() {
+      this.showConfirmModal = true;
+    },
+    async confirmDelete() {
+      try {
+        await deleteCalling(`/posts/${this.postId}`, {post_id:this.postId}, true);
+        this.showConfirmModal = false;
+        window.location.reload();
+      } catch (err) {
+        console.error("Error al eliminar la publicación:", err);
+        this.showConfirmModal = false;
+      }
     }
+
   }
 };
 </script>
@@ -81,6 +107,13 @@ export default {
       <router-link :to="{ name: 'profile', params: { id: userId } }" class="profile-link username-link">
         <h4 class="username">{{ userData.username }}</h4>
       </router-link>
+
+      <button
+        v-if="isOwner"
+        @click="deletePost"
+        class="delete-button"
+        title="Eliminar publicación"
+      >×</button>
     </header>
 
     <div class="post-image-container">
@@ -106,6 +139,14 @@ export default {
   <div v-else class="error-message">
     <p>Error: {{ error.message }}</p>
   </div>
+
+  <ConfirmModal
+    v-if="showConfirmModal"
+    message="¿Estás seguro de que quieres eliminar esta publicación?"
+    @confirm="confirmDelete"
+    @cancel="showConfirmModal = false"
+  />
+
 </template>
 
 <style scoped>
@@ -125,6 +166,7 @@ export default {
   display: flex;
   align-items: center;
   margin-bottom: 12px;
+  position: relative;
 }
 
 .profile-link {
@@ -151,6 +193,22 @@ export default {
   font-size: 1.1em;
   color: #333;
   margin: 0;
+}
+
+.delete-button {
+  margin-left: auto;
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  font-weight: bold;
+  color: #e91e63;
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: color 0.2s ease;
+}
+
+.delete-button:hover {
+  color: #c2185b;
 }
 
 .post-image-container {
