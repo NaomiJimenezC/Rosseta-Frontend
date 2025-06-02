@@ -61,7 +61,7 @@ export default {
       }
     },
     handleCommentClick() {
-      console.log('Botón de comentario clicado para el post:', this.postId);
+      this.$router.push({ name: 'post', params: { id: this.postId } });
     }
   }
 };

@@ -1,13 +1,9 @@
 <script>
-import {deleteCalling, getCalling, postCalling} from "@/Helpers/CallToAPI.js";
+import {getCalling} from "@/Helpers/CallToAPI.js";
 import defaultProfileImage from "@/assets/Default_pfp.jpg";
-import Post from "@/components/Post.vue";
 
 export default {
   name: "Profile",
-  components: {
-    Post
-  },
   data() {
     return {
       user: null,
@@ -21,15 +17,20 @@ export default {
   },
   computed: {
     loggedInUserId() {
-      return localStorage.getItem('userId') ? parseInt(localStorage.getItem('userId')) : null;
+      return localStorage.getItem("userId")
+        ? parseInt(localStorage.getItem("userId"))
+        : null;
+    },
+    profileId() {
+      return Number(this.$route.params.id);
     }
   },
   async created() {
     await this.fetchProfileData();
   },
   watch: {
-    '$route.params.id': {
-      handler: 'fetchProfileData',
+    "$route.params.id": {
+      handler: "fetchProfileData",
       immediate: false
     }
   },
@@ -37,65 +38,27 @@ export default {
     async fetchProfileData() {
       this.loading = true;
       this.error = null;
-      const profileId = this.$route.params.id;
-
-      this.isCurrentUserProfile = (this.loggedInUserId && this.loggedInUserId === parseInt(profileId));
+      this.isCurrentUserProfile =
+        this.loggedInUserId && this.loggedInUserId === this.profileId;
 
       try {
-        const userData = await getCalling(`/users/${profileId}`, true);
-        const postsData = await getCalling(`/users/${profileId}/posts`, {'user_id': profileId}, true);
-        this.user = userData;
-        this.posts = postsData;
+        this.user = await getCalling(`/users/${this.profileId}`, true);
 
-        if (!this.isCurrentUserProfile && this.loggedInUserId) {
-          await this.checkFollowStatus(profileId);
-        }
+        const response = await getCalling(`/users/${this.profileId}/posts`, true);
+        this.posts = response.data;
 
       } catch (err) {
         console.error("Error al cargar el perfil:", err);
-        this.error = 'No se pudo cargar el perfil.';
+        this.error = "No se pudo cargar el perfil.";
       } finally {
         this.loading = false;
       }
     },
 
-    async checkFollowStatus(profileId) {
-      try {
-        const response = await getCalling(`/users/${profileId}/is-following`, true);
-        this.isFollowing = response.isFollowing;
-      } catch (err) {
-        console.error("Error al verificar el estado de seguimiento:", err);
-        this.isFollowing = false;
-      }
-    },
-
-    async toggleFollow() {
-      if (!this.loggedInUserId) {
-        alert("Debes iniciar sesión para seguir/dejar de seguir a usuarios.");
-        return;
-      }
-      this.loading = true;
-      try {
-        let response;
-        if (this.isFollowing) {
-          response = await deleteCalling(`/users/${this.user.id}/unfollow`, {}, true);
-        } else {
-          response = await postCalling(`/users/${this.user.id}/follow`, {}, true);
-        }
-        if (response.status === 201 || response.status === 200) {
-          await this.checkFollowStatus(this.user.id);
-        } else {
-          console.warn("La operación de seguir/dejar de seguir no fue exitosa:", response);
-          alert("La acción no pudo completarse.");
-        }
-      } catch (err) {
-        console.error("Error al seguir/dejar de seguir:", err);
-        alert("Ocurrió un error al realizar la acción. Intenta de nuevo.");
-      } finally {
-        this.loading = false;
-      }
+    goToPost(postId) {
+      this.$router.push({ name: "post", params: { id: postId } });
     }
-  },
+  }
 };
 </script>
 
@@ -113,38 +76,43 @@ export default {
         />
         <div>
           <h1 class="username">{{ user.username }}</h1>
-          <div class="stats">
+          <nav class="stats">
             <span>{{ user.followers_count }} seguidores</span>
             <span>{{ user.following_count }} seguidos</span>
             <span>{{ posts.length }} publicaciones</span>
-          </div>
+          </nav>
 
           <button
             v-if="!isCurrentUserProfile"
-            @click="toggleFollow"
-            :class="['follow-button', { 'unfollow': isFollowing }]"
+            class="follow-button"
             :disabled="loading"
           >
-            {{ isFollowing ? 'Dejar de Seguir' : 'Seguir' }}
+            {{ isFollowing ? "Dejar de Seguir" : "Seguir" }}
           </button>
           <button v-else class="edit-profile-button">Editar Perfil</button>
         </div>
       </header>
 
-      <section>
+      <section class="publications-section">
         <h2 class="section-title">Publicaciones</h2>
-        <div v-if="posts.length">
-          <Post
+        <p v-if="!posts.length" class="message">Este usuario no tiene publicaciones.</p>
+        <ul v-else class="image-grid" aria-label="Publicaciones del usuario">
+          <li
             v-for="post in posts"
             :key="post.id"
-            :postId="post.id"
-            :userId="post.users_id"
-            :img="post.image_url"
-            :description="post.content"
-            :caption="post.caption"
-          />
-        </div>
-        <p v-else class="message">Este usuario no tiene publicaciones.</p>
+            class="image-grid__item"
+            @click="goToPost(post.id)"
+            role="button"
+            tabindex="0"
+            @keyup.enter="goToPost(post.id)"
+          >
+            <img
+              :src="post.image_url"
+              :alt="post.caption || 'Imagen de publicación'"
+              class="image-grid__img"
+            />
+          </li>
+        </ul>
       </section>
     </section>
   </main>
@@ -188,22 +156,8 @@ export default {
   margin-right: 16px;
 }
 
-.section-title {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 16px;
-}
-
-.message {
-  font-size: 14px;
-  color: #666;
-}
-
-.error {
-  color: red;
-}
-
-.follow-button, .edit-profile-button {
+.follow-button,
+.edit-profile-button {
   margin-top: 15px;
   padding: 10px 20px;
   border: none;
@@ -227,14 +181,6 @@ export default {
   cursor: not-allowed;
 }
 
-.follow-button.unfollow {
-  background-color: #dc3545;
-}
-
-.follow-button.unfollow:hover {
-  background-color: #c82333;
-}
-
 .edit-profile-button {
   background-color: #6c757d;
   color: white;
@@ -242,5 +188,55 @@ export default {
 
 .edit-profile-button:hover {
   background-color: #5a6268;
+}
+.publications-section {
+  margin-top: 1.5rem;
+}
+
+.section-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 16px;
+}
+
+/* Grid de imágenes */
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.image-grid__item {
+  cursor: pointer;
+  overflow: hidden;
+  border-radius: 8px;
+  border: 1px solid #ff80ab;
+  background-color: #fce4ec;
+  transition: transform 0.2s ease;
+}
+
+.image-grid__item:hover,
+.image-grid__item:focus {
+  transform: scale(1.03);
+  outline: none;
+}
+
+.image-grid__img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+
+.message {
+  font-size: 14px;
+  color: #666;
+}
+
+.error {
+  color: red;
 }
 </style>
