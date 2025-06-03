@@ -34,8 +34,7 @@ export default {
       this.$router.push('/notifications');
     },
     goToSettings() {
-
-      console.log('Navigate to settings');
+      this.$router.push({name: 'settings'});
     },
     goToMessages() {
       this.$router.push('/chats');

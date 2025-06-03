@@ -10,6 +10,11 @@ import LoginPage from "@/pages/LoginPage.vue";
 import RegisterPage from "@/pages/RegisterPage.vue";
 import NotificationPage from "@/pages/NotificationPage.vue";
 import PostPage from "@/pages/PostPage.vue";
+import Contact from "@/pages/Contact.vue";
+import Settings from "@/pages/Settings.vue";
+import AboutUs from "@/pages/AboutUs.vue";
+import UserSettings from "@/pages/UserSettings.vue";
+import Apariencia from "@/pages/Apariencia.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -30,7 +35,12 @@ const router = createRouter({
       component: Chat,
       props: true,
       meta: { requiresAuth: true }
-    }
+    },
+    { path: '/settings', name: 'settings', component:Settings, meta: { requiresAuth: true } },
+    { path: '/settings/contact', name: 'contact',component: Contact,meta:{requiresAuth: true} },
+    { path: '/settings/about', name: 'about',component: AboutUs,meta:{requiresAuth: true} },
+    { path: '/settings/user', name: 'user settings',component: UserSettings,meta:{requiresAuth: true} },
+    { path: '/settings/appearance', name: 'appearance',component: Apariencia,meta:{requiresAuth: true} },
   ]
 });
 
