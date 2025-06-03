@@ -1,10 +1,10 @@
 <script>
 import HomeIcon from 'vue-material-design-icons/Home.vue';
-import MagnifyIcon from 'vue-material-design-icons/Magnify.vue'; // Changed from SearchWebIcon based on visual
+import MagnifyIcon from 'vue-material-design-icons/Magnify.vue';
 import AccountCircleIcon from 'vue-material-design-icons/AccountCircle.vue';
-import BellIcon from 'vue-material-design-icons/Bell.vue'; // For 'Notificaciones'
+import BellIcon from 'vue-material-design-icons/Bell.vue';
 import CogIcon from 'vue-material-design-icons/Cog.vue';
-import MessageTextIcon from 'vue-material-design-icons/MessageText.vue'; // For 'Mensajes'
+import MessageTextIcon from 'vue-material-design-icons/MessageText.vue';
 
 export default {
   name: "Header",

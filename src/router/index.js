@@ -36,8 +36,8 @@ const router = createRouter({
       props: true,
       meta: { requiresAuth: true }
     },
-    { path: '/settings', name: 'settings', component:Settings, meta: { requiresAuth: true } },
-    { path: '/settings/contact', name: 'contact',component: Contact,meta:{requiresAuth: true} },
+    { path: '/settings', name: 'settings', component: Settings, meta: { requiresAuth: true } },
+    { path: '/settings/contact', name: 'contact',component: Contact ,meta:{requiresAuth: true} },
     { path: '/settings/about', name: 'about',component: AboutUs,meta:{requiresAuth: true} },
     { path: '/settings/user', name: 'user settings',component: UserSettings,meta:{requiresAuth: true} },
     { path: '/settings/appearance', name: 'appearance',component: Apariencia,meta:{requiresAuth: true} },
