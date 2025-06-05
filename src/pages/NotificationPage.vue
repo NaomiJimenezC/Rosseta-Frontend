@@ -1,5 +1,5 @@
 <script>
-import { getCalling, postCalling } from '@/Helpers/CallToAPI.js';
+import {getCalling, postCalling} from '@/Helpers/CallToAPI.js';
 
 export default {
   name: 'NotificationPage',
@@ -16,8 +16,7 @@ export default {
       this.loading = true;
       this.error = null;
       try {
-        const notifRes = await getCalling('/notifications');
-        this.notifications = notifRes;
+        this.notifications = await getCalling('/notifications');
         const countRes = await getCalling('/notifications/unread-count');
         this.unreadCount = countRes.unread_notifications;
       } catch (e) {

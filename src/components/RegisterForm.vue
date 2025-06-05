@@ -76,9 +76,7 @@ export default {
       try {
         const uploadResult = await uploadFormImageWebpAxios(file);
         if (uploadResult && uploadResult.secure_url) {
-          // guardar en state local para previsualización
           this.values.profile_photo = uploadResult.secure_url;
-          // sincronizar con Vee-Validate
           setFieldValue('profile_photo', uploadResult.secure_url);
         } else {
           this.submitError = 'Error al subir la foto de perfil.';

@@ -1,78 +1,46 @@
-<script>
-import HomeIcon from 'vue-material-design-icons/Home.vue';
-import MagnifyIcon from 'vue-material-design-icons/Magnify.vue';
-import AccountCircleIcon from 'vue-material-design-icons/AccountCircle.vue';
-import BellIcon from 'vue-material-design-icons/Bell.vue';
-import CogIcon from 'vue-material-design-icons/Cog.vue';
-import MessageTextIcon from 'vue-material-design-icons/MessageText.vue';
-
-export default {
-  name: "Header",
-  components: {
-    HomeIcon,
-    MagnifyIcon,
-    AccountCircleIcon,
-    BellIcon,
-    CogIcon,
-    MessageTextIcon
-  },
-  methods: {
-    publish(){
-      this.$router.push('/publish');
-    },
-    goToHome() {
-      this.$router.push('/');
-    },
-    goToSearch() {
-      this.$router.push('/search');
-    },
-    goToProfile() {
-      const userId = localStorage.getItem("userId");
-      this.$router.push(`/profile/${userId}`);
-    },
-    goToNotifications() {
-      this.$router.push('/notifications');
-    },
-    goToSettings() {
-      this.$router.push({name: 'settings'});
-    },
-    goToMessages() {
-      this.$router.push('/chats');
-    }
-  }
-}
-</script>
-
+<!-- src/components/Header.vue -->
 <template>
-  <header class="app-sidebar"> <div class="logo-container">
-    <img  alt="Rosseta Logo" class="rosseta-logo">
-    <span class="app-title">Rosseta</span>
-  </div>
+  <header class="app-sidebar">
+    <div class="logo-container">
+      <img alt="Rosseta Logo" class="rosseta-logo" />
+      <span class="app-title">Rosseta</span>
+    </div>
 
     <nav class="main-nav">
       <section @click="goToHome" class="nav-item">
-        <home-icon :size="24"/>
+        <home-icon :size="24" />
         <span>Inicio</span>
       </section>
+
       <section @click="goToSearch" class="nav-item">
-        <magnify-icon :size="24"/>
+        <magnify-icon :size="24" />
         <span>Buscar</span>
       </section>
+
       <section @click="goToProfile" class="nav-item">
-        <account-circle-icon :size="24"/>
+        <account-circle-icon :size="24" />
         <span>Perfil</span>
       </section>
+
       <section @click="goToNotifications" class="nav-item">
-        <bell-icon :size="24"/>
+        <bell-icon :size="24" />
         <span>Notificaciones</span>
+        <span v-if="unreadNotifications > 0" class="badge">
+          {{ unreadNotifications }}
+        </span>
       </section>
+
       <section @click="goToSettings" class="nav-item">
-        <cog-icon :size="24"/>
+        <cog-icon :size="24" />
         <span>Ajustes</span>
       </section>
+
       <section @click="goToMessages" class="nav-item">
-        <message-text-icon :size="24"/>
+        <message-text-icon :size="24" />
         <span>Mensajes</span>
+        <span v-if="unreadChats > 0" class="badge">
+          {{ unreadChats }}
+        </span>
       </section>
     </nav>
 
@@ -82,6 +50,115 @@ export default {
   </header>
 </template>
 
+<script>
+import HomeIcon from 'vue-material-design-icons/Home.vue';
+import MagnifyIcon from 'vue-material-design-icons/Magnify.vue';
+import AccountCircleIcon from 'vue-material-design-icons/AccountCircle.vue';
+import BellIcon from 'vue-material-design-icons/Bell.vue';
+import CogIcon from 'vue-material-design-icons/Cog.vue';
+import MessageTextIcon from 'vue-material-design-icons/MessageText.vue';
+import { getCalling } from '@/Helpers/CallToAPI.js';
+
+export default {
+  name: 'Header',
+  components: {
+    HomeIcon,
+    MagnifyIcon,
+    AccountCircleIcon,
+    BellIcon,
+    CogIcon,
+    MessageTextIcon,
+  },
+  data() {
+    return {
+      unreadNotifications: 0,
+      unreadChats: 0,
+      conversations: [],
+    };
+  },
+  computed: {
+    currentUserId() {
+      return Number(localStorage.getItem('userId'));
+    },
+  },
+  methods: {
+    async loadInitialCounts() {
+      try {
+        const notiRes = await getCalling('/notifications/unread-count', true);
+        this.unreadNotifications = notiRes.unread_notifications || 0;
+
+        const convRes = await getCalling('/conversations', true);
+        this.conversations = convRes.data || [];
+
+        const chatsRes = await getCalling('/conversations/unread-count', true);
+        this.unreadChats = chatsRes.unread_chats || 0;
+      } catch (e) {
+        console.error(e);
+      }
+    },
+    goToHome() {
+      this.$router.push('/home');
+    },
+    goToSearch() {
+      this.$router.push('/search');
+    },
+    goToProfile() {
+      const u = this.currentUserId;
+      if (u) this.$router.push(`/profile/${u}`);
+    },
+    goToNotifications() {
+      this.$router.push('/notifications');
+    },
+    goToSettings() {
+      this.$router.push({ name: 'settings' });
+    },
+    goToMessages() {
+      this.$router.push('/chats');
+    },
+    publish() {
+      this.$router.push('/publish');
+    },
+  },
+  async mounted() {
+    await this.loadInitialCounts();
+
+    if (this.currentUserId && window.Echo) {
+      window.Echo.private(`App.Models.User.${this.currentUserId}`)
+        .notification(() => {
+          this.unreadNotifications += 1;
+        })
+        .error(err => {
+          console.error(err);
+        });
+    }
+
+    if (window.Echo) {
+      this.conversations.forEach(conv => {
+        window.Echo.private(`chat.${conv.id}`)
+          .listen('.message.direct', e => {
+            if (e.from_id !== this.currentUserId) {
+              this.unreadChats += 1;
+            }
+          })
+          .error(err => {
+            console.error(err);
+          });
+      });
+    }
+  },
+  beforeUnmount() {
+    if (window.Echo) {
+      if (this.currentUserId) {
+        window.Echo.private(`App.Models.User.${this.currentUserId}`).stopListening();
+      }
+      this.conversations.forEach(conv => {
+        window.Echo.private(`chat.${conv.id}`).stopListening('.message.direct');
+      });
+    }
+  },
+};
+</script>
+
 <style scoped>
 .app-sidebar {
   background-color: #fcf6ed;
@@ -89,7 +166,7 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
   overflow-y: auto;
 }
 
@@ -128,6 +205,7 @@ export default {
   border-radius: 8px;
   transition: background-color 0.2s ease, color 0.2s ease;
   width: calc(100% - 30px);
+  position: relative;
 }
 
 .nav-item:hover {
@@ -152,6 +230,21 @@ export default {
 
 .nav-item:hover span {
   color: #db446b;
+}
+
+.badge {
+  position: absolute;
+  top: 8px;
+  right: 15px;
+  background-color: #db446b;
+  color: #fff;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .publish-button {
