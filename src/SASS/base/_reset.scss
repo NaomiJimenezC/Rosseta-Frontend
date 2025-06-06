@@ -1,0 +1,59 @@
+/* _reset.scss */
+/* Aplica box-sizing border-box a todos los elementos */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Configuración básica para html y body */
+html {
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: 'Open Sans', sans-serif;
+  background: var(--color-secundario-200);
+  color: #000;
+}
+
+/* Imágenes y medios: aseguran responsividad */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* Inputs, botones y áreas de texto heredan la fuente */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* Enlaces: quitar subrayado y heredar color */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Listas: eliminar estilos por defecto */
+ul,
+ol {
+  list-style: none;
+}
+
+/* Otros ajustes útiles */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
