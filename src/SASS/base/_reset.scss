@@ -1,5 +1,5 @@
+@use 'fonts';
 /* _reset.scss */
-/* Aplica box-sizing border-box a todos los elementos */
 *,
 *::before,
 *::after {
@@ -17,12 +17,11 @@ html {
 
 body {
   margin: 0;
-  font-family: 'Open Sans', sans-serif;
-  background: var(--color-secundario-200);
-  color: #000;
+  font-family: 'Montserrat', sans-serif;
+  background: var(--color-primario-100);
+  color: var(--color-grises-800);
 }
 
-/* Imágenes y medios: aseguran responsividad */
 img,
 picture,
 video,
@@ -32,7 +31,6 @@ svg {
   max-width: 100%;
 }
 
-/* Inputs, botones y áreas de texto heredan la fuente */
 input,
 button,
 textarea,
@@ -40,19 +38,16 @@ select {
   font: inherit;
 }
 
-/* Enlaces: quitar subrayado y heredar color */
 a {
   text-decoration: none;
   color: inherit;
 }
 
-/* Listas: eliminar estilos por defecto */
 ul,
 ol {
   list-style: none;
 }
 
-/* Otros ajustes útiles */
 table {
   border-collapse: collapse;
   border-spacing: 0;
