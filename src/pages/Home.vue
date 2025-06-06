@@ -1,10 +1,11 @@
 <script>
 import { getCalling } from "@/Helpers/CallToAPI.js";
 import Post from "@/components/Post.vue";
+import Suggestions from "@/components/Suggestions.vue";
 
 export default {
   name: 'Home',
-  components: {Post},
+  components: {Suggestions, Post},
   data() {
     return {
       posts: [],
@@ -52,6 +53,7 @@ export default {
     </ul>
     <h2 v-else>No hay publicaciones disponibles</h2>
   </div>
+  <Suggestions/>
 </template>
 
 <style scoped>

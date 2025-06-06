@@ -39,7 +39,6 @@ export default {
               const postId = notif.data.post_id;
               if (postId) {
                 const post = await getCalling(`/posts/${postId}`);
-                console.log(post);
                 notif.thumbnail = post.data.image_url;
               }
             } else if (type === 'mention') {
