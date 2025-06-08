@@ -1,0 +1,31 @@
+/* layout/_grid.scss */
+.app-layout {
+  display: grid;
+  grid-template-columns: 260px 1fr 260px;
+  gap: 1rem;
+  padding: 1rem;
+
+  &__sidebar {
+    grid-column: 1;
+  }
+
+  &__content {
+    grid-column: 2;
+  }
+
+  &__aside-secondary {
+    grid-column: 3;
+  }
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+
+    &__sidebar,
+    &__content,
+    &__aside-secondary {
+      grid-column: 1;
+      grid-row: auto; // Reset
+    }
+  }
+
+}

@@ -1,27 +1,53 @@
+$color-primario-800: #F2EBBF;
+$color-primario-700: #F4EDC7;
+$color-primario-600: #F6F0CF;
+$color-primario-500: #F7F2D7;
+$color-primario-400: #F9F5DF;
+$color-primario-300: #FBF7E7;
+$color-primario-200: #FCFAEF;
+$color-primario-100: #FEFCF7;
+
+$color-secundario-800: #DB005B;
+$color-secundario-700: #E4426D;
+$color-secundario-600: #EB6380;
+$color-secundario-500: #F28094;
+$color-secundario-400: #F79AA9;
+$color-secundario-300: #FBB4BE;
+$color-secundario-200: #FECDD3;
+$color-secundario-100: #FFE6E9;
+
+$color-grises-800: #1C1C1C;
+$color-grises-700: #393939;
+$color-grises-600: #555555;
+$color-grises-500: #717171;
+$color-grises-400: #AAAAAA;
+$color-grises-300: #C6C6C6;
+$color-grises-200: #E3E3E3;
+
 :root {
-  --color-primario-800: #F2EBBF;
-  --color-primario-700: #F4EDC7;
-  --color-primario-600: #F6F0CF;
-  --color-primario-500: #F7F2D7;
-  --color-primario-400: #F9F5DF;
-  --color-primario-300: #FBF7E7;
-  --color-primario-200: #FCFAEF;
-  --color-primario-100: #FEFCF7;
+  --color-primario-800: #{$color-primario-800};
+  --color-primario-700: #{$color-primario-700};
+  --color-primario-600: #{$color-primario-600};
+  --color-primario-500: #{$color-primario-500};
+  --color-primario-400: #{$color-primario-400};
+  --color-primario-300: #{$color-primario-300};
+  --color-primario-200: #{$color-primario-200};
+  --color-primario-100: #{$color-primario-100};
 
-  --color-secundario-800: #DB005B;
-  --color-secundario-700: #E4426D;
-  --color-secundario-600: #EB6380;
-  --color-secundario-500: #F28094;
-  --color-secundario-400: #F79AA9;
-  --color-secundario-300: #FBB4BE;
-  --color-secundario-200: #FECDD3;
-  --color-secundario-100: #FFE6E9;
+  --color-secundario-800: #{$color-secundario-800};
+  --color-secundario-700: #{$color-secundario-700};
+  --color-secundario-600: #{$color-secundario-600};
+  --color-secundario-500: #{$color-secundario-500};
+  --color-secundario-400: #{$color-secundario-400};
+  --color-secundario-300: #{$color-secundario-300};
+  --color-secundario-200: #{$color-secundario-200};
+  --color-secundario-100: #{$color-secundario-100};
 
-  --color-grises-800: #1C1C1C;
-  --color-grises-700: #393939;
-  --color-grises-600: #555555;
-  --color-grises-500: #717171;
-  --color-grises-400: #AAAAAA;
-  --color-grises-300: #C6C6C6;
-  --color-grises-200: #E3E3E3;
+  --color-grises-800: #{$color-grises-800};
+  --color-grises-700: #{$color-grises-700};
+  --color-grises-600: #{$color-grises-600};
+  --color-grises-500: #{$color-grises-500};
+  --color-grises-400: #{$color-grises-400};
+  --color-grises-300: #{$color-grises-300};
+  --color-grises-200: #{$color-grises-200};
 }

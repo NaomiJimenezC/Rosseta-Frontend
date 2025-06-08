@@ -1,5 +1,4 @@
 @use 'fonts';
-/* _reset.scss */
 *,
 *::before,
 *::after {
@@ -8,7 +7,6 @@
   padding: 0;
 }
 
-/* Configuración básica para html y body */
 html {
   font-size: 16px;
   line-height: 1.5;

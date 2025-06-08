@@ -1,0 +1,40 @@
+@use '@/SASS/abstracts/colours' as colours;
+@use 'fonts' as fonts;
+
+:root{
+  color-scheme: light dark;
+}
+body{
+  background-color: light-dark(var(--color-primario-200),var(--color-grises-200));
+  color: light-dark(var(--color-grises-800),var(--color-primario-200));
+  font-family: fonts.$font-primary;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+body.dark {
+  color-scheme: dark;
+}
+
+body.light {
+  color-scheme: light;
+}
+
+h1,h2,h3,h4,h5,h6{
+  font-family: fonts.$font-headings;
+}
+
+h1{
+  font-size: 48px;
+}
+
+h2{
+  font-size: 32px;
+}
+
+h3{
+  font-size: 24px;
+}
+
+h4{
+  font-size: 21px;
+}
