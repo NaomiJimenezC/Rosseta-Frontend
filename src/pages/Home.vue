@@ -53,7 +53,6 @@ export default {
     </ul>
     <h2 v-else>No hay publicaciones disponibles</h2>
   </div>
-  <Suggestions/>
 </template>
 
 <style scoped>

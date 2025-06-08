@@ -13,7 +13,6 @@
 
   &__logo {
     display: flex;
-    align-items: center;
     padding: 0 12px;
     margin-bottom: 24px;
   }
@@ -31,7 +30,7 @@
   &__nav {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 16px;
     margin-bottom: 12px;
   }
 
@@ -60,8 +59,8 @@
   &__badge {
     position: absolute;
     right: 12px;
-    background-color: #ff2e63;
-    color: white;
+    background-color: c.$color-secundario-700;
+    color: c.$color-primario-200;
     border-radius: 50%;
     width: 20px;
     height: 20px;

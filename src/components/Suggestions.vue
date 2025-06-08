@@ -32,6 +32,7 @@ export default {
 </script>
 
 <template>
+  <h1>Recomendaciones</h1>
   <section class="suggestions-box">
     <ul class="suggestions-list">
       <li
@@ -58,7 +59,7 @@ export default {
   background-color: #f48fb1;
   border-radius: 8px;
   padding: 16px;
-  max-width: 280px;
+  max-width:max-content;
 }
 
 .suggestions-list {

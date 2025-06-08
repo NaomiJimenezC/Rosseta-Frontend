@@ -43,9 +43,16 @@
       </button>
     </nav>
 
-    <button @click="publish" class="app-sidebar__publish">
+
+    <button @click="openPublishModal" class="app-sidebar__publish">
       Publicar
     </button>
+
+    <NewPublicationModal
+      v-model:isVisible="showNewPublicationModal"
+      @publication-successful="handlePublicationSuccessful"
+      @modal-closed="handleModalClosed"
+    />
   </header>
 </template>
 
@@ -57,10 +64,12 @@ import BellIcon from 'vue-material-design-icons/Bell.vue'
 import CogIcon from 'vue-material-design-icons/Cog.vue'
 import MessageTextIcon from 'vue-material-design-icons/MessageText.vue'
 import { getCalling } from '@/Helpers/CallToAPI.js'
+import NewPublicationModal from "@/components/NewPublicationModal.vue";
 
 export default {
   name: 'Header',
   components: {
+    NewPublicationModal,
     HomeIcon,
     MagnifyIcon,
     AccountCircleIcon,
@@ -73,6 +82,7 @@ export default {
       unreadNotifications: 0,
       unreadChats: 0,
       conversations: [],
+      showNewPublicationModal: false,
     }
   },
   computed: {
@@ -114,9 +124,18 @@ export default {
     goToMessages() {
       this.$router.push('/chats')
     },
-    publish() {
-      this.$router.push('/publish')
+    openPublishModal() {
+      this.showNewPublicationModal = true;
     },
+    handlePublicationSuccessful() {
+      console.log('Publicación exitosa desde el Header!');
+      this.$router.push("/home")
+
+    },
+    handleModalClosed() {
+      console.log('Modal de publicación cerrada.');
+      this.$router.push("/home")
+    }
   },
   async mounted() {
     await this.loadInitialCounts()
