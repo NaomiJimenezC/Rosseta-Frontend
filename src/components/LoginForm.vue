@@ -48,34 +48,34 @@ export default {
 </script>
 
 <template>
+  <Form :validation-schema="schema" class="form" @submit="handleSubmit" v-slot="{ errors }">
+    <div v-if="loginError" class="form__alert form__alert--danger">{{ loginError }}</div>
 
-  <Form :validation-schema="schema" class="formularios" @submit="handleSubmit" v-slot="{ errors }">
-    <div v-if="loginError" class="alert alert-danger">{{ loginError }}</div>
-    <div class="form-group">
-      <label for="username">Nombre de usuario:</label>
+    <div class="form__group">
+      <label for="username" class="form__label">Nombre de usuario:</label>
       <Field
         id="username"
         name="username"
         type="text"
-        class="form-control"
-        :class="{ 'is-invalid': errors.username }"
+        class="form__input"
+        :class="{ 'form__input--is-invalid': errors.username }"
       />
-      <ErrorMessage name="username" class="error-message" />
+      <ErrorMessage name="username" class="form__error-message" />
     </div>
 
-    <div class="form-group">
-      <label for="password">Contraseña:</label>
+    <div class="form__group">
+      <label for="password" class="form__label">Contraseña:</label>
       <Field
         id="password"
         name="password"
         type="password"
-        class="form-control"
-        :class="{ 'is-invalid': errors.password }"
+        class="form__input"
+        :class="{ 'form__input--is-invalid': errors.password }"
       />
-      <ErrorMessage name="password" class="error-message invalid-feedback" />
+      <ErrorMessage name="password" class="form__error-message form__error-message--invalid-feedback" />
     </div>
 
-    <button type="submit" class="btn btn-primary">Acceder</button>
+    <button type="submit" class="form__button">Acceder</button>
   </Form>
 </template>
 

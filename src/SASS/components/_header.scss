@@ -72,8 +72,8 @@
   }
 
   &__publish {
-    background-color: c.$color-secundario-600;
-    color: c.$color-primario-100;
+    background-color: light-dark(c.$color-secundario-600,c.$color-grises-600);
+    color: light-dark(c.$color-primario-100,c.$color-grises-200);
     border: none;
     border-radius: 16px;
     padding: 12px;

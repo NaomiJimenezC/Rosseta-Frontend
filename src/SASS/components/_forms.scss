@@ -1,41 +1,70 @@
 @use '../abstracts/colours' as c;
-.formularios{
+
+.form {
   display: flex;
   flex-direction: column;
-  align-items: start;
-  background-color: light-dark(c.$color-secundario-600,c.$color-grises-600);
+  align-items: flex-start;
+  background-color: light-dark(c.$color-secundario-600, c.$color-grises-600);
   border-radius: 16px;
   padding: 1rem;
   width: max-content;
 
-}
-.formularios label{
-  color: light-dark(c.$color-primario-300, c.$color-grises-200)
-}
-.formularios input{
-  background-color: light-dark(c.$color-secundario-200,c.$color-grises-200);
-  width: max-content;
-  padding: 0.25rem;
-  border-radius: 8px;
-  border:none;
-}
+  &__label {
+    color: light-dark(c.$color-primario-300, c.$color-grises-200);
+  }
 
-.formularios button{
-  background-color: light-dark(c.$color-primario-500,c.$color-grises-300);
-  color: light-dark(c.$color-secundario-600,c.$color-grises-600);
-  padding: 0.5rem;
-  border:none;
-  border-radius: 128px;
-}
+  &__input {
+    background-color: light-dark(c.$color-secundario-200, c.$color-grises-200);
+    width: max-content;
+    padding: 0.25rem;
+    border-radius: 8px;
+    border: none;
+  }
 
-.formularios .error-message{
-  font-weight: bold;
-  color: light-dark(c.$color-primario-800,c.$color-grises-200);
-}
+  &__button {
+    background-color: light-dark(c.$color-primario-500, c.$color-grises-300);
+    color: light-dark(c.$color-secundario-600, c.$color-grises-600);
+    padding: 0.5rem;
+    border: none;
+    border-radius: 128px;
+    cursor: pointer;
+  }
 
-.formularios .form-group {
-  display: flex;
-  flex-direction: column;
-  align-items: start;
-  margin-bottom: 1rem;
+  &__error-message {
+    font-weight: bold;
+    color: light-dark(c.$color-primario-800, c.$color-grises-200);
+  }
+
+  &__group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+  }
+
+  &__checkbox-input {
+    border: none;
+    margin-right: 0.5rem;
+    cursor: pointer;
+
+    &--is-invalid {
+      outline: 2px solid red;
+      outline-offset: 2px;
+    }
+  }
+
+  &__checkbox-label {
+    color: light-dark(c.$color-primario-300, c.$color-grises-200);
+    margin-bottom: 0;
+    flex-grow: 1;
+  }
+
+  &__link {
+    color: light-dark(c.$color-primario-500, c.$color-primario-200);
+    text-decoration: underline;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
 }

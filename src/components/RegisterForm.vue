@@ -97,151 +97,125 @@ export default {
     :initial-values="values"
     @submit="handleSubmit"
     v-slot="{ errors, values, setFieldValue }"
+    class="form"
   >
-    <div v-if="submitError" class="alert alert-danger">{{ submitError }}</div>
+    <div v-if="submitError" class="form__alert form__alert--danger">{{ submitError }}</div>
 
-    <div class="form-group">
-      <label for="username">Nombre de usuario: <span class="required">*</span></label>
+    <div class="form__group">
+      <label for="username" class="form__label">Nombre de usuario: <span class="form__required">*</span></label>
       <Field
         id="username"
         name="username"
         type="text"
-        class="form-control"
-        :class="{ 'is-invalid': errors.username }"
+        class="form__input"
+        :class="{ 'form__input--is-invalid': errors.username }"
         v-model="values.username"
       />
-      <ErrorMessage name="username" class="error-message invalid-feedback" />
+      <ErrorMessage name="username" class="form__error-message form__error-message--invalid-feedback" />
     </div>
 
-    <div class="form-group">
-      <label for="email">Correo electrónico: <span class="required">*</span></label>
+    <div class="form__group">
+      <label for="email" class="form__label">Correo electrónico: <span class="form__required">*</span></label>
       <Field
         id="email"
         name="email"
         type="email"
-        class="form-control"
-        :class="{ 'is-invalid': errors.email }"
+        class="form__input"
+        :class="{ 'form__input--is-invalid': errors.email }"
         v-model="values.email"
       />
-      <ErrorMessage name="email" class="error-message invalid-feedback" />
+      <ErrorMessage name="email" class="form__error-message form__error-message--invalid-feedback" />
     </div>
 
-    <div class="form-group">
-      <label for="password">Contraseña: <span class="required">*</span></label>
+    <div class="form__group">
+      <label for="password" class="form__label">Contraseña: <span class="form__required">*</span></label>
       <Field
         id="password"
         name="password"
         type="password"
-        class="form-control"
-        :class="{ 'is-invalid': errors.password }"
+        class="form__input"
+        :class="{ 'form__input--is-invalid': errors.password }"
         v-model="values.password"
       />
-      <ErrorMessage name="password" class="error-message invalid-feedback" />
+      <ErrorMessage name="password" class="form__error-message form__error-message--invalid-feedback" />
     </div>
 
-    <div class="form-group">
-      <label for="password_confirmation">Confirmar contraseña: <span class="required">*</span></label>
+    <div class="form__group">
+      <label for="password_confirmation" class="form__label">Confirmar contraseña: <span class="form__required">*</span></label>
       <Field
         id="password_confirmation"
         name="password_confirmation"
         type="password"
-        class="form-control"
-        :class="{ 'is-invalid': errors.password_confirmation }"
+        class="form__input"
+        :class="{ 'form__input--is-invalid': errors.password_confirmation }"
         v-model="values.password_confirmation"
       />
-      <ErrorMessage name="password_confirmation" class="error-message invalid-feedback" />
+      <ErrorMessage name="password_confirmation" class="form__error-message form__error-message--invalid-feedback" />
     </div>
 
-    <div class="form-group">
-      <label for="birthday">Fecha de nacimiento: <span class="required">*</span></label>
+    <div class="form__group">
+      <label for="birthday" class="form__label">Fecha de nacimiento: <span class="form__required">*</span></label>
       <Field
         id="birthday"
         name="birthday"
         type="date"
-        class="form-control"
-        :class="{ 'is-invalid': errors.birthday }"
+        class="form__input"
+        :class="{ 'form__input--is-invalid': errors.birthday }"
         v-model="values.birthday"
       />
-      <ErrorMessage name="birthday" class="error-message invalid-feedback" />
+      <ErrorMessage name="birthday" class="form__error-message form__error-message--invalid-feedback" />
     </div>
 
-    <div class="form-group">
-      <label for="phone_number">Número de teléfono (Opcional):</label>
+    <div class="form__group">
+      <label for="phone_number" class="form__label">Número de teléfono (Opcional):</label>
       <Field
         id="phone_number"
         name="phone_number"
         type="text"
-        class="form-control"
-        :class="{ 'is-invalid': errors.phone_number }"
+        class="form__input"
+        :class="{ 'form__input--is-invalid': errors.phone_number }"
         v-model="values.phone_number"
       />
-      <ErrorMessage name="phone_number" class="error-message invalid-feedback" />
+      <ErrorMessage name="phone_number" class="form__error-message form__error-message--invalid-feedback" />
     </div>
 
-    <div class="form-group">
-      <label for="profile_photo">Foto de perfil (max 2MB, JPG/PNG):</label>
+    <div class="form__group">
+      <label for="profile_photo" class="form__label">Foto de perfil (max 2MB, JPG/PNG):</label>
       <Field
         id="profile_photo"
         name="profile_photo"
         type="file"
-        class="form-control"
+        class="form__input form__input--file"
         @change="e => handleFileChange(e, setFieldValue)"
         accept="image/jpeg, image/png"
-        :class="{ 'is-invalid': errors.profile_photo }"
+        :class="{ 'form__input--is-invalid': errors.profile_photo }"
       />
-      <ErrorMessage name="profile_photo" class="error-message invalid-feedback" />
+      <ErrorMessage name="profile_photo" class="form__error-message form__error-message--invalid-feedback" />
     </div>
 
-    <div class="form-group form-check">
+    <div class="form__group form__group--check">
       <Field
         id="terms_and_conditions"
         name="terms_and_conditions"
         type="checkbox"
         :value="true"
-        class="form-check-input"
-        :class="{ 'is-invalid': errors.terms_and_conditions }"
+        class="form__checkbox-input"
+        :class="{ 'form__checkbox-input--is-invalid': errors.terms_and_conditions }"
         v-model="values.terms_and_conditions"
       />
-      <label class="form-check-label" for="terms_and_conditions">
-        Acepto los <a href="/terminos" target="_blank">términos y condiciones</a> <span class="required">*</span>
+      <label class="form__checkbox-label" for="terms_and_conditions">
+        Acepto los <a href="/terminos" target="_blank" >términos y condiciones</a> <span class="form__required">*</span>
       </label>
-      <ErrorMessage name="terms_and_conditions" class="error-message invalid-feedback d-block" />
+      <ErrorMessage name="terms_and_conditions" class="form__error-message form__error-message--invalid-feedback form__error-message--block" />
     </div>
 
-    <button type="submit" class="btn btn-primary" :disabled="isSending">
+    <button type="submit" class="form__button" :disabled="isSending">
       {{ isSending ? 'Registrando...' : 'Acceder' }}
     </button>
 
   </Form>
 </template>
 
-<style scoped>
-.error-message {
-  color: red;
-  font-size: 0.8em;
-}
-.form-group {
-  margin-bottom: 1rem;
-}
-.is-invalid {
-  border-color: red;
-}
-.invalid-feedback {
-  display: none;
-  width: 100%;
-  margin-top: 0.25rem;
-  font-size: 80%;
-  color: #dc3545;
-}
-.is-invalid ~ .invalid-feedback,
-.is-invalid ~ .form-check-label + .invalid-feedback {
-  display: block;
-}
-.d-block {
-  display: block !important;
-}
-.required {
-  color: red;
-  font-weight: bold;
-}
+<style lang="sass" scoped>
+@use "@/SASS/components/forms"
 </style>
