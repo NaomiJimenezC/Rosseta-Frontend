@@ -1,0 +1,41 @@
+@use '../abstracts/colours' as c;
+.formularios{
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  background-color: light-dark(c.$color-secundario-600,c.$color-grises-600);
+  border-radius: 16px;
+  padding: 1rem;
+  width: max-content;
+
+}
+.formularios label{
+  color: light-dark(c.$color-primario-300, c.$color-grises-200)
+}
+.formularios input{
+  background-color: light-dark(c.$color-secundario-200,c.$color-grises-200);
+  width: max-content;
+  padding: 0.25rem;
+  border-radius: 8px;
+  border:none;
+}
+
+.formularios button{
+  background-color: light-dark(c.$color-primario-500,c.$color-grises-300);
+  color: light-dark(c.$color-secundario-600,c.$color-grises-600);
+  padding: 0.5rem;
+  border:none;
+  border-radius: 128px;
+}
+
+.formularios .error-message{
+  font-weight: bold;
+  color: light-dark(c.$color-primario-800,c.$color-grises-200);
+}
+
+.formularios .form-group {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  margin-bottom: 1rem;
+}

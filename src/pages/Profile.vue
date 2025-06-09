@@ -1,5 +1,5 @@
 <script>
-import {getCalling} from "@/Helpers/CallToAPI.js";
+import {getCalling, postCalling} from "@/Helpers/CallToAPI.js";
 import defaultProfileImage from "@/assets/Default_pfp.jpg";
 
 export default {
@@ -57,6 +57,14 @@ export default {
 
     goToPost(postId) {
       this.$router.push({ name: "post", params: { id: postId } });
+    },
+
+    follow(idUsuario){
+      try {
+        //postCalling(/users/")
+      } catch (e){
+        console.log(e)
+      }
     }
   }
 };

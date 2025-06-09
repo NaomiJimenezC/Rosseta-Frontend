@@ -49,7 +49,7 @@ export default {
 
 <template>
 
-  <Form :validation-schema="schema" @submit="handleSubmit" v-slot="{ errors }">
+  <Form :validation-schema="schema" class="formularios" @submit="handleSubmit" v-slot="{ errors }">
     <div v-if="loginError" class="alert alert-danger">{{ loginError }}</div>
     <div class="form-group">
       <label for="username">Nombre de usuario:</label>
@@ -60,7 +60,7 @@ export default {
         class="form-control"
         :class="{ 'is-invalid': errors.username }"
       />
-      <ErrorMessage name="username" class="error-message invalid-feedback" />
+      <ErrorMessage name="username" class="error-message" />
     </div>
 
     <div class="form-group">
@@ -79,47 +79,6 @@ export default {
   </Form>
 </template>
 
-<style scoped>
-.form-group {
-  margin-bottom: 1rem;
-}
-
-.error-message {
-  color: red;
-  font-size: 0.8em;
-}
-
-.is-invalid {
-  border-color: red;
-}
-
-.invalid-feedback {
-  display: block;
-  width: 100%;
-  margin-top: 0.25rem;
-  font-size: 80%;
-  color: #dc3545;
-}
-
-.alert-danger {
-  color: #721c24;
-  background-color: #f8d7da;
-  border-color: #f5c6cb;
-  margin-bottom: 1rem;
-  padding: 0.75rem 1.25rem;
-  border-radius: 0.25rem;
-}
-
-.btn-primary {
-  background-color: #007bff;
-  color: white;
-  padding: 0.5rem 1rem;
-  border: none;
-  border-radius: 0.25rem;
-  cursor: pointer;
-}
-
-.btn-primary:hover {
-  background-color: #0056b3;
-}
+<style lang="scss" scoped>
+@use '@/SASS/components/forms';
 </style>
