@@ -28,13 +28,13 @@
     <div v-if="activeTab === 'posts' && posts.length" class="results-section">
       <h2 class="section-title">Posts</h2>
       <ul class="posts-list">
-        <li v-for="post in posts" :key="post.id" class="post-item">
-          <p>{{ post.content }}</p>
-          <p v-if="post.caption" class="post-caption">{{ post.caption }}</p>
-          <img
-            v-if="post.image_url"
-            :src="post.image_url"
-            class="post-image"
+        <li v-for="post in posts" :key="post.id">
+          <Post
+            :postId="post.id"
+            :userId="post.users_id"
+            :img="post.image_url"
+            :caption="post.caption"
+            :description="post.content"
           />
         </li>
       </ul>
@@ -74,9 +74,11 @@
 
 <script>
 import { getCalling } from '@/Helpers/CallToAPI.js';
+import Post from "@/components/Post.vue";
 
 export default {
   name: "SearchResults",
+  components: {Post},
   data() {
     return {
       query: '',
