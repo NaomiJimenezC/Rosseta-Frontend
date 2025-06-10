@@ -1,40 +1,51 @@
 <template>
-  <section class="chat-view">
-    <header class="chat-header">
+  <section class="chat">
+    <header class="chat__header">
       <button @click="$router.back()">← Volver</button>
       <h2 v-if="otherUser">{{ otherUser.username }}</h2>
     </header>
 
-    <main class="chat-messages">
-      <p v-if="loading">Cargando mensajes…</p>
-      <p v-else-if="error" class="error">{{ error }}</p>
+    <main class="chat__messages" ref="messagesContainer"> <p v-if="loading">Cargando mensajes…</p>
+      <p v-else-if="error" class="chat__messages__error">{{ error }}</p>
 
       <ul v-else>
         <li
           v-for="msg in messages"
           :key="msg.id"
-          :class="{ mine: msg.sender_id === currentUserId }"
-          class="chat-message"
+          :class="[
+            'chat__messages__item',
+            msg.sender_id === currentUserId
+              ? 'chat__messages__item__mine'
+              : 'chat__messages__item__other'
+          ]"
         >
-          <span class="message-content">{{ msg.content }}</span>
-          <small class="message-time">
+          <span class="chat__messages__text">{{ msg.content }}</span>
+          <small class="chat__messages__message-time">
             {{ new Date(msg.created_at).toLocaleTimeString() }}
           </small>
         </li>
       </ul>
     </main>
 
-    <form class="chat-form" @submit.prevent="sendMessage">
+    <form class="chat__form" @submit.prevent="sendMessage">
       <input
+        class="form__input"
         v-model="newMessage"
         type="text"
         placeholder="Escribe un mensaje…"
         autocomplete="off"
       />
-      <button type="submit" :disabled="!newMessage.trim()">Enviar</button>
+      <button
+        class="chat__form__button"
+        type="submit"
+        :disabled="!newMessage.trim()"
+      >
+        Enviar
+      </button>
     </form>
   </section>
 </template>
+
 
 <script>
 import { getCalling, postCalling } from '@/Helpers/CallToAPI.js';
@@ -68,18 +79,24 @@ export default {
       return this.conversation.users.find(u => u.id !== this.currentUserId);
     }
   },
+  watch: {
+    messages() {
+      this.$nextTick(() => {
+        this.scrollToBottom();
+      });
+    }
+  },
   methods: {
     async fetchConversation() {
       try {
         this.loading = true;
-
-        // 1) Obtener detalles de la conversación (usuarios)
         const convRes = await getCalling(`/conversations/${this.id}`);
         this.conversation = convRes.data;
-
-        // 2) Obtener mensajes paginados
         const msgRes = await getCalling(`/conversations/${this.id}/messages`);
         this.messages = msgRes.data.data || msgRes.data;
+        this.$nextTick(() => {
+          this.scrollToBottom();
+        });
       } catch (e) {
         this.error = 'No se pudieron cargar los mensajes.';
         console.error(e);
@@ -99,12 +116,22 @@ export default {
         this.messages.push(data);
         this.newMessage = '';
       } catch (e) {
-        console.error('Error enviando mensaje:', e);
+          console.error('Error enviando mensaje:', e);
       }
     },
 
     handleIncoming(message) {
       this.messages.push(message);
+    },
+
+    /**
+     * Scrolls the chat messages container to the bottom.
+     */
+    scrollToBottom() {
+      const messagesContainer = this.$refs.messagesContainer;
+      if (messagesContainer) {
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      }
     },
 
     /**
@@ -121,7 +148,6 @@ export default {
           forceTLS: import.meta.env.VITE_PUSHER_SCHEME === 'https',
           enabledTransports: ['ws', 'wss'],
 
-          // Autenticación para canales privados
           authEndpoint: import.meta.env.VITE_BACKEND_URL + '/broadcasting/auth',
           auth: {
             headers: {
@@ -134,16 +160,13 @@ export default {
     }
   },
   mounted() {
-    // 1) Cargar la conversación y mensajes existentes
     this.fetchConversation();
 
-    // 2) Inicializar Echo/Pusher y suscribirse al canal privado
     const echo = this.ensureEcho();
     this.echoChannel = echo.private(`chat.${this.id}`);
 
     this.echoChannel
       .listen('.message.direct', e => {
-        // El payload 'e' debe coincidir con lo que emite DirectMessageSent::broadcastWith()
         this.handleIncoming({
           id: e.id || Date.now(),
           sender_id: e.from_id,
@@ -163,71 +186,7 @@ export default {
 };
 </script>
 
-<style scoped>
-.chat-view {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-
-.chat-header {
-  display: flex;
-  align-items: center;
-  padding: 1rem;
-  border-bottom: 1px solid #ddd;
-}
-.chat-header h2 {
-  margin: 0 auto;
-}
-
-.chat-messages {
-  flex: 1;
-  overflow-y: auto;
-  padding: 1rem;
-}
-.chat-messages ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-.chat-message {
-  margin-bottom: 0.75rem;
-  max-width: 70%;
-  word-wrap: break-word;
-  padding: 0.5rem;
-  border-radius: 8px;
-}
-.chat-message.mine {
-  margin-left: auto;
-  background: #dcf8c6;
-}
-.chat-message:not(.mine) {
-  background: #f1f0f0;
-}
-.message-time {
-  display: block;
-  font-size: 0.7rem;
-  color: #999;
-  margin-top: 0.25rem;
-}
-
-.chat-form {
-  display: flex;
-  padding: 0.5rem;
-  border-top: 1px solid #ddd;
-}
-.chat-form input {
-  flex: 1;
-  padding: 0.5rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-.chat-form button {
-  margin-left: 0.5rem;
-  padding: 0.5rem 1rem;
-}
-
-.error {
-  color: red;
-}
+<style lang="sass" scoped>
+@use "@/SASS/components/forms"
+@use '@/SASS/pages/chat'
 </style>

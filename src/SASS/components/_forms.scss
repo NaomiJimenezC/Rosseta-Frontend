@@ -59,6 +59,15 @@
     flex-grow: 1;
   }
 
+  &__fieldset{
+    border: none;
+  }
+
+  &__legend {
+    color: c.$color-primario-800;
+    font-weight: bold;
+  }
+
   &__link {
     color: light-dark(c.$color-primario-500, c.$color-primario-200);
     text-decoration: underline;

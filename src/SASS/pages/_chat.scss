@@ -1,0 +1,77 @@
+@use '@/SASS/abstracts/colours' as c;
+
+$spacing: 1rem;
+$border-color: #ddd;
+$bg-mine: light-dark(c.$color-secundario-200,c.$color-grises-400) ;
+$color-mine:c.$color-primario-100;
+$color-other:c.$color-primario-100;
+$bg-other: light-dark(c.$color-secundario-400,c.$color-grises-500);
+$text-time: c.$color-grises-300 ;
+$error-color: c.$color-secundario-800;
+
+.chat{
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    margin-top: 0.1rem;
+    padding: $spacing;
+    border-bottom: 1px solid $border-color;
+    h2 {
+      margin: 0 auto;
+    }
+  }
+
+  &__messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: $spacing;
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    &__item {
+      margin-bottom: 0.75rem;
+      max-width: 70%;
+      word-wrap: break-word;
+      padding: 0.5rem;
+      border-radius: 8px;
+
+
+      &__mine {
+        margin-left: auto;
+        background: $bg-mine;
+      }
+
+      &__other {
+        background: $bg-other;
+        color: $color-other;
+      }
+    }
+
+    &__message-time {
+      display: block;
+      font-size: 0.7rem;
+      color: $text-time;
+      margin-top: 0.25rem;
+    }
+  }
+
+  &__form {
+    display: flex;
+    padding: 0.5rem;
+    border-top: 1px solid $border-color;
+    gap: 0.5rem;
+    position:sticky;
+    input {
+      flex: 1;
+      padding: 0.5rem;
+    }
+  }
+}
