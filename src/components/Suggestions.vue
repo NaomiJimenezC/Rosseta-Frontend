@@ -32,21 +32,21 @@ export default {
 </script>
 
 <template>
-  <h1>Recomendaciones</h1>
-  <section class="suggestions-box">
-    <ul class="suggestions-list">
+  <h2>Recomendaciones</h2>
+  <section class="suggestions">
+    <ul class="suggestions__list">
       <li
         v-for="user in suggestions"
         :key="user.id"
-        class="suggestion-item"
+        class="suggestions__item"
         @click="goToProfile(user.id)"
       >
         <img
           :src="user.profile_picture_url || defaultProfileImage"
           alt="Avatar"
-          class="suggestion-avatar"
+          class="suggestions__item__avatar"
         />
-        <span class="suggestion-username">@{{ user.username }}</span>
+        <span class="suggestions__item__username">@{{ user.username }}</span>
       </li>
     </ul>
   </section>
@@ -54,51 +54,6 @@ export default {
 
 
 
-<style scoped>
-.suggestions-box {
-  background-color: #f48fb1;
-  border-radius: 8px;
-  padding: 16px;
-  max-width:max-content;
-}
-
-.suggestions-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.suggestion-item {
-  display: flex;
-  align-items: center;
-  margin-bottom: 12px;
-  padding: 4px 8px;
-  cursor: pointer;
-  transition: background-color 0.2s ease-in-out, border-radius 0.2s ease-in-out;
-}
-
-.suggestion-item:hover {
-  background-color: #fce4ec;
-  border-radius: 6px;
-}
-
-.suggestion-item:last-child {
-  margin-bottom: 0;
-}
-
-.suggestion-avatar {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-right: 12px;
-  border: 2px solid #fff;
-  background-color: #fff;
-}
-
-.suggestion-username {
-  font-size: 1.1em;
-  color: #333;
-  font-weight: 500;
-}
+<style lang="sass" scoped>
+@use '@/SASS/components/recommendations'
 </style>

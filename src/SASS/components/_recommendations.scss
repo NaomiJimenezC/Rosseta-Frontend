@@ -1,0 +1,44 @@
+@use "../abstracts/colours" as c;
+.suggestions {
+  max-width:max-content;
+  padding: 16px;
+  background-color: c.$color-secundario-500;
+  border-radius: 8px;
+
+  &__list{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  &__item{
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    padding: 4px 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out, border-radius 0.2s ease-in-out;
+
+    &__username{
+      color: c.$color-primario-100;
+      font-weight: bold;
+    }
+
+    &__avatar{
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-right: 12px;
+      border: 2px solid c.$color-primario-200;
+      background-color: c.$color-primario-100;
+    }
+  }
+  &__item:hover{
+    background-color: c.$color-primario-200;
+    border-radius: 6px;
+  }
+  &__item:last-child{
+    margin-bottom: 0;
+  }
+}

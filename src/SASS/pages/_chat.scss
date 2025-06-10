@@ -12,12 +12,11 @@ $error-color: c.$color-secundario-800;
 .chat{
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  height: 96vh;
 
   &__header {
     display: flex;
     align-items: center;
-    margin-top: 0.1rem;
     padding: $spacing;
     border-bottom: 1px solid $border-color;
     h2 {

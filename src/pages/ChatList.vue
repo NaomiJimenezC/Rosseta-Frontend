@@ -115,7 +115,7 @@ export default {
   </section>
 </template>
 
-<style scoped>
+<style  scoped>
 .chat-list {
   padding: 1rem;
 }
