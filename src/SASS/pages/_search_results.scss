@@ -1,0 +1,88 @@
+@use '@/SASS/abstracts/colours' as c;
+
+.search-results {
+  &__container {
+    padding: 16px;
+  }
+
+  &__input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 8px;
+  }
+
+  &__tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 16px;
+  }
+
+  &__tab {
+    padding: 8px 16px;
+    width: 100%;
+    transition: background-color 0.15s ease;
+    &--active {
+      background-color: c.$color-secundario-200;
+      color: c.$color-secundario-800;
+    }
+  }
+
+  &__section {
+    margin-bottom: 24px;
+  }
+
+  &__section-title {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
+
+  &__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    &--posts {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    &--users {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+  }
+
+  &__item {
+    padding: 12px;
+    border-radius: 4px;
+  }
+
+  &__user-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: inherit;
+    padding: 8px;
+    border-radius: 4px;
+    transition: background-color 0.15s ease;
+
+    &:hover {
+      background-color: c.$color-secundario-100;
+    }
+  }
+
+  &__avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  &__no-results {
+    color: c.$color-grises-800;
+  }
+}

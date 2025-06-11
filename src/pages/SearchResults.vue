@@ -1,32 +1,45 @@
 <template>
-  <div class="search-results__container">
+  <main class="search-results__container">
+    <label for="search-input" class="visually-hidden">Buscar</label>
     <input
+      id="search-input"
       v-model="query"
       @input="onInput"
       type="text"
       placeholder="Buscar..."
-      class="search-results__input"
+      class="search-results__input form__input"
     />
 
-    <div class="search-results__tabs">
+    <nav class="search-results__tabs" aria-label="Filtrar resultados">
       <button
         @click="activeTab = 'posts'"
         :class="['search-results__tab', { 'search-results__tab--active': activeTab === 'posts' }]"
+        role="tab"
+        :aria-selected="activeTab === 'posts'"
       >
-        Ver Posts
+        Posts
       </button>
       <button
         @click="activeTab = 'users'"
         :class="['search-results__tab', { 'search-results__tab--active': activeTab === 'users' }]"
+        role="tab"
+        :aria-selected="activeTab === 'users'"
       >
-        Ver Usuarios
+        Usuarios
       </button>
-    </div>
+    </nav>
 
-    <div v-if="error" class="search-results__error">{{ error }}</div>
+    <section v-if="error" class="search-results__error" role="alert">
+      {{ error }}
+    </section>
 
-    <section v-if="activeTab === 'posts' && posts.length" class="search-results__section">
-      <h2 class="search-results__section-title">Posts</h2>
+    <section
+      v-if="activeTab === 'posts'"
+      class="search-results__section"
+      role="tabpanel"
+      aria-labelledby="posts-tab"
+    >
+      <h2 id="posts-tab" class="search-results__section-title">Posts</h2>
       <ul class="search-results__list search-results__list--posts">
         <li v-for="post in posts" :key="post.id" class="search-results__item">
           <Post
@@ -38,10 +51,21 @@
           />
         </li>
       </ul>
+      <div
+        v-if="!loading && posts.length === 0 && query"
+        class="search-results__no-results"
+      >
+        No se encontraron posts para «{{ query }}».
+      </div>
     </section>
 
-    <section v-if="activeTab === 'users' && users.length" class="search-results__section">
-      <h2 class="search-results__section-title">Usuarios</h2>
+    <section
+      v-if="activeTab === 'users'"
+      class="search-results__section"
+      role="tabpanel"
+      aria-labelledby="users-tab"
+    >
+      <h2 id="users-tab" class="search-results__section-title">Usuarios</h2>
       <ul class="search-results__list search-results__list--users">
         <li v-for="user in users" :key="user.id" class="search-results__item">
           <router-link
@@ -58,15 +82,14 @@
           </router-link>
         </li>
       </ul>
+      <div
+        v-if="!loading && users.length === 0 && query"
+        class="search-results__no-results"
+      >
+        No se encontraron usuarios para «{{ query }}».
+      </div>
     </section>
-
-    <div
-      v-if="!loading && !posts.length && !users.length && query"
-      class="search-results__no-results"
-    >
-      No se encontraron resultados para "{{ query }}".
-    </div>
-  </div>
+  </main>
 </template>
 
 <script>
@@ -120,108 +143,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@use '@/SASS/abstracts/colours' as c;
-
-.search-results {
-  &__container {
-    padding: 16px;
-  }
-
-  &__input {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 8px;
-    border: 1px solid #d1d5db;
-    border-radius: 4px;
-  }
-
-  &__tabs {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 16px;
-  }
-
-  &__tab {
-    padding: 8px 16px;
-    border: none;
-    border-radius: 4px;
-    background-color: #e5e7eb;
-    cursor: pointer;
-    transition: background-color 0.15s ease;
-
-    &--active {
-      background-color: #1f2937;
-      color: white;
-    }
-  }
-
-  &__error {
-    color: c.$color-secundario-800;
-    margin-bottom: 16px;
-  }
-
-  &__section {
-    margin-bottom: 24px;
-  }
-
-  &__section-title {
-    font-size: 1.125rem;
-    font-weight: bold;
-    margin-bottom: 8px;
-  }
-
-  &__list {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-
-    &--posts {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-
-    &--users {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-  }
-
-  &__item {
-    border: 1px solid #d1d5db;
-    padding: 12px;
-    border-radius: 4px;
-  }
-
-  &__user-link {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    text-decoration: none;
-    color: inherit;
-    padding: 8px;
-    border-radius: 4px;
-    transition: background-color 0.15s ease;
-
-    &:hover {
-      background-color: #f3f4f6;
-    }
-  }
-
-  &__avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    object-fit: cover;
-  }
-
-  &__username {
-    font-size: 1rem;
-  }
-
-  &__no-results {
-    color: #6b7280;
-  }
-}
+@use '@/SASS/components/forms';
+@use "@/SASS/pages/search_results";
 </style>

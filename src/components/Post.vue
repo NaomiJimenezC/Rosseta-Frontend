@@ -166,7 +166,7 @@ export default {
   display: flex;
   align-items: center;
   margin-bottom: 12px;
-  position: relative;
+  position: static;
 }
 
 .profile-link {
