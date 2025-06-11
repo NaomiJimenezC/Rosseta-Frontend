@@ -56,10 +56,8 @@
         </ul>
       </section>
 
-      <!-- Modales -->
       <FollowersListModal
-        v-if="showFollowersModal"
-        :followers="followers.data"
+        v-model:visible="showFollowersModal" :followers="followers.data"
         :loggedInUserId="loggedInUserId"
         :profileUserId="profileId"
         @unfollow="handleRemoveFollower"
@@ -67,8 +65,7 @@
       />
 
       <FollowingListModal
-        v-if="showFollowingsModal"
-        :followings="followings.data"
+        v-model:visible="showFollowingsModal" :followings="followings.data"
         :loggedInUserId="loggedInUserId"
         :profileUserId="profileId"
         @unfollow="handleUnfollowUser"

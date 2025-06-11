@@ -9,19 +9,19 @@
     li {
       display: flex;
       align-items: center;
-      margin-bottom: 0.75rem
+      margin-top: 0.75rem;
+      margin-bottom: 0.75rem;
+      color: light-dark(c.$color-primario-800,c.$color-grises-200);
+      font-weight: bold;
+      cursor: pointer;
 
       img {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        object-fit: cover;
-        margin-right: 0.75rem;
-      }
-
-      span {
-        color: light-dark(c.$color-primario-800,c.$color-grises-200);
-      }
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          object-fit: cover;
+          margin-right: 0.75rem;
+        }
     }
   }
 

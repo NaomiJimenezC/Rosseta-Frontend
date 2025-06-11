@@ -36,6 +36,7 @@
             @click="select(user.id)"
             class="user-item"
           >
+            <img :src="user.profile_picture_url" alt="perfil de usuario">
             {{ user.username }}
           </li>
           <li v-if="!filtered.length" class="user__no_results">

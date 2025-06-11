@@ -1,0 +1,64 @@
+@use '@/SASS/abstracts/colours' as c;
+
+.follows {
+  &__results {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+    li {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+    }
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  &__info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+  }
+
+  &__avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+
+  &__username {
+    color: light-dark(c.$color-primario-400, c.$color-grises-300);
+    font-weight: bold;
+  }
+
+  &__unfollow {
+    color: c.$color-secundario-800;
+    background-color: light-dark(c.$color-primario-800, c.$color-grises-300);
+    border-radius: 16px;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: background-color 0.3s;
+  }
+
+  &__unfollow:hover {
+    background-color: c.$color-primario-200;
+    color: light-dark(c.$color-secundario-800, c.$color-grises-300);
+    cursor: pointer;
+  }
+
+
+  &__no_results {
+    color: light-dark(c.$color-primario-400, c.$color-grises-300);
+    text-align: center;
+    padding: 1rem 0;
+    font-weight: bold;
+  }
+}

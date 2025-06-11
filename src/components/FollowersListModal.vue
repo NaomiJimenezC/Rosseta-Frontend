@@ -1,41 +1,77 @@
 <template>
-  <div class="modal-backdrop" @click.self="$emit('close')">
-    <div class="modal-content">
-      <h2 class="modal-title">Seguidores</h2>
-      <ul class="followers-list">
-        <li v-for="follower in followers" :key="follower.id" class="follower-item">
-          <router-link
-            v-if="follower && follower.id"
-            :to="{ name: 'profile', params: { id: follower.id } }"
-            class="follower-info"
-            @click.native="$emit('close')"
-          >
-            <img
-              :src="follower.profile_picture_url || defaultAvatar"
-              alt="Foto de perfil"
-              class="avatar"
-            />
-            <span class="username">{{ follower.username }}</span>
-          </router-link>
-          <div v-else class="follower-info">
-            <img
-              :src="follower.profile_picture_url || defaultAvatar"
-              alt="Foto de perfil"
-              class="avatar"
-            />
-            <span class="username">{{ follower.username || 'Usuario Desconocido' }}</span>
-          </div>
+  <div
+    v-if="visible"
+    class="modal__overlay"
+    @click.self="$emit('close')"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="followers-modal-title"
+  >
+    <div class="modal__content">
+      <header class="modal__header">
+        <h2 id="followers-modal-title" class="modal__title">Seguidores</h2>
+        <button
+          type="button"
+          class="modal__close-button"
+          @click="$emit('close')"
+          aria-label="Cerrar modal"
+        >
+          ×
+        </button>
+      </header>
 
-          <button
-            v-if="loggedInUserId === profileUserId"
-            class="unfollow-btn"
-            @click="$emit('unfollow', follower.id)"
+      <div class="modal__body">
+        <ul class="follows__results">
+          <li
+            v-for="follower in followers"
+            :key="follower.id"
+            class="follows__item"
           >
-            Eliminar seguidor
-          </button>
-        </li>
-      </ul>
-      <button class="close-btn" @click="$emit('close')">Cerrar</button>
+            <router-link
+              v-if="follower && follower.id"
+              :to="{ name: 'profile', params: { id: follower.id } }"
+              class="follows__info"
+              @click="$emit('close')"
+            >
+              <img
+                :src="follower.profile_picture_url || defaultAvatar"
+                alt="Foto de perfil"
+                class="follows__avatar"
+              />
+              <span class="follows__username">{{ follower.username }}</span>
+            </router-link>
+
+            <div v-else class="follows__info">
+              <img
+                :src="follower.profile_picture_url || defaultAvatar"
+                alt="Foto de perfil"
+                class="follows__avatar"
+              />
+              <span class="follows__username">{{ follower.username || 'Usuario Desconocido' }}</span>
+            </div>
+
+            <button
+              v-if="loggedInUserId === profileUserId"
+              class="modal__submit-button"
+              @click="$emit('unfollow', follower.id)"
+            >
+              Eliminar seguidor
+            </button>
+          </li>
+        </ul>
+
+        <p v-if="!followers.length" class="follows__no_results">
+          No tienes seguidores todavía.
+        </p>
+      </div>
+
+      <button
+        type="button"
+        class="modal__submit-button"
+        @click="$emit('close')"
+      >
+        Cerrar
+      </button>
     </div>
   </div>
 </template>
@@ -51,6 +87,10 @@ export default defineComponent({
       type: Array,
       required: true,
       default: () => []
+    },
+    visible: {
+      type: Boolean,
+      required: true
     },
     loggedInUserId: {
       type: [String, Number],
@@ -69,81 +109,8 @@ export default defineComponent({
 })
 </script>
 
-
-<style scoped>
-
-.modal-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
-}
-.modal-content {
-  background: #fff;
-  border-radius: 8px;
-  padding: 16px;
-  width: 90%;
-  max-width: 400px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-.modal-title {
-  margin-bottom: 12px;
-  font-size: 1.25rem;
-  font-weight: bold;
-  text-align: center;
-}
-.followers-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  max-height: 300px;
-  overflow-y: auto;
-}
-.follower-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 0;
-  border-bottom: 1px solid #eaeaea;
-}
-.follower-info {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  color: inherit;
-}
-.avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
-  margin-right: 8px;
-}
-.username {
-  font-size: 1rem;
-}
-.unfollow-btn {
-  background: transparent;
-  border: none;
-  color: #e74c3c;
-  cursor: pointer;
-  font-size: 0.875rem;
-}
-.close-btn {
-  margin-top: 12px;
-  width: 100%;
-  padding: 8px;
-  background: #3498db;
-  border: none;
-  color: white;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1rem;
-}
+<style lang="sass" scoped>
+@use "@/SASS/components/forms"
+@use "@/SASS/components/modals"
+@use "@/SASS/components/follows_list"
 </style>
