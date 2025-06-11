@@ -1,95 +1,102 @@
 <template>
-  <main class="post-page">
-    <section class="post-container">
-      <p v-if="loadingPost" class="loading">Cargando publicación…</p>
-      <p v-else-if="errorPost" class="error">{{ errorPost }}</p>
-      <article v-else class="post">
-        <header class="post-content">
-          <p class="post-author">
-            <router-link
-              v-if="post.user"
-              :to="`/profile/${post.user.id}`"
-              class="username-link"
-            >
-              <strong>{{ post.user.username }}</strong>
-            </router-link>
-            <span v-else><strong>Usuario desconocido</strong></span>
-            <time class="post-date">{{ formatDate(post.created_at) }}</time>
-          </p>
-        </header>
-        <figure v-if="post.image_url">
-          <img
-            :src="post.image_url"
-            :alt="post.caption || 'Imagen del post'"
-            class="post-image"
-          />
-        </figure>
-        <p v-if="post.content" class="post-text">{{ post.content }}</p>
-      </article>
-    </section>
+  <main class="post-page__container">
+    <section v-if="loadingPost" class="post-page__loading">Cargando publicación…</section>
+    <section v-else-if="errorPost" class="post-page__error">{{ errorPost }}</section>
 
-    <section class="comments-section">
-      <h2>Comentarios</h2>
-      <p v-if="loadingComments" class="loading">Cargando comentarios…</p>
-      <p v-else-if="errorComments" class="error">{{ errorComments }}</p>
-      <ul v-else class="comments-list">
-        <li v-if="comments.length === 0" class="no-comments">
+    <article v-else class="post-page__post">
+      <header class="post-page__header">
+        <p class="post-page__author">
+          <router-link
+            v-if="post.user"
+            :to="`/profile/${post.user.id}`"
+            class="post-page__author-info"
+          >
+            <img
+              :src="post.user.profile_picture_url || defaultProfileImage"
+              alt="Foto de perfil"
+              class="post-page__author-avatar"
+            />
+            <strong class="post-page__author-name">{{ post.user.username }}</strong>
+            <time class="post-page__date">{{ formatDate(post.created_at) }}</time>
+          </router-link>
+        </p>
+      </header>
+
+      <figure v-if="post.image_url" class="post-page__figure">
+        <img
+          :src="post.image_url"
+          :alt="post.caption || 'Imagen del post'"
+          class="post-page__image"
+        />
+      </figure>
+
+      <p v-if="post.content" class="post-page__text">{{ post.content }}</p>
+    </article>
+
+    <section class="post-page__comments-section">
+      <h2 class="post-page__comments-title">Comentarios</h2>
+      <p v-if="loadingComments" class="post-page__loading">Cargando comentarios…</p>
+      <p v-else-if="errorComments" class="post-page__error">{{ errorComments }}</p>
+
+      <ul v-else class="post-page__comments-list">
+        <li v-if="comments.length === 0" class="post-page__no-comments">
           No hay comentarios aún.
         </li>
         <li
           v-for="comment in comments"
           :key="comment.id"
-          class="comment-item"
+          class="post-page__comment-item"
         >
           <article>
-            <header class="comment-header">
+            <header class="post-page__comment-header">
               <router-link
                 v-if="comment.user"
                 :to="`/profile/${comment.user.id}`"
+                class="post-page__comment-username"
               >
                 <strong>{{ comment.user.username }}</strong>
               </router-link>
-              <span v-else><strong>Anon</strong></span>
-              <time class="comment-date">{{ formatDate(comment.created_at) }}</time>
+              <span v-else class="post-page__comment-username"><strong>Anon</strong></span>
+              <time class="post-page__comment-date">{{ formatDate(comment.created_at) }}</time>
               <button
                 v-if="currentUserId === comment.user?.id || currentUserId === post.user?.id"
-                class="btn-delete-comment"
+                class="post-page__delete-comment-btn"
                 @click="deleteComment(comment)"
               >
                 Eliminar
               </button>
             </header>
-            <p class="comment-content">{{ comment.content }}</p>
+            <p class="post-page__comment-text">{{ comment.content }}</p>
           </article>
         </li>
       </ul>
     </section>
 
-    <section v-if="!loadingPost && !errorPost" class="comment-form-section">
-      <h3>Añadir un comentario</h3>
-      <form @submit.prevent="submitComment" class="comment-form">
+    <section v-if="!loadingPost && !errorPost" class="post-page__form-section">
+      <h3 class="post-page__form-title">Añadir un comentario</h3>
+      <form @submit.prevent="submitComment" class="post-page__form">
         <textarea
           v-model="newComment"
           placeholder="Escribe tu comentario…"
           rows="3"
-          class="comment-input"
+          class="post-page__textarea"
         ></textarea>
         <button
           type="submit"
-          class="btn-submit"
+          class="post-page__submit-btn"
           :disabled="submittingComment || !newComment.trim()"
         >
           {{ submittingComment ? 'Enviando…' : 'Enviar' }}
         </button>
       </form>
-      <p v-if="submitError" class="error">{{ submitError }}</p>
+      <p v-if="submitError" class="post-page__error">{{ submitError }}</p>
     </section>
   </main>
 </template>
 
 <script>
+import defaultProfileImage from '@/assets/Default_pfp.jpg';
 import { deleteCalling, getCalling, postCalling } from '@/Helpers/CallToAPI.js';
-
 export default {
   name: 'PostPage',
   data() {
@@ -103,6 +110,7 @@ export default {
       errorComments: null,
       submittingComment: false,
       submitError: null,
+      defaultProfileImage,
     };
   },
   computed: {
@@ -163,7 +171,7 @@ export default {
       try {
         if (isCommentOwner) {
           await deleteCalling(`/comments/${comment.id}`, {}, true);
-        } else if (isPostOwner) {
+        } else {
           await deleteCalling('/comments/author-delete', { comment_id: comment.id }, true);
         }
         await this.fetchComments();
@@ -175,9 +183,7 @@ export default {
     formatDate(datetime) {
       const dt = new Date(datetime);
       return (
-        dt.toLocaleDateString() +
-        ' ' +
-        dt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        dt.toLocaleDateString()
       );
     },
   },
@@ -188,29 +194,7 @@ export default {
 };
 </script>
 
-<style scoped>
-.post-page { max-width: 700px; margin: 0 auto; padding: 1rem; font-family: Arial, sans-serif; }
-.loading { text-align: center; color: #555; }
-.error { text-align: center; color: red; }
-.post-container { margin-bottom: 2rem; }
-.post { border: 1px solid #ddd; border-radius: 4px; background: #fff; }
-.post-image { width: 100%; display: block; }
-.post-content { padding: 1rem; }
-.post-author { margin: 0 0 0.5rem; color: #333; display: flex; align-items: center; gap: 8px; }
-.post-date { font-size: 0.85rem; color: #777; margin-left: 8px; }
-.post-text { margin: 0.5rem 0; color: #444; }
-.comments-section { margin-bottom: 2rem; }
-.comments-list { list-style: none; padding: 0; }
-.no-comments { text-align: center; color: #666; }
-.comment-item { border-bottom: 1px solid #eee; padding: 0.75rem 0; }
-.comment-header { display: flex; align-items: center; gap: 8px; }
-.comment-date { font-size: 0.75rem; color: #888; margin-left: auto; }
-.comment-content { margin: 0; color: #444; }
-.comment-form-section { border-top: 1px solid #ddd; padding-top: 1rem; }
-.comment-form { display: flex; flex-direction: column; gap: 0.5rem; }
-.comment-input { width: 100%; padding: 0.5rem; font-size: 1rem; border: 1px solid #ccc; border-radius: 4px; resize: vertical; }
-.btn-submit { align-self: flex-end; padding: 0.5rem 1rem; font-size: 1rem; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
-.btn-submit:disabled { background-color: #aaa; cursor: not-allowed; }
-.btn-delete-comment { background: transparent; border: none; color: #e74c3c; cursor: pointer; font-size: 0.85rem; }
-.btn-delete-comment:hover { text-decoration: underline; }
+<style lang="scss" scoped>
+@use '@/SASS/pages/post';
+@use  '@/SASS/components/forms';
 </style>
