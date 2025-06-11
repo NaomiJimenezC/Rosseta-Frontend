@@ -1,34 +1,34 @@
 <template>
-  <div class="search-container">
+  <div class="search-results__container">
     <input
       v-model="query"
       @input="onInput"
       type="text"
       placeholder="Buscar..."
-      class="search-input"
+      class="search-results__input"
     />
-    <div class="button-group">
 
+    <div class="search-results__tabs">
       <button
         @click="activeTab = 'posts'"
-        :class="['tab-button', { 'active-tab': activeTab === 'posts' }]"
+        :class="['search-results__tab', { 'search-results__tab--active': activeTab === 'posts' }]"
       >
         Ver Posts
       </button>
       <button
         @click="activeTab = 'users'"
-        :class="['tab-button', { 'active-tab': activeTab === 'users' }]"
+        :class="['search-results__tab', { 'search-results__tab--active': activeTab === 'users' }]"
       >
         Ver Usuarios
       </button>
     </div>
 
-    <div v-if="error" class="error-message">{{ error }}</div>
+    <div v-if="error" class="search-results__error">{{ error }}</div>
 
-    <div v-if="activeTab === 'posts' && posts.length" class="results-section">
-      <h2 class="section-title">Posts</h2>
-      <ul class="posts-list">
-        <li v-for="post in posts" :key="post.id">
+    <section v-if="activeTab === 'posts' && posts.length" class="search-results__section">
+      <h2 class="search-results__section-title">Posts</h2>
+      <ul class="search-results__list search-results__list--posts">
+        <li v-for="post in posts" :key="post.id" class="search-results__item">
           <Post
             :postId="post.id"
             :userId="post.users_id"
@@ -38,34 +38,31 @@
           />
         </li>
       </ul>
-    </div>
+    </section>
 
-    <div v-if="activeTab === 'users' && users.length" class="results-section">
-      <h2 class="section-title">Usuarios</h2>
-      <ul class="users-list">
-        <li
-          v-for="user in users"
-          :key="user.id"
-          class="user-list-item" >
+    <section v-if="activeTab === 'users' && users.length" class="search-results__section">
+      <h2 class="search-results__section-title">Usuarios</h2>
+      <ul class="search-results__list search-results__list--users">
+        <li v-for="user in users" :key="user.id" class="search-results__item">
           <router-link
             :to="{ name: 'profile', params: { id: user.id } }"
-            class="user-link"
+            class="search-results__user-link"
           >
             <img
               v-if="user.profile_picture_url"
               :src="user.profile_picture_url"
               alt="avatar"
-              class="user-avatar"
+              class="search-results__avatar"
             />
-            <span>{{ user.username }}</span>
+            <span class="search-results__username">{{ user.username }}</span>
           </router-link>
         </li>
       </ul>
-    </div>
+    </section>
 
     <div
       v-if="!loading && !posts.length && !users.length && query"
-      class="no-results-message"
+      class="search-results__no-results"
     >
       No se encontraron resultados para "{{ query }}".
     </div>
@@ -74,11 +71,11 @@
 
 <script>
 import { getCalling } from '@/Helpers/CallToAPI.js';
-import Post from "@/components/Post.vue";
+import Post from '@/components/Post.vue';
 
 export default {
-  name: "SearchResults",
-  components: {Post},
+  name: 'SearchResults',
+  components: { Post },
   data() {
     return {
       query: '',
@@ -117,157 +114,114 @@ export default {
       this.debounceTimer = setTimeout(() => {
         this.performSearch();
       }, 400);
-    }
-  }
+    },
+  },
 };
 </script>
 
-<style scoped>
-/* Contenedor principal de la búsqueda */
-.search-container {
-  padding: 16px; /* Equivalente a p-4 */
-}
+<style lang="scss" scoped>
+@use '@/SASS/abstracts/colours' as c;
 
-/* Input de búsqueda */
-.search-input {
-  border: 1px solid #d1d5db; /* Equivalente a border */
-  border-radius: 4px; /* Equivalente a rounded */
-  padding: 8px; /* Equivalente a p-2 */
-  width: 100%; /* Equivalente a w-full */
-  margin-bottom: 8px; /* Equivalente a mb-2 */
-}
+.search-results {
+  &__container {
+    padding: 16px;
+  }
 
-/* Grupo de botones */
-.button-group {
-  display: flex; /* Equivalente a flex */
-  gap: 8px; /* Equivalente a space-x-2 */
-  margin-bottom: 16px; /* Equivalente a mb-4 */
-}
+  &__input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 8px;
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+  }
 
-/* Botón de búsqueda */
-.search-button {
-  background-color: #2563eb; /* Equivalente a bg-blue-600 */
-  color: white; /* Equivalente a text-white */
-  border-radius: 4px; /* Equivalente a rounded */
-  padding: 8px 16px; /* Equivalente a px-4 py-2 */
-  border: none;
-  cursor: pointer;
-}
+  &__tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
 
-.search-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
+  &__tab {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    background-color: #e5e7eb;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
 
-/* Botones de pestaña (Ver Posts, Ver Usuarios) */
-.tab-button {
-  border-radius: 4px; /* Equivalente a rounded */
-  padding: 8px 16px; /* Equivalente a px-4 py-2 */
-  border: none;
-  cursor: pointer;
-  background-color: #e5e7eb; /* Equivalente a bg-gray-200 */
-  color: black; /* Equivalente a text-black */
-}
+    &--active {
+      background-color: #1f2937;
+      color: white;
+    }
+  }
 
-.tab-button.active-tab {
-  background-color: #1f2937; /* Equivalente a bg-gray-800 */
-  color: white; /* Equivalente a text-white */
-}
+  &__error {
+    color: c.$color-secundario-800;
+    margin-bottom: 16px;
+  }
 
-/* Mensaje de error */
-.error-message {
-  color: #dc2626; /* Equivalente a text-red-600 */
-  margin-bottom: 16px; /* Equivalente a mb-4 */
-}
+  &__section {
+    margin-bottom: 24px;
+  }
 
-/* Sección de resultados (Posts/Usuarios) */
-.results-section {
-  /* No se necesitan estilos complejos aquí sin Tailwind */
-}
+  &__section-title {
+    font-size: 1.125rem;
+    font-weight: bold;
+    margin-bottom: 8px;
+  }
 
-.section-title {
-  font-weight: bold; /* Equivalente a font-bold */
-  font-size: 1.125rem; /* Equivalente a text-lg */
-  margin-bottom: 8px; /* Equivalente a mb-2 */
-}
+  &__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
 
-/* Lista de posts */
-.posts-list {
-  list-style: none; /* Quita viñetas de lista */
-  padding: 0;
-  margin: 0;
-  margin-bottom: 24px; /* Equivalente a mb-6 */
-  display: flex; /* Para space-y-2 */
-  flex-direction: column; /* Para space-y-2 */
-  gap: 8px; /* Para space-y-2 */
-}
+    &--posts {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
 
-/* Elemento individual de post */
-.post-item {
-  border: 1px solid #d1d5db; /* Equivalente a border */
-  padding: 12px; /* Equivalente a p-3 */
-  border-radius: 4px; /* Equivalente a rounded */
-}
+    &--users {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+  }
 
-.post-caption {
-  font-style: italic; /* Equivalente a italic */
-}
+  &__item {
+    border: 1px solid #d1d5db;
+    padding: 12px;
+    border-radius: 4px;
+  }
 
-.post-image {
-  max-height: 192px; /* Equivalente a max-h-48 */
-  border-radius: 4px; /* Equivalente a rounded */
-  margin-top: 8px; /* Equivalente a mt-2 */
-  width: auto; /* Asegura que la imagen no se estire */
-  height: auto; /* Asegura que la imagen no se estire */
-  display: block; /* Para que margin-top funcione bien */
-}
+  &__user-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+    color: inherit;
+    padding: 8px;
+    border-radius: 4px;
+    transition: background-color 0.15s ease;
 
-/* Lista de usuarios */
-.users-list {
-  list-style: none; /* Quita viñetas de lista */
-  padding: 0;
-  margin: 0;
-  display: flex; /* Para space-y-2 */
-  flex-direction: column; /* Para space-y-2 */
-  gap: 8px; /* Para space-y-2 */
-}
+    &:hover {
+      background-color: #f3f4f6;
+    }
+  }
 
-/* Elemento individual de usuario en la lista */
-.user-list-item {
-  border: 1px solid #d1d5db; /* Equivalente a border */
-  padding: 12px; /* Equivalente a p-3 */
-  border-radius: 4px; /* Equivalente a rounded */
-}
+  &__avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
 
-/* Enlace del usuario (router-link) */
-.user-link {
-  display: flex; /* Equivalente a flex */
-  align-items: center; /* Equivalente a items-center */
-  gap: 12px; /* Equivalente a space-x-3 */
-  width: 100%; /* Equivalente a w-full */
-  text-decoration: none; /* Quita el subrayado por defecto del enlace */
-  color: inherit; /* Hereda el color del texto del padre */
-  padding: 8px; /* Equivalente a p-2 */
-  margin: -8px; /* Equivalente a -m-2 */
-  border-radius: 4px; /* Equivalente a rounded */
-  transition: background-color 0.15s ease; /* Equivalente a transition-colors duration-150 */
-  cursor: pointer;
-}
+  &__username {
+    font-size: 1rem;
+  }
 
-.user-link:hover {
-  background-color: #f3f4f6; /* Equivalente a hover:bg-gray-100 */
-}
-
-/* Avatar del usuario */
-.user-avatar {
-  width: 40px; /* Equivalente a w-10 */
-  height: 40px; /* Equivalente a h-10 */
-  border-radius: 9999px; /* Equivalente a rounded-full */
-  object-fit: cover; /* Para asegurar que la imagen se vea bien */
-}
-
-/* Mensaje de no resultados */
-.no-results-message {
-  color: #6b7280; /* Equivalente a text-gray-500 */
+  &__no-results {
+    color: #6b7280;
+  }
 }
 </style>

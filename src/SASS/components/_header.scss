@@ -49,11 +49,18 @@
 
   &__nav-item:hover {
     background-color: c.$color-secundario-600;
-    color: c.$color-primario-100;
+    *{
+      color: c.$color-primario-200;
+    }
   }
 
   &__nav-text {
+    color: c.$color-grises-700;
     margin-left: 12px;
+  }
+
+  &__nav-icon {
+    color: c.$color-grises-700;
   }
 
   &__badge {

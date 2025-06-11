@@ -6,22 +6,22 @@
 
     <nav class="app-sidebar__nav">
       <button @click="goToHome" class="app-sidebar__nav-item">
-        <home-icon :size="32" />
+        <home-icon :size="32" class="app-sidebar__nav-icon" />
         <h3 class="app-sidebar__nav-text">Inicio</h3>
       </button>
 
       <button @click="goToSearch" class="app-sidebar__nav-item">
-        <magnify-icon :size="32" />
+        <magnify-icon :size="32" class="app-sidebar__nav-icon" />
         <h3 class="app-sidebar__nav-text">Buscar</h3>
       </button>
 
       <button @click="goToProfile" class="app-sidebar__nav-item">
-        <account-circle-icon :size="32" />
+        <account-circle-icon :size="32" class="app-sidebar__nav-icon" />
         <h3 class="app-sidebar__nav-text">Perfil</h3>
       </button>
 
       <button @click="goToNotifications" class="app-sidebar__nav-item">
-        <bell-icon :size="32" />
+        <bell-icon :size="32" class="app-sidebar__nav-icon" />
         <h3 class="app-sidebar__nav-text">Notificaciones</h3>
         <span v-if="unreadNotifications > 0" class="app-sidebar__badge">
           {{ unreadNotifications }}
@@ -29,12 +29,12 @@
       </button>
 
       <button @click="goToSettings" class="app-sidebar__nav-item">
-        <cog-icon :size="32" />
+        <cog-icon :size="32" class="app-sidebar__nav-icon" />
         <h3 class="app-sidebar__nav-text">Ajustes</h3>
       </button>
 
       <button @click="goToMessages" class="app-sidebar__nav-item">
-        <message-text-icon :size="32" />
+        <message-text-icon :size="32" class="app-sidebar__nav-icon" />
         <h3 class="app-sidebar__nav-text">Mensajes</h3>
         <span v-if="unreadChats > 0" class="app-sidebar__badge">
           {{ unreadChats }}
