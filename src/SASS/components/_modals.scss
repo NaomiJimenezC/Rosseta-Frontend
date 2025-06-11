@@ -1,6 +1,5 @@
 @use '@/SASS/abstracts/colours' as c;
 
-// Variables
 $overlay-base: c.$color-grises-300;
 $overlay-opacity: 0.5;
 $modal-bg: light-dark(c.$color-secundario-500, c.$color-grises-500);
@@ -22,6 +21,7 @@ $modal-z-index: 10000000;
         blue($overlay-base),
         $overlay-opacity
     );
+
     display: flex;
     justify-content: center;
     align-items: center;
@@ -69,6 +69,30 @@ $modal-z-index: 10000000;
     }
   }
 
+  &__submit-button {
+    display: block;
+    margin: 1.5rem auto 0;
+    margin-bottom: 1rem;
+    width: min-content;
+    background-color: c.$color-primario-600;
+    color: c.$color-secundario-600;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+
+    &:disabled {
+      background-color: c.$color-primario-200;
+      cursor: not-allowed;
+    }
+
+    &:hover:not(:disabled) {
+      background-color: c.$color-primario-700;
+    }
+  }
   &__body {
     padding: $modal-padding;
     overflow-y: auto;

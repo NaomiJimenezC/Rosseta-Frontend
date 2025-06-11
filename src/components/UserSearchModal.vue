@@ -1,18 +1,35 @@
 <template>
-  <dialog ref="dialog" class="user-search-modal">
-    <form @submit.prevent class="user-search-form">
-      <header class="modal-header">
-        <h2>Elegir usuario</h2>
-        <button type="button" @click="close" aria-label="Cerrar">×</button>
+  <div
+    v-if="visible"
+    class="modal__overlay"
+    @click.self="close"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="modal-title"
+  >
+    <div class="modal__content">
+      <header class="modal__header">
+        <h2 id="modal-title" class="modal__title">
+          Elegir usuario
+        </h2>
+        <button
+          type="button"
+          class="modal__close-button"
+          @click="close"
+          aria-label="Cerrar modal"
+        >
+          ×
+        </button>
       </header>
-      <div class="modal-body">
+
+      <div class="modal__body">
         <input
           v-model="term"
           type="search"
           placeholder="Filtrar por nombre..."
-          class="user-search__input"
+          class="form__input"
         />
-        <ul class="user-results">
+        <ul class="user__results">
           <li
             v-for="user in filtered"
             :key="user.id"
@@ -21,16 +38,14 @@
           >
             {{ user.username }}
           </li>
-          <li v-if="!filtered.length" class="no-results">
+          <li v-if="!filtered.length" class="user__no_results">
             No se encontraron usuarios.
           </li>
         </ul>
       </div>
-      <footer class="modal-footer">
-        <button type="button" @click="close">Cancelar</button>
-      </footer>
-    </form>
-  </dialog>
+        <button type="button" @click="close" class="modal__submit-button">Cancelar</button>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -41,79 +56,34 @@ export default {
     users:   { type: Array,   required: true }
   },
   data() {
-    return { term: '' };
+    return { term: '' }
   },
   computed: {
     filtered() {
       const t = this.term.toLowerCase().trim();
-
-      if (t === '') {
-        return this.users;
-      }
-
-      return this.users.filter(u =>
-        u.username.toLowerCase().includes(t)
-      );
-    }
-  },
-  watch: {
-    visible(val) {
-      this.$nextTick(() => {
-        if (val) {
-          this.$refs.dialog.showModal();
-        } else {
-          this.$refs.dialog.close();
-          this.term = '';
-        }
-      });
+      return t === ''
+        ? this.users
+        : this.users.filter(u =>
+          u.username.toLowerCase().includes(t)
+        );
     }
   },
   methods: {
     select(id) {
       this.$emit('select-user', id);
+      this.close();
     },
     close() {
+      this.$emit('update:visible', false);
       this.$emit('close');
+      this.term = '';
     }
   }
-};
+}
 </script>
 
-<style scoped>
-.user-search-modal {
-  border: none;
-  padding: 0;
-}
-.modal-header,
-.modal-footer {
-  padding: 0.75rem;
-  border-bottom: 1px solid #ddd;
-}
-.modal-body {
-  padding: 0.75rem;
-}
-.user-search__input {
-  width: 100%;
-  padding: 0.5rem;
-  margin-bottom: 0.5rem;
-}
-.user-results {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  max-height: 200px;
-  overflow-y: auto;
-}
-.user-item {
-  padding: 0.5rem;
-  cursor: pointer;
-}
-.user-item:hover {
-  background: #f1f1f1;
-}
-.no-results {
-  padding: 0.5rem;
-  color: #888;
-  font-style: italic;
-}
+<style lang="sass" scoped>
+@use "@/SASS/components/modals"
+@use "@/SASS/components/forms"
+@use "@/SASS/components/user_searchmodal"
 </style>
