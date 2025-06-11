@@ -1,0 +1,27 @@
+@use "@/SASS/abstracts/colours" as c;
+.chat-list {
+  padding: 1rem;
+  &__header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    flex:1;
+    padding: 0.5rem;
+    gap: 1rem;
+    margin-bottom: 1rem;
+
+    input{
+      background-color: light-dark(c.$color-secundario-200, c.$color-grises-200);
+      width: 100%;
+      padding: 0.25rem;
+      border-radius: 8px;
+      border: none;
+    }
+  }
+
+  &__items{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+}

@@ -1,0 +1,120 @@
+@use "../abstracts/colours" as c;
+.image-upload-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: 2px dashed c.$color-primario-700;
+  border-radius: 8px;
+  padding: 30px;
+  cursor: pointer;
+  background-color: c.$color-secundario-100;
+  text-align: center;
+  min-height: 200px;
+  margin-bottom: 1rem;
+}
+
+.upload-icon {
+  font-size: 4rem;
+  color: c.$color-secundario-700;
+  margin-bottom: 15px;
+}
+
+.select-button {
+  &:hover:not(:disabled) {
+    background-color: c.$color-secundario-800;
+  }
+
+  &:disabled {
+    background-color: c.$color-secundario-100;
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+}
+
+.selected-image {
+  margin: 0 auto 1rem auto;
+  display: block;
+  max-width: 50%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: c.$color-primario-800;
+  font-weight: bold;
+}
+
+.textarea-field,
+.text-field {
+  width: 100%;
+  padding: 10px;
+  background-color: c.$color-secundario-200;
+  border: 1px solid #f8bbd0;
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 1rem;
+}
+
+.textarea-field {
+  min-height: 80px;
+  resize: vertical;
+}
+
+.submit-button {
+  background-color: c.$color-primario-600;
+  color: c.$color-secundario-600;
+  border: none;
+  padding: 12px 25px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  width: 100%;
+  margin-top: 1rem;
+
+  &:disabled {
+    background-color: c.$color-primario-200;
+    cursor: not-allowed;
+  }
+
+  &:hover:not(:disabled) {
+    background-color: c.$color-primario-700;
+  }
+}
+
+.change-image-button {
+  background-color: c.$color-primario-600;
+  color: c.$color-secundario-600;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 1rem;
+  width: 100%;
+  transition: background-color 0.3s ease, color 0.3s ease;
+
+  &:hover {
+    background-color: c.$color-secundario-600;
+    color: c.$color-primario-600;
+  }
+}
+
+.error-message {
+  color: red;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.success-message {
+  color: green;
+  margin-top: 10px;
+  text-align: center;
+}

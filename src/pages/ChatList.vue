@@ -86,17 +86,15 @@ export default {
       <input
         v-model="searchTerm"
         placeholder="Buscar conversaciones..."
-        class="chat-search__input"
       />
       <button
         @click="openUserSearch"
-        class="chat-list__new-chat-btn"
       >
-        + Nuevo chat
+        Nuevo chat
       </button>
     </header>
 
-    <ul class="conversations">
+    <ul class="chat-list__items">
       <conversation-item
         v-for="conv in filteredConversations"
         :key="conv.id"
@@ -114,26 +112,7 @@ export default {
     />
   </section>
 </template>
-
-<style  scoped>
-.chat-list {
-  padding: 1rem;
-}
-.chat-list__header {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-.chat-search__input {
-  flex: 1;
-  padding: 0.5rem;
-}
-.chat-list__new-chat-btn {
-  padding: 0.5rem 1rem;
-}
-.conversations {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
+<style lang="sass" scoped>
+@use "@/SASS/components/forms"
+@use "@/SASS/pages/chatList"
 </style>

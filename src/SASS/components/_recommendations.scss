@@ -2,7 +2,7 @@
 .suggestions {
   max-width:max-content;
   padding: 16px;
-  background-color: c.$color-secundario-500;
+  background-color: light-dark(c.$color-secundario-600,c.$color-grises-500);
   border-radius: 8px;
 
   &__list{

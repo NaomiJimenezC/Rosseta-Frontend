@@ -1,0 +1,76 @@
+@use '@/SASS/abstracts/colours' as c;
+
+// Variables
+$overlay-base: c.$color-grises-300;
+$overlay-opacity: 0.5;
+$modal-bg: light-dark(c.$color-secundario-500, c.$color-grises-500);
+$modal-padding: 1.5rem;
+$modal-radius: 8px;
+$modal-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+$close-size: 2rem;
+$close-color: light-dark(c.$color-primario-800, c.$color-grises-200);
+$close-hover-color: light-dark(c.$color-secundario-600, c.$color-grises-300);
+$modal-z-index: 10000000;
+
+.modal {
+  &__overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(
+        red($overlay-base),
+        green($overlay-base),
+        blue($overlay-base),
+        $overlay-opacity
+    );
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: $modal-z-index;
+  }
+
+  &__content {
+    background: $modal-bg;
+    border-radius: $modal-radius;
+    box-shadow: $modal-shadow;
+    max-width: 100%;
+    max-height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    align-items: center;
+    padding: 0.5rem;
+    border-bottom: 1px solid c.$color-grises-200;
+  }
+
+  &__title {
+    margin: 0;
+    padding-left: 1rem;
+    color: light-dark(c.$color-primario-800, c.$color-grises-200);
+  }
+
+  &__close-button {
+    padding-right: 1rem;
+    background: none;
+    border: none;
+    font-size: $close-size;
+    line-height: 1;
+    cursor: pointer;
+    color: $close-color;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: $close-hover-color;
+    }
+  }
+
+  &__body {
+    padding: $modal-padding;
+    overflow-y: auto;
+  }
+}
