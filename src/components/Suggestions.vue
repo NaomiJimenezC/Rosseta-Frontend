@@ -1,13 +1,20 @@
 <script>
 import { getCalling } from '@/Helpers/CallToAPI.js'
 import defaultProfileImage from '@/assets/Default_pfp.jpg'
+import Header from "@/components/Header.vue";
 
 export default {
   name: 'Suggestions',
+  components: {Header},
   data() {
     return {
       suggestions: [],
       defaultProfileImage
+    }
+  },
+  computed: {
+    shouldHideHeader() {
+      return this.$route.meta.hideHeader || false;
     }
   },
   methods: {
@@ -31,7 +38,8 @@ export default {
 }
 </script>
 
-<template>
+<template >
+  <div v-if="!shouldHideHeader">
   <h2 class="tittle">Recomendaciones</h2>
   <section class="suggestions">
     <ul class="suggestions__list">
@@ -50,6 +58,10 @@ export default {
       </li>
     </ul>
   </section>
+  >
+
+  </div>
+
 </template>
 
 

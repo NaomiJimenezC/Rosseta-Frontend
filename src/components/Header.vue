@@ -1,5 +1,8 @@
 <template>
-  <header :class="['app-sidebar', { 'app-sidebar--open': showMenu }]">
+  <header
+    v-if="!shouldHideHeader"
+    :class="['app-sidebar', { 'app-sidebar--open': showMenu }]"
+  >
     <div class="app-sidebar__logo">
       <h1 class="app-sidebar__title">Rosseta</h1>
     </div>
@@ -86,6 +89,9 @@ export default {
   computed: {
     currentUserId() {
       return Number(localStorage.getItem('userId'))
+    },
+    shouldHideHeader() {
+      return this.$route.meta.hideHeader || false;
     }
   },
   methods: {

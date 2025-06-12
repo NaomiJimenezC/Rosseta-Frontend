@@ -1,4 +1,5 @@
 <template>
+
   <div class="verify-email__container">
     <h1>Verificar tu correo electrónico</h1>
 
