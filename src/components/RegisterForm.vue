@@ -58,7 +58,6 @@ export default {
 
       try {
         await postCalling('/register', processedValues, true);
-        alert('¡Registro exitoso!');
         this.$router.push({ name: 'verify-email', query: { email: values.email } });
         resetForm();
       } catch (error) {

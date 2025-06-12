@@ -6,7 +6,6 @@
 
   &__sidebar {
     grid-column: 1;
-
   }
 
   &__content {
@@ -17,15 +16,31 @@
   &__aside-secondary {
     grid-column: 3;
   }
-  @media (max-width: 768px) {
-    grid-template-columns: 1fr;
 
-    &__sidebar,
-    &__content,
+  @media(max-width: 1024px) {
     &__aside-secondary {
-      grid-column: 1;
-      grid-row: auto; // Reset
+      display: none;
     }
   }
 
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr auto;
+    padding: 0;
+
+    &__content {
+      grid-column: 1;
+      grid-row: 2;
+      padding: 1rem;
+      overflow-y: auto;
+    }
+
+    &__sidebar {
+      text-align: center;
+      position: static;
+      grid-column: 1;
+      grid-row: 1;
+      width: 100%;
+    }
+  }
 }

@@ -1,7 +1,7 @@
 @use "../abstracts/colours" as c;
 
 .app-sidebar {
-  width: 240px;
+  width: fit-content;
   height: 100vh;
   color: c.$color-grises-800;
   padding: 16px;
@@ -23,7 +23,7 @@
     margin-right: 12px;
   }
 
-  &__title{
+  &__title {
     color: c.$color-secundario-700;
   }
 
@@ -40,17 +40,18 @@
     padding: 5px 6px;
     border-radius: 8px;
     cursor: pointer;
-    transition: background-color 0.2s;
-    position: relative;
     background: none;
     border: none;
     text-align: left;
-  }
+    transition: background-color 0.2s;
+    position: relative;
 
-  &__nav-item:hover {
-    background-color: c.$color-secundario-600;
-    *{
-      color: c.$color-primario-200;
+    &:hover {
+      background-color: c.$color-secundario-600;
+
+      * {
+        color: c.$color-primario-200;
+      }
     }
   }
 
@@ -75,4 +76,92 @@
     align-items: center;
     justify-content: center;
   }
+
+  &__mobile-icon {
+    color: c.$color-primario-800;
+  }
+
+  &__mobile {
+    display: none;
+  }
+
+  &__close {
+    display: none;
+    @media (max-width: 768px) {
+      display: block;
+      align-self: flex-end;
+      background: none;
+      border: none;
+      color: c.$color-primario-800;
+      cursor: pointer;
+      margin-bottom: 1rem;
+    }
+  }
+
+  @media (max-width: 1024px) {
+    & {
+      width: 64px;
+      padding: 8px;
+    }
+
+    &__publish{
+      display: none;
+    }
+    &__badge {
+      right: 4px;
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  @media (max-width: 768px) {
+    position: static;
+    width: 100%;
+    height: min-content;
+    display: flex;
+    justify-content: space-between;
+
+    &__title {
+      display: block;
+      width: 100%;
+      height: 0;
+      text-align: center;
+      color: c.$color-secundario-700;
+    }
+
+    &__mobile {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: none;
+      cursor: pointer;
+      background-color: c.$color-secundario-600;
+      width: fit-content;
+    }
+
+    &__mobile-icon,
+    &__nav-icon,
+    &__nav-text {
+      color: c.$color-primario-200;
+    }
+
+    &__nav {
+      position: fixed;
+      top: 0;
+      left: -100%;
+      width: 75%;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: 16px;
+      background: c.$color-secundario-600;
+      transition: left 0.3s ease;
+      z-index: 1000;
+
+      .app-sidebar--open & {
+        left: 0;
+      }
+    }
+  }
+
 }

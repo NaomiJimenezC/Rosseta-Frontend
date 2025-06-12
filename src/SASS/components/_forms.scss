@@ -48,7 +48,7 @@
     cursor: pointer;
 
     &--is-invalid {
-      outline: 2px solid red;
+      outline: 2px solid c.$color-primario-800;
       outline-offset: 2px;
     }
   }

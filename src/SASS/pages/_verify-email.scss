@@ -1,0 +1,29 @@
+@use "@/SASS/abstracts/colours" as c;
+
+.verify-email {
+  &__container {
+    max-width: max-content;
+    margin: 1rem auto;
+    border-radius: 5px;
+  }
+  &__p{
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+  &__alert {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-radius: 5px;
+  }
+
+  &__invalid-feedback {
+    display: block;
+    width: 100%;
+    margin-top: 0.25rem;
+    color: c.$color-secundario-800;
+  }
+
+  &__visually-hidden {
+    display: none;
+  }
+}

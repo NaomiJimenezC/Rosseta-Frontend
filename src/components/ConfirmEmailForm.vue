@@ -1,26 +1,28 @@
 <template>
-  <div class="verify-email-container">
-    <h2>Verificar tu correo electrónico</h2>
+  <div class="verify-email__container">
+    <h1>Verificar tu correo electrónico</h1>
 
-    <div v-if="errorMessage" class="alert alert-danger" v-html="errorMessage"></div>
-    <div v-if="message" class="alert alert-success">{{ message }}</div>
+    <div v-if="errorMessage" class="verify-email__alert verify-email__alert--danger" v-html="errorMessage"></div>
+    <div v-if="message" class="verify-email__alert verify-email__alert--success">{{ message }}</div>
 
-    <p v-if="!errorMessage && !message">
-      Se ha enviado un código de verificación a <strong>{{ email }}</strong>. Por favor, introduce el código a continuación para verificar tu correo electrónico.
+    <p class="verify-email__p" v-if="!errorMessage && !message">
+      Se ha enviado un código de verificación a <strong>{{ email }}</strong>. Por favor,
+      introduce el código a continuación para verificar tu correo electrónico. No olvides revisar la
+      carpeta de spam
     </p>
 
-    <Form @submit="verifyEmail" :validation-schema="schema" v-slot="{ errors }">
-      <div class="form-group visually-hidden">
+    <Form @submit="verifyEmail" class="form"  :validation-schema="schema" v-slot="{ errors }">
+      <div class="form__group verify-email__visually-hidden">
         <label for="email">Correo electrónico:</label>
         <Field type="email" id="email" name="email" class="form-control" v-model="email" :readonly="true" />
         <ErrorMessage name="email" class="error-message invalid-feedback" />
       </div>
-      <div class="form-group">
-        <label for="verification_code">Código de verificación:</label>
-        <Field type="text" id="verification_code" name="verification_code" class="form-control" v-model="verificationCode" />
+      <div class="form__group">
+        <label class="form__label" for="verification_code">Código de verificación:</label>
+        <Field type="text" id="verification_code" name="verification_code" class="form__input" v-model="verificationCode" />
         <ErrorMessage name="verification_code" class="error-message invalid-feedback" />
       </div>
-      <button type="submit" class="btn btn-primary" :disabled="isVerifying">
+      <button type="submit" class="form__button" :disabled="isVerifying">
         <span v-if="isVerifying">Verificando...</span>
         <span v-else>Verificar</span>
       </button>
@@ -96,60 +98,7 @@ export default {
 };
 </script>
 
-<style scoped>
-.verify-email-container {
-  max-width: 400px;
-  margin: 50px auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.form-group {
-  margin-bottom: 15px;
-}
-
-.alert {
-  margin-bottom: 15px;
-  padding: 10px;
-  border-radius: 5px;
-}
-
-.alert-danger {
-  color: #721c24;
-  background-color: #f8d7da;
-  border-color: #f5c6cb;
-}
-
-.alert-success {
-  color: #155724;
-  background-color: #d4edda;
-  border-color: #c3e6cb;
-}
-
-.error-message {
-  color: red;
-  font-size: 0.8em;
-}
-
-.invalid-feedback {
-  display: block;
-  width: 100%;
-  margin-top: 0.25rem;
-  font-size: 80%;
-  color: #dc3545;
-}
-
-/* Clase para ocultar visualmente un elemento */
-.visually-hidden {
-  position: absolute !important;
-  width: 1px !important;
-  height: 1px !important;
-  padding: 0 !important;
-  margin: -1px !important;
-  overflow: hidden !important;
-  clip: rect(0, 0, 0, 0) !important;
-  white-space: nowrap !important;
-  border: 0 !important;
-}
+<style lang="scss" scoped>
+@use "@/SASS/components/forms";
+@use "@/SASS/pages/verify-email";
 </style>
