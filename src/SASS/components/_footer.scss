@@ -1,0 +1,76 @@
+@use '../abstracts/colours' as c;
+
+.app-footer {
+  display: none;
+  @media (max-width: 768px) {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: c.$color-secundario-600;
+    padding: 10px 0;
+    z-index: 1;
+    justify-content: space-between;
+    align-items: center;
+
+    &__nav {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      width: 100%;
+      padding: 0 10px;
+
+      &-item {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 8px 0;
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        color: c.$color-primario-600;
+        position: relative;
+
+        &:hover,
+        &:focus {
+          color: c.$color-primario-600;
+        }
+
+        &--add-button {
+          .app-footer__nav-icon {
+            color: c.$color-primario-800;
+          }
+        }
+      }
+
+      &-icon {
+        display: block;
+        color: c.$color-primario-800;
+      }
+
+      &__badge {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        background-color: c.$color-primario-800;
+        color: c.$color-primario-200;
+        font-size: 10px;
+        font-weight: bold;
+        border-radius: 50%;
+        min-width: 16px;
+        height: 16px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 1px;
+        transform: translate(50%, -50%);
+        pointer-events: none;
+        z-index: 1;
+
+      }
+    }
+  }
+}
