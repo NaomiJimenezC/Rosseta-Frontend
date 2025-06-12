@@ -91,13 +91,13 @@ export default {
         <magnify-icon :size="24" class="app-footer__nav-icon" />
       </button>
 
-      <button @click="openPublishModal" class="app-footer__nav-item app-footer__nav-item--add-button">
-        <plus-circle-icon :size="32" class="app-footer__nav-icon" />
-      </button>
-
       <button @click="goToNotifications()" class="app-footer__nav-item">
         <bell-icon :size="24" class="app-footer__nav-icon" />
         <span v-if="unreadNotifications > 0" class="app-footer__badge app-footer__badge--notifications">{{ unreadNotifications }}</span>
+      </button>
+
+      <button @click="openPublishModal" class="app-footer__nav-item app-footer__nav-item--add-button">
+        <plus-circle-icon :size="24" class="app-footer__nav-icon" />
       </button>
 
       <button @click="goToMessages()" class="app-footer__nav-item">
