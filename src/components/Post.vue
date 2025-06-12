@@ -69,7 +69,7 @@ export default {
       } catch (err) {
         console.error('Error toggling like:', err);
       } finally {
-        this.loading = false;
+        this.processingLike = false;
       }
     },
     handleCommentClick() {
@@ -84,7 +84,7 @@ export default {
         this.showConfirmModal = false;
         window.location.reload();
       } catch (err) {
-        console.error("Error al eliminar la publicación:", err);
+        console.error("Error deleting post:", err);
         this.showConfirmModal = false;
       }
     }
@@ -94,50 +94,53 @@ export default {
 </script>
 
 <template>
+  <!-- Post Content -->
   <article v-if="!loading && !error" class="post-card">
-    <header class="post-header">
-      <router-link :to="{ name: 'profile', params: { id: userId } }" class="profile-link">
+    <header class="post-card__header">
+      <router-link :to="{ name: 'profile', params: { id: userId } }" class="post-card__profile-link">
         <img
           :src="userData.profile_picture_url || defaultProfileImage"
           :alt="`${userData.username} profile photo`"
-          class="profile-picture"
+          class="post-card__profile-picture"
         />
       </router-link>
 
-      <router-link :to="{ name: 'profile', params: { id: userId } }" class="profile-link username-link">
-        <h4 class="username">{{ userData.username }}</h4>
+      <router-link :to="{ name: 'profile', params: { id: userId } }" class="post-card__username-link">
+        <h4 class="post-card__username">{{ userData.username }}</h4>
       </router-link>
 
       <button
         v-if="isOwner"
         @click="deletePost"
-        class="delete-button"
+        class="post-card__delete-button"
         title="Eliminar publicación"
-      >×</button>
+      >
+        ×
+      </button>
     </header>
 
-    <div class="post-image-container">
-      <img :src="img" :alt="caption" class="post-image" />
+    <div class="post-card__image-container">
+      <img :src="img" :alt="caption" class="post-card__image" />
     </div>
 
-    <div class="post-interactions">
-      <span class="action-button like-button" @click="toggleLike">
-        <HeartOutline v-if="!hasLiked" class="icon-outline" />
-        <Heart v-else class="icon-filled" />
+    <div class="post-card__interactions">
+      <span class="post-card__action-button post-card__like-button" @click="toggleLike">
+        <HeartOutline v-if="!hasLiked" class="post-card__icon post-card__icon--outline" />
+        <Heart v-else class="post-card__icon post-card__icon--filled" />
       </span>
-      <span class="action-button comment-button" @click="handleCommentClick">
-        <MessageOutline class="icon-outline" />
+      <span class="post-card__action-button post-card__comment-button" @click="handleCommentClick">
+        <MessageOutline class="post-card__icon post-card__icon--outline" />
       </span>
     </div>
 
-    <p v-if="description" class="post-description">{{ description }}</p>
+    <p v-if="description" class="post-card__description">{{ description }}</p>
   </article>
 
-  <div v-else-if="loading" class="loading-message">
-    <p>Loading post data...</p>
+  <div v-else-if="loading" class="post-card post-card--loading">
+    <p class="post-card__status-message">Loading post data...</p>
   </div>
-  <div v-else class="error-message">
-    <p>Error: {{ error.message }}</p>
+  <div v-else class="post-card post-card--error">
+    <p class="post-card__status-message">Error: {{ error.message }}</p>
   </div>
 
   <ConfirmModal
@@ -146,139 +149,8 @@ export default {
     @confirm="confirmDelete"
     @cancel="showConfirmModal = false"
   />
-
 </template>
 
-<style scoped>
-.post-card {
-  background-color: #fce4ec;
-  border-radius: 8px;
-  padding: 16px;
-  margin-bottom: 20px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  max-width: 500px;
-  margin-left: auto;
-  margin-right: auto;
-  border: 1px solid #ff80ab;
-}
-
-.post-header {
-  display: flex;
-  align-items: center;
-  margin-bottom: 12px;
-  position: static;
-}
-
-.profile-link {
-  text-decoration: none;
-  color: inherit;
-  display: flex;
-  align-items: center;
-}
-
-.username-link {
-  margin-left: 10px;
-}
-
-.profile-picture {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  object-fit: cover;
-  border: 2px solid #ff80ab;
-}
-
-.username {
-  font-weight: bold;
-  font-size: 1.1em;
-  color: #333;
-  margin: 0;
-}
-
-.delete-button {
-  margin-left: auto;
-  background: transparent;
-  border: none;
-  font-size: 20px;
-  font-weight: bold;
-  color: #e91e63;
-  cursor: pointer;
-  padding: 4px 8px;
-  transition: color 0.2s ease;
-}
-
-.delete-button:hover {
-  color: #c2185b;
-}
-
-.post-image-container {
-  width: 100%;
-  max-height: 500px;
-  overflow: hidden;
-  border-radius: 4px;
-  margin-bottom: 12px;
-  border: 1px solid #d8bfd8;
-}
-
-.post-image {
-  width: 100%;
-  height: auto;
-  display: block;
-}
-
-.post-interactions {
-  display: flex;
-  align-items: center;
-  margin-bottom: 12px;
-}
-
-.action-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  padding: 8px;
-  border-radius: 50%;
-  transition: background-color 0.2s ease, transform 0.2s ease;
-}
-
-.action-button:hover {
-  background-color: rgba(255, 192, 203, 0.5);
-}
-
-.action-button:active {
-  transform: scale(0.9);
-}
-
-.like-button {
-  margin-right: 8px;
-}
-
-.icon-outline,
-.icon-filled {
-  width: 24px;
-  height: 24px;
-  color: #ff4081;
-}
-
-.icon-filled {
-  color: #e91e63;
-}
-
-.post-description {
-  font-size: 0.95em;
-  color: #555;
-  margin: 0;
-  line-height: 1.5;
-}
-
-.loading-message, .error-message {
-  text-align: center;
-  padding: 20px;
-  color: #777;
-}
-
-.error-message {
-  color: #d32f2f;
-}
+<style lang="sass" scoped>
+@use "@/SASS/components/post"
 </style>

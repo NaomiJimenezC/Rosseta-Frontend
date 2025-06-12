@@ -1,12 +1,12 @@
-/* layout/_grid.scss */
 .app-layout {
   display: grid;
-  grid-template-columns: 33% 33% 33%;
-  gap: 1rem;
+  grid-template-columns: 30% 40% 20%;
+  gap: 2rem;
   padding: 1rem;
 
   &__sidebar {
     grid-column: 1;
+
   }
 
   &__content {
