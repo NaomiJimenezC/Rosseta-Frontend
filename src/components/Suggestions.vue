@@ -32,7 +32,7 @@ export default {
 </script>
 
 <template>
-  <h2>Recomendaciones</h2>
+  <h2 class="tittle">Recomendaciones</h2>
   <section class="suggestions">
     <ul class="suggestions__list">
       <li

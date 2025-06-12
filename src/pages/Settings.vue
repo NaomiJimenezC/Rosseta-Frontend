@@ -18,129 +18,50 @@ export default defineComponent({
 </script>
 
 <template>
-  <main class="settings-page">
-    <header class="settings-header">
-      <h1>Ajustes</h1>
-      <hr />
+  <main class="settings">
+    <header class="settings__header">
+      <h1 class="settings__title">Ajustes</h1>
     </header>
 
-    <nav aria-label="Menú de ajustes">
-      <ul class="settings-list">
-        <li>
-          <router-link
-            :to="{ name: 'user settings' }"
-            class="settings-link"
-          >
-            <AccountCircleIcon class="icon" />
-            <span>Cuenta</span>
+    <nav class="settings__nav" aria-label="Menú de ajustes">
+      <ul class="settings__list">
+        <li class="settings__item">
+          <router-link :to="{ name: 'user settings' }" class="settings__link">
+            <AccountCircleIcon class="settings__icon" />
+            <span class="settings__label">Cuenta</span>
           </router-link>
         </li>
 
-        <li>
-          <router-link
-            :to="{ name: 'contact' }"
-            class="settings-link"
-          >
-            <AccountBoxIcon class="icon" />
-            <span>Contacto</span>
+        <li class="settings__item">
+          <router-link :to="{ name: 'contact' }" class="settings__link">
+            <AccountBoxIcon class="settings__icon" />
+            <span class="settings__label">Contacto</span>
           </router-link>
         </li>
 
-        <li>
-          <router-link
-            :to="{ name: 'appearance' }"
-            class="settings-link"
-          >
-            <PaletteIcon class="icon" />
-            <span>Apariencia</span>
+        <li class="settings__item">
+          <router-link :to="{ name: 'appearance' }" class="settings__link">
+            <PaletteIcon class="settings__icon" />
+            <span class="settings__label">Apariencia</span>
           </router-link>
         </li>
 
-        <li>
-          <router-link
-            :to="{ name: 'about' }"
-            class="settings-link"
-          >
-            <InformationIcon class="icon" />
-            <span>Sobre nosotros</span>
+        <li class="settings__item">
+          <router-link :to="{ name: 'about' }" class="settings__link">
+            <InformationIcon class="settings__icon" />
+            <span class="settings__label">Sobre nosotros</span>
           </router-link>
         </li>
       </ul>
     </nav>
 
-    <section class="settings-content">
+    <section class="settings__content">
       <router-view />
     </section>
   </main>
 </template>
 
-
-<style scoped>
-.settings-page {
-  max-width: 600px;
-  margin: 0 auto;
-  padding: 1rem;
-  font-family: Arial, sans-serif;
-}
-
-.settings-header {
-  margin-bottom: 1rem;
-}
-
-.settings-header h1 {
-  font-size: 1.8rem;
-  margin: 0;
-}
-
-.settings-header hr {
-  border: none;
-  border-top: 2px solid #ccc;
-  margin: 0.5rem 0 1rem;
-}
-
-nav[aria-label="Menú de ajustes"] {
-  margin-bottom: 2rem;
-}
-
-.settings-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.settings-list li + li {
-  margin-top: 0.75rem;
-}
-
-.settings-link {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  color: #333;
-  padding: 0.5rem;
-  border-radius: 4px;
-  transition: background-color 0.2s ease;
-}
-
-.settings-link:hover,
-.settings-link:focus {
-  background-color: rgba(0, 0, 0, 0.05);
-  outline: none;
-}
-
-.settings-link .icon {
-  width: 24px;
-  height: 24px;
-  margin-right: 0.75rem;
-  color: #555;
-}
-
-.settings-list span {
-  font-size: 1rem;
-}
-
-.settings-content {
-  padding: 1rem 0;
-  border-top: 1px solid #e0e0e0;
-}
+<style lang="scss" scoped>
+@use "@/SASS/pages/settings";
 </style>
+

@@ -1,6 +1,12 @@
 @use "../abstracts/colours" as c;
+.tittle{
+  margin-top: 2rem;
+  border-bottom: 2px solid c.$color-grises-600;
+  width: max-content;
+}
 .suggestions {
   max-width:max-content;
+  margin-top: 1rem;
   padding: 16px;
   background-color: light-dark(c.$color-secundario-600,c.$color-grises-500);
   border-radius: 8px;
@@ -37,6 +43,9 @@
   &__item:hover{
     background-color: c.$color-primario-200;
     border-radius: 6px;
+    *{
+      color: c.$color-secundario-500;
+    }
   }
   &__item:last-child{
     margin-bottom: 0;

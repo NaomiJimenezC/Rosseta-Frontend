@@ -1,0 +1,83 @@
+@use '@/SASS/abstracts/colours' as c;
+
+:root[data-theme='light'] {
+  --bg: c.$color-primario-100;
+  --fg: c.$color-grises-800;
+}
+
+:root[data-theme='dark'] {
+  --bg: c.$color-grises-200;
+  --fg: c.$color-primario-100;
+}
+
+.appearance {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 1rem;
+  font-family: Arial, sans-serif;
+  background-color: var(--bg);
+  color: var(--fg);
+  transition: background-color 0.3s ease, color 0.3s ease;
+
+  &__header {
+    & .appearance__title {
+      margin: 0;
+    }
+
+    & .appearance__divider {
+      border: none;
+      border-top: 2px solid c.$color-grises-400;
+      margin: 0.5rem 0 1rem;
+    }
+  }
+
+  &__color-mode {
+    margin-top: 1rem;
+
+    & .appearance__label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+
+    & .appearance__toggle-group {
+      display: flex;
+      gap: 0.5rem;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    & .appearance__toggle {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      padding: 0.75rem;
+      background-color: c.$color-secundario-100;
+      color: c.$color-grises-800;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      transition: background-color 0.2s ease;
+
+      &--light {
+        border-right: 1px solid c.$color-secundario-500;
+      }
+
+      &:hover {
+        background-color: c.$color-secundario-300;
+      }
+
+      &--active {
+        background-color: c.$color-secundario-500;
+        color: c.$color-primario-200;
+        font-weight: bold;
+      }
+    }
+    & .appearance__icon {
+      width: 24px;
+      height: 24px;
+    }
+  }
+}

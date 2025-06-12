@@ -5,7 +5,7 @@ import Suggestions from "@/components/Suggestions.vue";
 
 export default {
   name: 'Home',
-  components: {Suggestions, Post},
+  components: { Suggestions, Post },
   data() {
     return {
       posts: [],
@@ -32,35 +32,45 @@ export default {
 </script>
 
 <template>
-  <div>
-    <h1>Siguiendo</h1>
-    <div v-if="loading">
-      Cargando publicaciones...
-    </div>
-    <div v-else-if="error">
-      Error al cargar las publicaciones: {{ error.message }}
-    </div>
-    <ul v-else-if="posts && posts.data && posts.data.length > 0" class="post-list">
-      <li v-for="post in posts.data" :key="post.id">
-        <Post
-          :postId="post.id"
-          :userId="post.users_id"
-          :img="post.image_url"
-          :caption="post.caption"
-          :description="post.content"
-        />
-      </li>
-    </ul>
-    <h2 v-else>No hay publicaciones disponibles</h2>
-  </div>
+  <section class="home">
+    <header class="home__header">
+      <h1 class="home__title">Siguiendo</h1>
+    </header>
+
+    <template v-if="loading">
+      <div class="home__status">
+        <p>Cargando publicaciones...</p>
+      </div>
+    </template>
+
+    <template v-else-if="error">
+      <div class="home__status">
+        <p>Error al cargar las publicaciones: {{ error.message }}</p>
+      </div>
+    </template>
+
+    <template v-else-if="posts && posts.data && posts.data.length">
+      <ul class="home__list">
+        <li v-for="post in posts.data" :key="post.id" class="home__item">
+          <Post
+            :postId="post.id"
+            :userId="post.users_id"
+            :img="post.image_url"
+            :caption="post.caption"
+            :description="post.content"
+          />
+        </li>
+      </ul>
+    </template>
+
+    <template v-else>
+      <div class="home__empty">
+        <h2>No hay publicaciones disponibles</h2>
+      </div>
+    </template>
+  </section>
 </template>
 
-<style scoped>
-.post-list {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}
-
-
+<style lang="scss" scoped>
+@use "@/SASS/pages/home";
 </style>

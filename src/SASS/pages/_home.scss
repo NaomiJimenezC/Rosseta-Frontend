@@ -1,0 +1,38 @@
+@use "@/SASS/abstracts/colours" as c;
+.home {
+  max-width: fit-content;
+  margin: 0 auto;
+
+  &__header {
+    border-bottom: 2px solid c.$color-grises-600;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+
+    & .home__title {
+      margin: 0;
+      color: c.$color-grises-700;
+    }
+  }
+
+  &__status {
+    text-align: center;
+    margin: 20px 0;
+    color: c.$color-grises-800;
+  }
+
+  &__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    & .home__item {
+      margin-bottom: 1rem;
+    }
+  }
+
+  &__empty {
+    text-align: center;
+    color: c.$color-grises-500;
+    margin-top: 20px;
+  }
+}

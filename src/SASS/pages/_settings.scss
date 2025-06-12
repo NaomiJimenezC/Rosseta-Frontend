@@ -1,0 +1,63 @@
+@use "@/SASS/abstracts/colours" as c;
+.settings {
+  width: 80%;
+  margin: 0 auto;
+  padding: 1rem;
+
+  &__header {
+    margin: 0;
+    border-bottom: 2px solid c.$color-grises-600;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+  }
+
+  &__title {
+    margin: 0;
+  }
+
+  &__nav {
+    margin-bottom: 2rem;
+  }
+
+  &__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  &__item + &__item {
+    margin-top: 0.75rem;
+  }
+
+  &__link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: c.$color-grises-700;
+    padding: 0.5rem;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+
+    &:hover,
+    &:focus {
+      background-color: c.$color-secundario-200;
+      outline: none;
+    }
+  }
+
+  &__icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 0.75rem;
+    color: c.$color-secundario-800;
+  }
+
+  &__label {
+    font-size: 1rem;
+  }
+
+  &__content {
+    padding: 1rem 0;
+    border-top: 2px solid c.$color-grises-800;
+  }
+}

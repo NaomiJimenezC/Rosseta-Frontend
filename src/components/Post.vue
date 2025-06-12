@@ -94,7 +94,6 @@ export default {
 </script>
 
 <template>
-  <!-- Post Content -->
   <article v-if="!loading && !error" class="post-card">
     <header class="post-card__header">
       <router-link :to="{ name: 'profile', params: { id: userId } }" class="post-card__profile-link">
