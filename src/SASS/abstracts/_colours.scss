@@ -20,9 +20,11 @@ $color-grises-800: #1C1C1C;
 $color-grises-700: #393939;
 $color-grises-600: #555555;
 $color-grises-500: #717171;
-$color-grises-400: #AAAAAA;
-$color-grises-300: #C6C6C6;
-$color-grises-200: #E3E3E3;
+$color-grises-400: #717171;
+$color-grises-300: #AAAAAA;
+$color-grises-200: #C6C6C6;
+$color-grises-100: #E3E3E3;
+
 
 :root {
   --color-primario-800: #{$color-primario-800};
@@ -50,4 +52,6 @@ $color-grises-200: #E3E3E3;
   --color-grises-400: #{$color-grises-400};
   --color-grises-300: #{$color-grises-300};
   --color-grises-200: #{$color-grises-200};
+  --color-grises-100: #{$color-grises-100};
+
 }

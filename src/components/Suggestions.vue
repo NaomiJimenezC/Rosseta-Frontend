@@ -58,8 +58,6 @@ export default {
       </li>
     </ul>
   </section>
-  >
-
   </div>
 
 </template>

@@ -21,7 +21,7 @@
     text-align: left;
 
     & .login-page__title {
-      color: c.$color-secundario-800;
+      color: light-dark(c.$color-secundario-800,c.$color-grises-800);
       margin: 0 0 1rem;
     }
 
@@ -35,13 +35,13 @@
     }
 
     & .login-page__register-link {
-      color: c.$color-secundario-600;
+      color: light-dark(c.$color-secundario-600,c.$color-grises-600);
       text-decoration: none;
       font-weight: bold;
       transition: color 0.2s ease;
 
       &:hover {
-        color: c.$color-secundario-800;
+        color:light-dark(c.$color-secundario-800,c.$color-grises-800) ;
         text-decoration: underline;
       }
     }

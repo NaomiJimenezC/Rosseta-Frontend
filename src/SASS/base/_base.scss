@@ -1,40 +1,37 @@
-@use '@/SASS/abstracts/colours' as colours;
+@use '@/SASS/abstracts/colours' as c;
+@use "@/SASS/abstracts/variables" as v;
 @use 'fonts' as fonts;
 
-:root{
-  color-scheme: light dark;
+:root {
+  --color-bg: #{c.$color-primario-200};
+  --color-text: #{c.$color-grises-800};
 }
-body{
-  background-color: light-dark(var(--color-primario-200),var(--color-grises-200));
-  color: light-dark(var(--color-grises-800),var(--color-primario-200));
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
   font-family: fonts.$font-primary;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-body.dark {
+[data-theme='dark'] {
+  --color-bg: #{v.$bg-dark};
+  --color-text: #{v.$text-dark};
   color-scheme: dark;
 }
 
-body.light {
+[data-theme='light'] {
+  --color-bg: #{c.$color-primario-200};
+  --color-text: #{c.$color-grises-700};
   color-scheme: light;
 }
 
-h1,h2,h3,h4,h5,h6{
+
+h1, h2, h3, h4, h5, h6 {
   font-family: fonts.$font-headings;
 }
 
-h1{
-  font-size: 48px;
-}
-
-h2{
-  font-size: 32px;
-}
-
-h3{
-  font-size: 24px;
-}
-
-h4{
-  font-size: 21px;
-}
+h1 { font-size: 48px; }
+h2 { font-size: 32px; }
+h3 { font-size: 24px; }
+h4 { font-size: 21px; }

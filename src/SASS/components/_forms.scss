@@ -14,7 +14,7 @@
   }
 
   &__input {
-    background-color: light-dark(c.$color-secundario-200, c.$color-grises-200);
+    background-color: light-dark(c.$color-secundario-200, c.$color-grises-300);
     width: max-content;
     padding: 0.25rem;
     border-radius: 8px;
@@ -48,7 +48,7 @@
     cursor: pointer;
 
     &--is-invalid {
-      outline: 2px solid c.$color-primario-800;
+      outline: 2px solid light-dark(c.$color-primario-800,c.$color-grises-100);
       outline-offset: 2px;
     }
   }
@@ -64,12 +64,12 @@
   }
 
   &__legend {
-    color: c.$color-primario-800;
+    color: light-dark(c.$color-primario-800,c.$color-grises-100);
     font-weight: bold;
   }
 
   &__link {
-    color: light-dark(c.$color-primario-500, c.$color-primario-200);
+    color: light-dark(c.$color-primario-500, c.$color-grises-100);
     text-decoration: underline;
 
     &:hover {

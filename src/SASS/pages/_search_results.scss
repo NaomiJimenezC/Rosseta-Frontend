@@ -22,8 +22,8 @@
     width: 100%;
     transition: background-color 0.15s ease;
     &--active {
-      background-color: c.$color-secundario-200;
-      color: c.$color-secundario-800;
+      background-color: light-dark(c.$color-secundario-200,c.$color-grises-200);
+      color: light-dark(c.$color-secundario-800,c.$color-grises-800);
     }
   }
 
@@ -71,7 +71,7 @@
     transition: background-color 0.15s ease;
 
     &:hover {
-      background-color: c.$color-secundario-100;
+      background-color: light-dark(c.$color-secundario-100,c.$color-grises-200);
     }
   }
 

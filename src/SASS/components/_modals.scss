@@ -51,7 +51,7 @@ $modal-z-index: 10000000;
   &__title {
     margin: 0;
     padding-left: 1rem;
-    color: light-dark(c.$color-primario-800, c.$color-grises-200);
+    color: light-dark(c.$color-primario-800, c.$color-grises-100);
   }
 
   &__close-button {
@@ -74,8 +74,8 @@ $modal-z-index: 10000000;
     margin: 1.5rem auto 0;
     margin-bottom: 1rem;
     width: min-content;
-    background-color: c.$color-primario-600;
-    color: c.$color-secundario-600;
+    background-color: light-dark(c.$color-primario-600, c.$color-grises-300) ;
+    color: light-dark(c.$color-secundario-600,c.$color-grises-600);
     border: none;
     padding: 12px 25px;
     border-radius: 5px;
@@ -85,17 +85,17 @@ $modal-z-index: 10000000;
     transition: background-color 0.3s ease;
 
     &:disabled {
-      background-color: c.$color-primario-200;
+      background-color: light-dark(c.$color-primario-200, c.$color-grises-200) ;
       cursor: not-allowed;
     }
 
     &:hover:not(:disabled) {
-      background-color: c.$color-primario-700;
+      background-color: light-dark(c.$color-primario-700, c.$color-grises-200) ;
     }
   }
   &__body {
     padding: $modal-padding;
-    color: c.$color-primario-700;
+    color: light-dark(c.$color-primario-700, c.$color-grises-200) ;
     font-weight: bold;
     overflow-y: auto;
   }

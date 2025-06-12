@@ -1,10 +1,10 @@
 @use "@/SASS/abstracts/colours" as c;
 
-$badge-bg: c.$color-secundario-500;
-$badge-color: c.$color-secundario-200;
-$item-border: c.$color-grises-300;
-$unread-bg: c.$color-secundario-400;
-$text-secondary: c.$color-secundario-500;
+$badge-bg: light-dark(c.$color-secundario-500,c.$color-grises-500);
+$badge-color: light-dark(c.$color-secundario-200,c.$color-grises-400);
+$item-border: c.$color-grises-400;
+$unread-bg: light-dark(c.$color-secundario-400,c.$color-grises-400);
+$text-secondary: light-dark(c.$color-secundario-500,c.$color-grises-800) ;
 $error-color: #e3342f;
 
 .notification-page {
@@ -49,7 +49,7 @@ $error-color: #e3342f;
     transition: background-color 0.2s ease;
 
     &:hover {
-      background-color: #f0f0f0;
+      background-color: light-dark(c.$color-secundario-300,c.$color-grises-200);
     }
   }
 
@@ -100,7 +100,7 @@ $error-color: #e3342f;
   }
 
   &__user {
-    color: c.$color-secundario-800;
+    color: light-dark(c.$color-secundario-800,c.$color-grises-800);
     cursor: pointer;
     font-weight: 600;
 
@@ -110,7 +110,7 @@ $error-color: #e3342f;
   }
 
   &__post-link {
-    color: c.$color-secundario-800;
+    color: light-dark(c.$color-secundario-800,c.$color-grises-800);
     font-weight: bold;
     cursor: pointer;
     &:hover {

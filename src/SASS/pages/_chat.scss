@@ -46,11 +46,12 @@ $error-color: c.$color-secundario-800;
       &__mine {
         margin-left: auto;
         background: $bg-mine;
+        color: light-dark($color-mine,c.$color-grises-200);
       }
 
       &__other {
         background: $bg-other;
-        color: $color-other;
+        color: light-dark($color-other, c.$color-grises-300);
       }
     }
 

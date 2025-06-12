@@ -2,7 +2,7 @@
 
 button{
   background-color: light-dark(c.$color-secundario-600,c.$color-grises-600);
-  color: light-dark(c.$color-primario-100,c.$color-grises-200);
+  color: light-dark(c.$color-primario-100,c.$color-grises-100);
   border: none;
   border-radius: 16px;
   padding: 12px;
@@ -13,6 +13,6 @@ button{
   margin-top: 0;
 }
 button:hover{
-  background-color: c.$color-secundario-800;
+  background-color: light-dark(c.$color-secundario-800, c.$color-grises-800) ;
 }
 

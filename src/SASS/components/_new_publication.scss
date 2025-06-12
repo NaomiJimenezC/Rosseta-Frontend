@@ -4,11 +4,11 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  border: 2px dashed c.$color-primario-700;
+  border: 2px dashed light-dark(c.$color-primario-700, c.$color-grises-300);
   border-radius: 8px;
   padding: 30px;
   cursor: pointer;
-  background-color: c.$color-secundario-100;
+  background-color: light-dark(c.$color-secundario-100,c.$color-grises-100);
   text-align: center;
   min-height: 200px;
   margin-bottom: 1rem;
@@ -16,17 +16,17 @@
 
 .upload-icon {
   font-size: 4rem;
-  color: c.$color-secundario-700;
+  color: light-dark(c.$color-secundario-700, c.$color-grises-700);
   margin-bottom: 15px;
 }
 
 .select-button {
   &:hover:not(:disabled) {
-    background-color: c.$color-secundario-800;
+    background-color: light-dark(c.$color-secundario-700, c.$color-grises-700);
   }
 
   &:disabled {
-    background-color: c.$color-secundario-100;
+    background-color: light-dark(c.$color-secundario-100,c.$color-grises-100);
     cursor: not-allowed;
     opacity: 0.7;
   }
@@ -48,7 +48,6 @@
 label {
   display: block;
   margin-bottom: 0.5rem;
-  color: c.$color-primario-800;
   font-weight: bold;
 }
 
@@ -56,8 +55,8 @@ label {
 .text-field {
   width: 100%;
   padding: 10px;
-  background-color: c.$color-secundario-200;
-  border: 1px solid #f8bbd0;
+  background-color: light-dark(c.$color-secundario-200,c.$color-grises-300);
+  border: 1px solid light-dark(c.$color-secundario-200,c.$color-grises-200);
   border-radius: 5px;
   box-sizing: border-box;
   font-size: 1rem;
@@ -69,8 +68,7 @@ label {
 }
 
 .submit-button {
-  background-color: c.$color-primario-600;
-  color: c.$color-secundario-600;
+
   border: none;
   padding: 12px 25px;
   border-radius: 5px;
@@ -87,13 +85,14 @@ label {
   }
 
   &:hover:not(:disabled) {
-    background-color: c.$color-primario-700;
+    background-color: light-dark(c.$color-primario-700,c.$color-grises-100);
+    color: c.$color-grises-800;
   }
 }
 
 .change-image-button {
-  background-color: c.$color-primario-600;
-  color: c.$color-secundario-600;
+  background-color: light-dark(c.$color-primario-600,c.$color-grises-200);
+  color: light-dark(c.$color-secundario-600, c.$color-grises-700) ;
   padding: 8px 15px;
   border-radius: 5px;
   cursor: pointer;
@@ -102,8 +101,8 @@ label {
   transition: background-color 0.3s ease, color 0.3s ease;
 
   &:hover {
-    background-color: c.$color-secundario-600;
-    color: c.$color-primario-600;
+    background-color: light-dark(c.$color-secundario-600,c.$color-grises-600);
+    color: light-dark(c.$color-primario-600,c.$color-grises-200) ;
   }
 }
 

@@ -7,16 +7,11 @@
     padding: 1rem;
   }
 
-  &__loading {
-    text-align: center;
-    color: #555;
-  }
-
   &__post {
     margin-bottom: 2rem;
-    border: 1px solid #ddd;
+    border: 1px solid c.$color-grises-800;
     border-radius: 4px;
-    background: c.$color-secundario-600;
+    background: light-dark(c.$color-secundario-600,c.$color-grises-200);
   }
 
   &__header {
@@ -37,11 +32,11 @@
   }
 
   &__author-name {
-    color: c.$color-primario-700;
+    color:light-dark(c.$color-primario-700,c.$color-grises-700);
   }
 
   &__date {
-    color: c.$color-primario-600;
+    color:light-dark(c.$color-primario-600,c.$color-grises-600);
     margin-left: 8px;
   }
 
@@ -56,7 +51,7 @@
 
   &__text {
     margin: 0.5rem 1rem 1rem;
-    color: c.$color-primario-700;
+    color: light-dark(c.$color-primario-700,c.$color-grises-800);
   }
 
   &__comments-section {
@@ -97,14 +92,15 @@
   }
 
   &__comment-date {
-    color: c.$color-grises-500;
+    color: light-dark(c.$color-grises-500,c.$color-grises-800);
     margin-left: auto;
   }
 
   &__delete-comment-btn {
     background: transparent;
     border: none;
-    color: c.$color-secundario-800;
+    color: light-dark( c.$color-secundario-800,c.$color-grises-800);
+    font-weight: bold;
     cursor: pointer;
     font-size: 0.85rem;
     margin-left: 8px;
@@ -133,7 +129,7 @@
     width: 100%;
     padding: 0.5rem;
     border: 1px solid c.$color-grises-300;
-    background-color: c.$color-secundario-400;
+    background-color: light-dark(c.$color-secundario-400,c.$color-grises-300);
     border-radius: 8px;
     resize: vertical;
   }
