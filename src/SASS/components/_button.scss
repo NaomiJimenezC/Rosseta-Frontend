@@ -9,7 +9,10 @@ button{
   font-size: 16px;
   font-weight: 500;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background-color ease 0.5s;
   margin-top: 0;
+}
+button:hover{
+  background-color: c.$color-secundario-800;
 }
 
