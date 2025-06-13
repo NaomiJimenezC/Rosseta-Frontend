@@ -40,6 +40,11 @@
         <h3 class="app-sidebar__nav-text">Mensajes</h3>
         <span v-if="unreadChats > 0" class="app-sidebar__badge">{{ unreadChats }}</span>
       </button>
+
+      <button @click="logOut()" class="app-sidebar__nav-item">
+        <logout-icon :size="32" class="app-sidebar__nav-icon"/>
+        <h3 class="app-sidebar__nav-text">Salir</h3>
+      </button>
     </nav>
 
     <button @click="openPublishModal" class="app-sidebar__publish">
@@ -62,7 +67,8 @@ import BellIcon from 'vue-material-design-icons/Bell.vue'
 import CogIcon from 'vue-material-design-icons/Cog.vue'
 import MessageTextIcon from 'vue-material-design-icons/MessageText.vue'
 import MenuIcon from 'vue-material-design-icons/Menu.vue'
-import { getCalling } from '@/Helpers/CallToAPI.js'
+import LogoutIcon from 'vue-material-design-icons/Logout.vue'
+import {getCalling, postCalling} from '@/Helpers/CallToAPI.js'
 import NewPublicationModal from '@/components/NewPublicationModal.vue'
 
 export default {
@@ -76,6 +82,7 @@ export default {
     CogIcon,
     MessageTextIcon,
     MenuIcon,
+    LogoutIcon
   },
   data() {
     return {
@@ -122,6 +129,17 @@ export default {
     openPublishModal() { this.showNewPublicationModal = true },
     handlePublicationSuccessful() { this.$router.push('/home') },
     handleModalClosed() { this.$router.push('/home') },
+    logOut() {
+      try {
+        postCalling("/logout",{},true)
+        localStorage.removeItem('authToken')
+        localStorage.removeItem('userId')
+        localStorage.removeItem('user')
+        this.$router.push('/')
+      } catch (e){
+        console.error(e)
+      }
+    }
   },
   async mounted() {
     await this.loadInitialCounts()

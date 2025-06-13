@@ -1,12 +1,11 @@
 @use '@/SASS/abstracts/colours' as c;
 
 $spacing: 1rem;
-$border-color: #ddd;
-$bg-mine: light-dark(c.$color-secundario-200,c.$color-grises-400) ;
-$color-mine:c.$color-primario-100;
-$color-other:c.$color-primario-100;
-$bg-other: light-dark(c.$color-secundario-400,c.$color-grises-500);
-$text-time: c.$color-grises-300 ;
+$bg-mine: light-dark(c.$color-secundario-400,c.$color-grises-400) ;
+$color-mine:c.$color-primario-800;
+$color-other:c.$color-primario-800;
+$bg-other: light-dark(c.$color-secundario-500,c.$color-grises-500);
+$text-time: c.$color-grises-100 ;
 $error-color: c.$color-secundario-800;
 
 .chat{
@@ -18,7 +17,7 @@ $error-color: c.$color-secundario-800;
     display: flex;
     align-items: center;
     padding: $spacing;
-    border-bottom: 1px solid $border-color;
+    border-bottom: 1px solid c.$color-grises-800;
     h2 {
       margin: 0 auto;
     }
@@ -66,7 +65,7 @@ $error-color: c.$color-secundario-800;
   &__form {
     display: flex;
     padding: 0.5rem;
-    border-top: 1px solid $border-color;
+    border-top: 1px solid c.$color-secundario-800;
     gap: 0.5rem;
     position:sticky;
     input {
