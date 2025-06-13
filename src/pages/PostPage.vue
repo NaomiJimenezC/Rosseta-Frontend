@@ -170,7 +170,7 @@ export default {
       if (!isCommentOwner && !isPostOwner) return;
       try {
         if (isCommentOwner) {
-          await deleteCalling(`/comments/${comment.id}`, {}, true);
+          await deleteCalling(`/comments`, {comment_id: comment.id }, true);
         } else {
           await deleteCalling('/comments/author-delete', { comment_id: comment.id }, true);
         }
