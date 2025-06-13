@@ -36,7 +36,7 @@
             @click="select(user.id)"
             class="user-item"
           >
-            <img :src="user.profile_picture_url" alt="perfil de usuario">
+            <img :src="user.profile_picture_url || defaultAvatar" alt="perfil de usuario">
             {{ user.username }}
           </li>
           <li v-if="!filtered.length" class="user__no_results">
@@ -50,6 +50,7 @@
 </template>
 
 <script>
+import defaultAvatar from '@/assets/Default_pfp.jpg'
 export default {
   name: 'UserSearchModal',
   props: {
@@ -57,7 +58,7 @@ export default {
     users:   { type: Array,   required: true }
   },
   data() {
-    return { term: '' }
+    return { term: '', defaultAvatar}
   },
   computed: {
     filtered() {
